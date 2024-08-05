@@ -18,13 +18,14 @@ class taper:
         
 
     def klopfenstein(self,N,gamma_max,L):       # N-> Number of segments (ideally infinite)
-        self.type = "klopfenstein"              # gamma_max-> maximum passband ripple
+        self.type = "klopfenstein"              # gamma_max-> minimum reflection coefficient
                                                 # L-> total length of tapering
         gamma0 = (self.Z_high-self.Z_low)/(self.Z_high+self.Z_low)                                                      # Ref. (5.77) in [1]
         A = np.arccosh(gamma0/gamma_max)                                                                                # Ref. (5.78) in [1]
         phi_integrand = lambda x: sp.special.i1(A * np.sqrt(1-x**2)) / (A * np.sqrt(1-x**2))                            # Ref. (5.75) in [1]
         phi = lambda x: sp.integrate.quad(phi_integrand , 0 , x)[0]                                                     # Ref. (5.75) in [1]
         Z = lambda z: np.exp(0.5*np.log(self.Z_low*self.Z_high) + gamma0/np.cosh(A) * np.power(A,2) * phi(2*z/L - 1))   # # Ref. (5.74) in [1]
+        ele_len_min = A/np.pi * 180  # Minimum electrical length of the tapering in degrees
 
         x = np.linspace(0,L,N)  # Sample point in the tapering interval
         y= np.array([])         # Impedance values in each samples of 'x' (initializaiton)
@@ -34,7 +35,7 @@ class taper:
             y = np.flip(y)
         else:
             pass
-        return [x,y]            # Returns the position and impedance pair as matrix rows.
+        return [x,y,ele_len_min]     # Returns the position and impedance pair as matrix rows.
     
 
 
@@ -46,8 +47,9 @@ class taper:
 ####################################################################
 #   Examples
 #
-#   Klopfenstein Tapering
-#   tl1 = taper(50,100)
-#   [x,y]=tl1.klopfenstein(5,0.01,1)
-#   print(x)
-#   print(y)
+# Klopfenstein Tapering
+# tl1 = taper(50,100)
+# [x,y,theta]=tl1.klopfenstein(10,0.01,1)
+# print('position: ' + str(x))
+# print('impedance: ' + str(y))
+# print('min electrical length: ' + str(theta))
