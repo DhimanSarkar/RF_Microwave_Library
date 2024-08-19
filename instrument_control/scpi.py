@@ -22,34 +22,36 @@ class scpi():
         pass
 
     def reset(self):
-        self.rm.write('*RST')
+        self.instr.write('*RST')
         return 0
 
 
     def measure(self,*args,**kwargs):
         # Setting Measurement Channel
-        if(re.search('^(CH||ch)?1$',kwargs['channel'])):
+        if(re.search(r'(?i)(CH)?(channel)?1$',kwargs['channel'])):
             channel = 1
-        elif(re.search('^(CH||ch)?2$',kwargs['channel'])):
+        elif(re.search(r'(?i)(CH)?(channel)?2$',kwargs['channel'])):
             channel = 2
         else:
             channel = 1
 
         #Setting Measurement Parameter
-        if('^(?i)(Voltage)?(V)?(volt)?$',kwargs['parameter']):
+        if(re.search(r'(?i)^(Voltage)?(V)?(volt)?$',kwargs['parameter'])):
             parameter = 'v'
-        elif('^(?i)(Current)?(I)?(amp)?$',kwargs['parameter']):
+        elif(re.search(r'(?i)^(Current)?(I)?(amp)?$',kwargs['parameter'])):
             parameter = 'i'
-        elif('^(?i)(Power)?(P)?(watt)?$',kwargs['parameter']):
+        elif(re.search(r'(?i)^(Power)?(P)?(watt)?$',kwargs['parameter'])):
             parameter = 'p'
         else:
             parameter = 'v'
         
         #Setting Parameter Type
-        if('^(?i)(DC)$',kwargs['type']):
+        if(re.search(r'(?i)^(DC)$',kwargs['type'])):
             parameter_type = 'dc'
-        elif('^(?i)(AC)$',kwargs['type']):
+        elif(re.search(r'(?i)^(AC)$',kwargs['type'])):
             parameter_type = 'ac'
+        else:
+            parameter_type = False
         
         meas_query = 'MEASure:SCALar' +\
                         ':CURRent'*(parameter=='i') +\
