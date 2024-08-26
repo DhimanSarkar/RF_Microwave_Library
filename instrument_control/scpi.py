@@ -28,29 +28,38 @@ class scpi():
 
     def measure(self,*args,**kwargs):
         # Setting Measurement Channel
-        if(re.search(r'(?i)(CH)?(channel)?1$',kwargs['channel'])):
-            channel = 1
-        elif(re.search(r'(?i)(CH)?(channel)?2$',kwargs['channel'])):
-            channel = 2
-        else:
+        try:    # Handle error if the argument is not provided during method call.
+            if(re.search('^(CH||ch)?1$',kwargs['channel'])):
+                channel = 1
+            elif(re.search('^(CH||ch)?2$',kwargs['channel'])):
+                channel = 2
+            else:
+                channel = 1
+        except:
             channel = 1
 
         #Setting Measurement Parameter
-        if(re.search(r'(?i)^(Voltage)?(V)?(volt)?$',kwargs['parameter'])):
-            parameter = 'v'
-        elif(re.search(r'(?i)^(Current)?(I)?(amp)?$',kwargs['parameter'])):
-            parameter = 'i'
-        elif(re.search(r'(?i)^(Power)?(P)?(watt)?$',kwargs['parameter'])):
-            parameter = 'p'
-        else:
+        try:    # Handle error if the argument is not provided during method call.
+            if('^(?i)(Voltage)?(V)?(volt)?$',kwargs['parameter']):
+                parameter = 'v'
+            elif('^(?i)(Current)?(I)?(amp)?$',kwargs['parameter']):
+                parameter = 'i'
+            elif('^(?i)(Power)?(P)?(watt)?$',kwargs['parameter']):
+                parameter = 'p'
+            else:
+                parameter = 'v'
+        except:
             parameter = 'v'
         
         #Setting Parameter Type
-        if(re.search(r'(?i)^(DC)$',kwargs['type'])):
-            parameter_type = 'dc'
-        elif(re.search(r'(?i)^(AC)$',kwargs['type'])):
-            parameter_type = 'ac'
-        else:
+        try:    # Handle error if the argument is not provided during method call.
+            if('^(?i)(DC)$',kwargs['type']):
+                parameter_type = 'dc'
+            elif('^(?i)(AC)$',kwargs['type']):
+                parameter_type = 'ac'
+            else:
+                parameter_type = False
+        except:
             parameter_type = False
         
         meas_query = 'MEASure:SCALar' +\
