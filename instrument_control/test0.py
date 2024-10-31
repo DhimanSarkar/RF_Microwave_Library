@@ -38,8 +38,22 @@ import instruments
 # mea = sa.meas()
 # print(mea)
 
-sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET",backend='@py')
-print(sg.id)
-sg.set_power()
-sg.set_freq()
-sg.set_pwr_level()
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET",backend='@py')
+# print(sg.id)
+# sg.set_power()
+# sg.set_freq()
+# sg.set_pwr_level()
+
+
+# inst0 = scpi.scpi('demoVISA',backend='test')
+
+# inst0.set(channel=41).frequency('1 GHz')
+
+sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
+pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+
+sg.set().frequency('1.111 GHz').power('-20 dBm').enable
+print(pm.get().power())
+sg.set().power(-11.11)
+print(pm.get().power())
+sg.disable
