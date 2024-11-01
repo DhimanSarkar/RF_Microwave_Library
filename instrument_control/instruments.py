@@ -5,12 +5,90 @@ import scpi
 #####   Power Supply         #######################
 #####   Keysight - E36234A   #######################
 ####################################################
-class E36234A(scpi.scpi):
+class PS_E36234A(scpi.scpi):
     def __init__(self,instrumentVISA):
         super().__init__(instrumentVISA)
         self.instr_type = 'Power Supply'
+        self.id = self.instr.query('*IDN?')
+        print("Connection Successful with " + str(self.id))
+
     def __del__(self):
         super().__del__()
+    
+    def voltage(self, *args, **kwargs):
+        if hasattr(self, 'channel') != True:
+            print("Channel not defined!")
+            return 0
+        else:
+            pass
+
+        if self.operation == 'set':
+            # SCPI Syntax-> [SOURce:]VOLTage[:LEVel][:IMMediate][:AMPLitude]<SPACE>{<voltage>|MINimum|MAXimum|UP|DOWN|DEFault}<SPACE>(@chanlist)
+            voltage = args[0]
+            self.voltage_status = voltage
+            scpi_statement = ':SOURce:VOLTage:LEVel:IMMediate:AMPLitude ' + str(voltage) + ',(@' + str(self.channel) + ')'
+            self.instr.write(scpi_statement)
+        elif self.operation == 'get':
+            # SCPI Syntax-> MEASure[:SCALar]:VOLTage[:DC]?<SPACE>{CH1|CH2}
+            scpi_statement = 'MEASure:SCALar:VOLTage:DC? CH'  +   str(self.channel)
+            now_voltage = self.instr.query(scpi_statement)
+            self.power_status = now_voltage
+            return now_voltage
+        else:
+            pass
+        return self
+    
+    def current(self, *args, **kwargs):
+        if hasattr(self, 'channel') != True:
+            print("Channel not defined!")
+            return 0
+        else:
+            pass
+
+        if self.operation == 'set':
+            # SCPI Syntax-> [SOURce:]CURRent[:LEVel][:IMMediate][:AMPLitude]<SPACE>{<voltage>|MINimum|MAXimum|UP|DOWN|DEFault}<SPACE>(@chanlist)
+            voltage = args[0]
+            self.voltage_status = voltage
+            scpi_statement = ':SOURce:CURRent:LEVel:IMMediate:AMPLitude ' + str(voltage) + ',(@' + str(self.channel) + ')'
+            self.instr.write(scpi_statement)
+        elif self.operation == 'get':
+            # SCPI Syntax-> MEASure[:SCALar]:CURRent[:DC]?<SPACE>{CH1|CH2}
+            scpi_statement = 'MEASure:SCALar:CURRent:DC? CH'  +   str(self.channel)
+            now_voltage = self.instr.query(scpi_statement)
+            self.power_status = now_voltage
+            return now_voltage
+        else:
+            pass
+        return self
+    
+    def state(self,*args,**kwargs):
+        if hasattr(self, 'channel') != True:
+            print("Channel not defined!")
+            return 0
+        else:
+            pass
+
+        # SCPI SYNTAX-> OUTPut[:STATe]<SPACE>{OFF|ON|0|1}<SPACE>(@{1|2}})
+        if self.operation == 'set':
+            stat = args[0]
+            scpi_statement = 'OUTPut:STATe ' + str(stat) + ',(@' + str(self.channel) + ')'
+            self.instr.write(scpi_statement)
+            self.status = stat
+        elif self.operation == 'get':
+            scpi_statement = 'OUTPut:STATe? ' + '(@' + str(self.channel) + ')'
+            now_state = self.instr.query(scpi_statement)
+            self.status = now_state
+            return now_state
+        else:
+            pass
+        return self
+
+    @property
+    def enable(self,*args,**kwargs):
+        self.state(1)
+    @property
+    def disable(self,*args,**kwargs):
+        self.state(0)
 
 
 
@@ -24,7 +102,7 @@ class PM_U8488A(scpi.scpi):
         self.instr_type = 'Power Sensor'
         self.id = self.instr.query('*IDN?')
         print("Connection Successful with " + str(self.id))
-        #self.channel = -1        # Set to 1 explicitly since the instrument is single channel.
+        
     def __del__(self):
         super().__del__()
 
@@ -51,10 +129,7 @@ class PM_U8488A(scpi.scpi):
         else:
             pass
         return self
-    
-    def test(self,*args,**kwargs):
-        y = self.instr.query(':SENSe:FREQuency?')
-        return y
+
 
 
 

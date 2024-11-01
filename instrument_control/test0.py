@@ -49,11 +49,23 @@ import instruments
 
 # inst0.set(channel=41).frequency('1 GHz')
 
-sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
-pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
+# pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+ps = instruments.PS_E36234A('TCPIP::10.10.20.1::5025::SOCKET')
 
-sg.set().frequency('1.111 GHz').power('-20 dBm').enable
-print(pm.get().power())
-sg.set().power(-11.11)
-print(pm.get().power())
-sg.disable
+# sg.set().frequency('1.111 GHz').power('-20 dBm').enable
+# print(pm.get().power())
+# sg.set().power(-11.11)
+# print(pm.get().power())
+# sg.disable
+
+ps.set(channel=1).voltage(2).enable
+ps.set(2).voltage(3.333).enable
+print(ps.get(1).voltage())
+print(ps.get(2).voltage())
+ps.set(1).current(1.333)
+ps.set(2).current(0.33)
+
+
+ps.set(1).disable
+ps.set(2).disable

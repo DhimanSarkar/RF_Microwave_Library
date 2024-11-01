@@ -32,7 +32,7 @@ class scpi():
         self.instr.chunk_size = 102400          # Data read packet size.
         self.instr.read_termination = '\n'      # Instrument str-out termination character.
         self.instr.write_termination = '\n'     # Instrument str-in termination character.
-        self.instr.query_delay = 2 #sec.        # Delay between two write() statements.
+        # self.instr.query_delay = 0.1 #sec.        # Delay between two write() statements.
                                                 # Ref. https://pyvisa.readthedocs.cio/en/latest/introduction/resources.html
 
     def __del__(self):
@@ -52,6 +52,8 @@ class scpi():
         self.operation = 'set'
         if 'channel' in kwargs:
             self.channel = kwargs.get('channel')
+        elif len(args) >= 1:
+            self.channel = args[0]
         else:
             self.channel = 1
         return self   
@@ -60,6 +62,8 @@ class scpi():
         self.operation = 'get'
         if 'channel' in kwargs:
             self.channel = kwargs.get('channel')
+        elif len(args) >= 1:
+            self.channel = args[0]
         else:
             self.channel = 1
         return self    
