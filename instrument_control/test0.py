@@ -54,13 +54,13 @@ pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
 ps = instruments.PS_E36234A('TCPIP::10.10.20.1::5025::SOCKET')
 sa = instruments.SA_MS2720T('TCPIP::10.10.30.1::9001::SOCKET')
 
-sg.set().frequency('1.111 GHz').power('-20 dBm').enable
-print(sa.get().marker(1))
-sg.set().frequency('1.111 GHz').power('-25 dBm').enable
-print(sa.get().marker(1))
-sg.set().frequency('1.111 GHz').power('-10.327 dBm').enable
-print(sa.get().marker(1))
-sg.set().disable
+# sg.set().frequency('1.111 GHz').power('-20 dBm').enable
+# print(sa.get().marker(1))
+# sg.set().frequency('1.111 GHz').power('-25 dBm').enable
+# print(sa.get().marker(1))
+# sg.set().frequency('1.111 GHz').power('-10.327 dBm').enable
+# print(sa.get().marker(1))
+# sg.set().disable
 # print(pm.get().power())
 # sg.set().power(-11.11)
 # print(pm.get().power())
@@ -76,3 +76,11 @@ sg.set().disable
 
 # ps.set(1).disable
 # ps.set(2).disable
+
+sg.disable
+# while(True):
+for i in range(1,10):
+    sg.set().power(-40+3*i).enable
+    y = sa.get().marker(1)
+    sg.disable
+    print(y)

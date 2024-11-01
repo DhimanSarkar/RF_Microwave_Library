@@ -260,7 +260,11 @@ class SG_SGS100A(scpi.scpi):
 
     @property
     def enable(self,*args,**kwargs):
+        self.operation = 'set'
         self.state(1)
+        self.operation = False
     @property
     def disable(self,*args,**kwargs):
+        self.operation = 'set'
         self.state(0)
+        self.operation = False
