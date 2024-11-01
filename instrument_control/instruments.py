@@ -141,9 +141,10 @@ class SA_MS2720T(scpi.scpi):
     def __init__(self,instrumentVISA,**kwargs):
         super().__init__(instrumentVISA,backend='@py')
         self.instr_type = 'Spectrum Analyzer'
-        self.instr.read_termination = '\r\n'    # Specific termination character for Anritsu MS2720T
-        self.instr.write_termination = '\r\n'   # Specific termination character for Anritsu MS2720T
+        self.instr.read_termination = '\n'    # Specific termination character for Anritsu MS2720T
+        self.instr.write_termination = '\n'   # Specific termination character for Anritsu MS2720T
         self.id = self.instr.query('*IDN?')
+        print("Connection Successful with " + str(self.id))
 
     def __del__(self):
         super().__del__()
@@ -151,6 +152,23 @@ class SA_MS2720T(scpi.scpi):
     def meas(self):
         measOut = self.instr.query(':CALCulate:MARKer1:Y?')
         return measOut
+
+    def marker(self, *args, **kwargs):
+        if self.operation == 'set':
+            print(' \'set()\' Operation Not Allowed!')
+        elif self.operation == 'get':
+            if len(args) >= 1:
+                markerNum = args[0]
+            else:
+                markerNum = 1
+            scpi_statement_1 = ':CALCulate:MARKer' + str(markerNum) + ':X?' # Get Marker Frequency
+            scpi_statement_2 = ':CALCulate:MARKer' + str(markerNum) + ':Y?' # Get Marker Power
+            now_marker = [self.instr.query(scpi_statement_1),self.instr.query(scpi_statement_2)]
+            self.marker_status = now_marker
+            return now_marker
+        else:
+            pass
+        return self
 
 
 
