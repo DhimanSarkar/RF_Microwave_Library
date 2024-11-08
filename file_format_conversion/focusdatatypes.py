@@ -10,6 +10,7 @@ import pandas as pd
 class data():
     def __init__(self,*args,**kwargs):
         self.dataframe = False
+        self.attrs = {}
         pass
     def __del__(self,*args,**kwargs):
         pass
@@ -31,6 +32,9 @@ class data():
         ###########################
         header_line_index = lineno
 
+        data_comment_block = data_line[0:header_line_index-3]
+        self.attrs['metadata'] = data_comment_block
+
         header_dataframe = pd.read_csv(io.StringIO(data_line[header_line_index-1]), sep='\\s+')
         self.dataframe = pd.DataFrame(columns=header_dataframe.columns[2:].to_list())
 
@@ -42,10 +46,3 @@ class data():
 
         powerIndex_col = self.dataframe.pop("PowerIndex")
         self.dataframe.insert(0, "PowerIndex", powerIndex_col)
-
-ps = data()
-
-ps.parse(file = 'C:\\Users\\GEECI\\Desktop\\satwave.satwave_bak')
-print(ps.dataframe)
-ps.dataframe.to_csv('C:\\Users\\GEECI\\Desktop\\export_csv.csv',index=False)
-ps.dataframe.to_html('C:\\Users\\GEECI\\Desktop\\export.html',index=False)
