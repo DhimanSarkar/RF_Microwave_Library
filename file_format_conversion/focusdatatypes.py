@@ -119,4 +119,3 @@ class data():
         powerIndex_col = self.dataframe.pop("PowerIndex")
         self.dataframe.insert(2, "PowerIndex", powerIndex_col)
         self.dataframe.sort_values(by=['GammaMag', 'GammaAng'], ascending=True, inplace=True)
-        print(self.dataframe)
