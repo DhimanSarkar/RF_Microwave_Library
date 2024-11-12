@@ -9,10 +9,15 @@ import pandas
 
 class data():
     def __init__(self,*args,**kwargs):
+        hii_message = r'Under Development. If your focus measurement data contains skipped data, this may result in wrong exported data.'
+        print(hii_message)
+
         self.dataframe = False
         self.attrs = {}
         pass
     def __del__(self,*args,**kwargs):
+        bye_message = r''
+        print(bye_message)
         pass
 
     def parse(self,*args,**kwargs):

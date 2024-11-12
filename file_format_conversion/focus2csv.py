@@ -25,3 +25,6 @@ for i in range(1,len(file)+1):
     open(str(file[i-1] + '.csv'),'w').write(''.join(focusData.attrs['metadata']))
     focusData.dataframe.to_csv(str(file[i-1]) + '.csv', index=False,  mode='a', float_format='%.10f')
     focusData.dataframe.to_html(str(file[i-1]) + '.html', index=False)
+
+
+input('Press Enter Key To Exit ...')
