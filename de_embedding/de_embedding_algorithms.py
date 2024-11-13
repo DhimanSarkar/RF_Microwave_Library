@@ -1,6 +1,7 @@
-import numpy as np
-import scipy as sp
-import matplotlib as mtplt
+import matplotlib.pyplot
+import numpy
+import scipy
+import matplotlib
 import matplotlib.pyplot as plt
 import skrf as rf
 
@@ -16,9 +17,9 @@ class network():
         pass
 
 class test():
-    def __init__(self,path):
+    def __init__(self,path,*args,**kwargs):
         self.path = path
-        self.network = rf.Network(str(self.path) + '\\THRU.s2p')
+        # self.network = rf.Network(str(self.path) + '\\THRU.s2p')
 
     def __del__(self):
         pass
@@ -90,9 +91,35 @@ class test():
         fixture_circuit.plot_graph(network_labels=True, port_labels=True, edge_labels=True)
         plt.show()
 
+    
+    def GlennCletusTRL(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
+        std_thru = rf.Network(str(kwargs['thru']))
+        std_refl = rf.Network(str(kwargs['refl']))
+        std_line = rf.Network(str(kwargs['line']))
+
+        f_points = std_thru.frequency.npoints
+        # print(f_points)
+
+        for f_index in range(0,f_points):
+            # print(f_index)
+            # print(std_thru.s[f_index])
+
+            # print((std_line[f_index].t)[0])
+
+            LT = numpy.linalg.matmul((std_line[f_index].t)[0], numpy.linalg.inv(std_thru[f_index].t)[0])  # Ref. (24) of [3]
+            # check = numpy.linalg.det(LT)
+            # print(numpy.abs(check))
+
+            quadratic_coeff = [LT[1,0], (LT[1,1]-LT[0,0]), LT[0,1]]     # Ref. (30, 31) of [3]
+            # print(quadratic_coeff)
+            roots = numpy.roots(quadratic_coeff)
+            print(roots)
+
+        return 0
+
         
-net1 = test("C:\\Users\\GEECI\\Documents\\RF_Microwave_Library\\de_embedding\\test_cal_std\\")
-net1.ChoBurk()
+net1 = test(path='')
+net1.GlennCletusTRL(thru=r'.\de_embedding\cal_std\thru.s2p', refl=r'.\de_embedding\cal_std\shrt.s1p', line=r'.\de_embedding\cal_std\line.s2p')
 
 
 
@@ -104,4 +131,7 @@ net1.ChoBurk()
 #   [2] Vandamme, E. P., et al. “Improved Three-step De-embedding Method to Accurately Account for the Influence of Pad Parasitics in Silicon On-wafer RF Test-structures.” 
 #       IEEE Transactions on Electron Devices, vol. 48, no. 4, Apr. 2001, pp. 737–42. 
 #       DOI: 10.1109/16.915712.
+#   [3] Engen, G. F., and C. A. Hoer. “Thru-Reflect-Line: An Improved Technique for Calibrating the Dual Six-Port Automatic Network Analyzer.” 
+#       IEEE Transactions on Microwave Theory and Techniques, vol. 27, no. 12, Dec. 1979, pp. 987–93. 
+#       DOI: 10.1109/tmtt.1979.1129778.
 ####################################################################
