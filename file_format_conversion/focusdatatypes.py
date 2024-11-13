@@ -56,6 +56,10 @@ class data():
         _j = 0
         for i in range(header_line_index + 1, len(data_line)):
             _data = pandas.read_csv(io.StringIO(data_line[i]), sep='\\s+', header=None, float_precision='high').loc[0].fillna(0).to_list()
+            if(_data[0] == '#'):
+                _data.pop(0)
+            else:
+                pass
             self.dataframe.loc[_j] = _data
             _j = _j + 1
 
@@ -70,7 +74,7 @@ class data():
         data_string = str(data_ascii.read())
         data_line = open(kwargs['file'], 'r').readlines()
 
-        header_start_string = 'Point\\s*Gamma'
+        header_start_string = r'Point\s{2}Gamma'
         ###########################
         # https://dzone.com/articles/finding-line-number-when
         src = data_string
@@ -91,7 +95,7 @@ class data():
 
         # https://dzone.com/articles/finding-line-number-when
         src = data_string
-        pattern = "#"
+        pattern = r'#\s{1}\d'
         lineno = list()
         for m in re.finditer(pattern, src):
             start = m.start()
@@ -101,10 +105,11 @@ class data():
 
         self.dataframe = pandas.DataFrame(columns=header_columns)
 
-        gamma_line_regex_pattern = '#\\s*\\d*\\s*(\\d*\\.?\\d*)\\s*(\\-?\\d*\\.?\\d*)'
+        gamma_line_regex_pattern = r'^#\s\d*\s{2}(\d*\.?\d*)\s{2}(\-?\d*\.?\d*)$'
 
         k = 0
         for i in range(0,len(gamaindex)):
+            print(data_line[gamaindex[i]])
             if i != len(gamaindex)-1:
                 _pwr_index_len = gamaindex[i+1]-gamaindex[i]
             else:
@@ -116,6 +121,10 @@ class data():
 
             for j in range(0,_pwr_index_len-1):
                 _data = pandas.read_csv(io.StringIO(data_line[gamaindex[i]+1+j]), sep='\\s+', header=None, float_precision='high').loc[0].fillna(0).to_list()
+                if(_data[0] == '#'):
+                    _data.pop(0)
+                else:
+                    pass
                 _data.insert(0,float(load_gamma_mag))
                 _data.insert(1,float(load_gamma_ang))
                 self.dataframe.loc[k] = _data
