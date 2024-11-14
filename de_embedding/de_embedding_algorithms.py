@@ -96,6 +96,7 @@ class test():
         std_thru = rf.Network(str(kwargs['thru']))
         std_refl = rf.Network(str(kwargs['refl']))
         std_line = rf.Network(str(kwargs['line']))
+        refl_s11 = numpy.complex128(-1+0j)
 
         f_points = std_thru.frequency.npoints
         # print(f_points)
@@ -113,8 +114,24 @@ class test():
             quadratic_coeff = [LT[1,0], (LT[1,1]-LT[0,0]), LT[0,1]]     # Ref. (30, 31) of [3]
             # print(quadratic_coeff)
             roots = numpy.roots(quadratic_coeff)
-            print(roots)
+            # print(roots)
 
+            # PATH 1
+            for _i in range(0,2):
+                s = roots[_i%2]
+                q = roots[(_i+1) %2]
+
+                # print((std_refl[f_index].s[0][0][0]))
+                r = (q - (std_refl[f_index].s[0][0][0])) / (refl_s11 * ((std_refl[f_index].s[0][0][0]) - s))
+                # print(r)
+
+                root_choice_check = numpy.abs((LT[0][0] * q + LT[0][1]) / (LT[0][0] * r * s + LT[0][1] * r))    # Ref. (57) of [3] 
+                if(root_choice_check < 1):
+                    break
+                else:
+                    continue
+            
+            print(root_choice_check)
         return 0
 
         
