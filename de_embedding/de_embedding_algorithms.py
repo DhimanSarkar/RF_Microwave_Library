@@ -3,7 +3,7 @@ import numpy
 import scipy
 import matplotlib
 import matplotlib.pyplot as plt
-import skrf as rf
+import skrf
 
 class network():
 
@@ -19,7 +19,7 @@ class network():
 class test():
     def __init__(self,path,*args,**kwargs):
         self.path = path
-        # self.network = rf.Network(str(self.path) + '\\THRU.s2p')
+        # self.network = skrf.Network(str(self.path) + '\\THRU.s2p')
 
     def __del__(self):
         pass
@@ -40,7 +40,7 @@ class test():
             s22_fxtr = s11_fxtr
             s_fxtr[i] = [[s11_fxtr, s12_fxtr],[s21_fxtr,s22_fxtr]]
         pass
-        fxtr = rf.Network(frequency=f_list, s=s_fxtr, z0=50)
+        fxtr = skrf.Network(frequency=f_list, s=s_fxtr, z0=50)
 
         fxtr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', dir=self.path, form='db', skrf_comment=False)
 
@@ -55,10 +55,10 @@ class test():
         f_points = self.network.frequency.npoints
         f_list   = self.network.frequency
 
-        thruS   = rf.Network(str(self.path) + '\\THRU.s2p')
-        openS   = rf.Network(str(self.path) + '\\OPEN.s1p')
-        shrt1S  = rf.Network(str(self.path) + '\\SHRT1.s1p')
-        shrt2S  = rf.Network(str(self.path) + '\\SHRT2.s1p')
+        thruS   = skrf.Network(str(self.path) + '\\THRU.s2p')
+        openS   = skrf.Network(str(self.path) + '\\OPEN.s1p')
+        shrt1S  = skrf.Network(str(self.path) + '\\SHRT1.s1p')
+        shrt2S  = skrf.Network(str(self.path) + '\\SHRT2.s1p')
 
         thruY   = thruS.y
         openY   = openS.y
@@ -74,9 +74,9 @@ class test():
         z1  = 2 #0.5 * (1/thruY[:,0,1] + 1/shrt1Y[:,0,0] - 1/shrt2S[:,0,0])
         z3  = 3 #0.5 * (-1/thruY[:,0,1] + 1/shrt1Y[:,0,0] + 1/shrt2S[:,0,0])
 
-        line = rf.media.DefinedGammaZ0(frequency=f_list)
-        port1 = rf.Circuit.Port(frequency=f_list, name='port1', z0=50)
-        port2 = rf.Circuit.Port(frequency=f_list, name='port2', z0=50)
+        line = skrf.media.DefinedGammaZ0(frequency=f_list)
+        port1 = skrf.Circuit.Port(frequency=f_list, name='port1', z0=50)
+        port2 = skrf.Circuit.Port(frequency=f_list, name='port2', z0=50)
         G1 = line.resistor(1/g1, name='G1')
         Z1 = line.resistor(z1, name='Z1')
         Z3 = line.resistor(z3, name='Z3')
@@ -87,15 +87,15 @@ class test():
             [(Z1,1),(port2,0)],
             [(Z3,1),(port2,0)]
             ]
-        fixture_circuit = rf.Circuit(netlist)
+        fixture_circuit = skrf.Circuit(netlist)
         fixture_circuit.plot_graph(network_labels=True, port_labels=True, edge_labels=True)
         plt.show()
 
     
     def GlennCletusTRL(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
-        std_thru = rf.Network(str(kwargs['thru']))
-        std_refl = rf.Network(str(kwargs['refl']))
-        std_line = rf.Network(str(kwargs['line']))
+        std_thru = skrf.Network(str(kwargs['thru']))
+        std_refl = skrf.Network(str(kwargs['refl']))
+        std_line = skrf.Network(str(kwargs['line']))
         refl_s11 = numpy.complex128(-1+0j)
 
         f_points = std_thru.frequency.npoints
@@ -133,10 +133,63 @@ class test():
             
             print(root_choice_check)
         return 0
+    
+    def GlennCletusTSD(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
+        std_thru = skrf.Network(str(kwargs['thru']))
+        std_refl = skrf.Network(str(kwargs['refl']))
+        std_line = skrf.Network(str(kwargs['line']))
+        refl_s11 = numpy.complex128(-1+0j)
+
+
+        # print((std_thru.t)[1])
+        # print((std_thru.s)[1])
+
+        f_list = std_thru.frequency
+        f_points = std_thru.frequency.npoints
+        # print(f_points)
+
+        for f_index in range(0,f_points):
+            TX = numpy.linalg.matmul((std_line[f_index].t)[0], numpy.linalg.inv(std_thru[f_index].t)[0])  # Ref. (24) of [3]
+            
+            quadratic_coeff = [TX[1,0], (TX[1,1]-TX[0,0]), -TX[0,1]]     # Ref. (30, 31) of [3]
+            roots = numpy.roots(quadratic_coeff)
+
+            for _i in range(0,2):
+                a = roots[_i%2]
+                b = roots[(_i+1) %2]
+                c = ((a * std_refl.s[f_index][0] -1) / (refl_s11 * (1 - b * std_refl.s[f_index][0])))[0]
+
+                # _root_check = numpy.abs((TX[1][0] * b + TX[1][1]) / (TX[0][1] * (1/a) + TX[0][0]))
+                # print(_root_check)
+                # print(abs(a*c) > 1)
+
+                if(abs(a*c) > 1):
+                    break
+                else:
+                    continue
+
+            TA_scaling = numpy.sqrt(1/(a*c - b*c))
+
+            if(f_index == 0):
+                T_A = numpy.array([[[a * TA_scaling, b*c*TA_scaling],[1*TA_scaling, c*TA_scaling]]])
+            else:
+                T_A = numpy.append(T_A, [[[a * TA_scaling, b*c*TA_scaling],[1*TA_scaling, c*TA_scaling]]], axis=0)
+        
+        T_B = numpy.linalg.matmul(numpy.linalg.inv(T_A), std_thru.t)
+        
+        fixture_A = skrf.network.Network(s=skrf.network.t2s(T_A), frequency=f_list, z0=50)
+        fixture_B = skrf.network.Network(s=skrf.network.t2s(T_B), frequency=f_list, z0=50)
+
+        # fixture_A.plot_s_smith()
+        # fixture_B.plot_s_db()
+        # plt.show()
+
+        fixture_A.write_touchstone(filename='A.s2p', dir=r'C:\Users\GEECI\Desktop', form='db', skrf_comment=False)
+        return 0
 
         
 net1 = test(path='')
-net1.GlennCletusTRL(thru=r'.\de_embedding\cal_std\thru.s2p', refl=r'.\de_embedding\cal_std\shrt.s1p', line=r'.\de_embedding\cal_std\line.s2p')
+net1.GlennCletusTSD(thru=r'.\de_embedding\cal_std\thru.s2p', refl=r'.\de_embedding\cal_std\shrt.s1p', line=r'.\de_embedding\cal_std\line.s2p')
 
 
 
