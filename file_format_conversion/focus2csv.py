@@ -1,3 +1,6 @@
+# license: AGPLv3
+# github repo: https://github.com/DhimanSarkar/RF_Microwave_Library/
+
 import focusdatatypes
 import tkinter
 import tkinter.filedialog
