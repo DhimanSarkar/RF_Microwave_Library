@@ -109,8 +109,8 @@ class data():
 
         k = 0
         for i in range(0,len(gamaindex)):
-            print(data_line[gamaindex[i]])
-            if i != len(gamaindex)-1:
+            if i != len(gamaindex
+                        )-1:
                 _pwr_index_len = gamaindex[i+1]-gamaindex[i]
             else:
                  _pwr_index_len = len(data_line)-gamaindex[i]
@@ -121,12 +121,13 @@ class data():
 
             for j in range(0,_pwr_index_len-1):
                 _data = pandas.read_csv(io.StringIO(data_line[gamaindex[i]+1+j]), sep='\\s+', header=None, float_precision='high').loc[0].fillna(0).to_list()
-                if(_data[0] == '#'):
+                if(_data[0] == '!'): # StopCondition Skipped line indecator-> '!'
                     _data.pop(0)
                 else:
                     pass
                 _data.insert(0,float(load_gamma_mag))
                 _data.insert(1,float(load_gamma_ang))
+
                 self.dataframe.loc[k] = _data
                 k = k+1
 
