@@ -58,7 +58,7 @@ class data():
         _j = 0
         for i in range(header_line_index + 1, len(data_line)):
             _data = pandas.read_csv(io.StringIO(data_line[i]), sep='\\s+', header=None, float_precision='high').loc[0].fillna(0).to_list()
-            if(_data[0] == '#'):
+            if(_data[0] == '!'): # FDCS skipped measasurement data line starts with-> !
                 _data.pop(0)
             else:
                 pass
