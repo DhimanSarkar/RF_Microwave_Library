@@ -11,7 +11,7 @@ import pandas
 
 class data():
     def __init__(self,*args,**kwargs):
-        hii_message = r'Under Development. If your focus measurement data contains skipped data, this may result in wrong exported data.'
+        hii_message = r'Under Development! If you\'re sucpicious of the exported result, please inform and consult the original measurement data file.'
         print(hii_message)
 
         self.dataframe = False
