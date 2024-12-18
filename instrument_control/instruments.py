@@ -155,7 +155,10 @@ class SA_MS2720T(scpi.scpi):
 
     def marker(self, *args, **kwargs):
         if self.operation == 'set':
-            print(' \'set()\' Operation Not Allowed!')
+            marker_number = args[0]
+            marker_freq = args[1]
+            scpi_statement = ':CALCulate:MARKer' + str(marker_number) + ':X ' + str(marker_freq)
+            self.instr.write(scpi_statement)
         elif self.operation == 'get':
             if len(args) >= 1:
                 markerNum = args[0]
@@ -170,8 +173,20 @@ class SA_MS2720T(scpi.scpi):
             pass
         return self
 
+    def frequency(self, *args, **kwargs):
+        if self.operation == 'set':
+            center_frequency = args[0]
+            # SCPI syntax -> [:SENSe]:FREQuency:CENTer <freq>
+            scpi_statement = ':SENSe:FREQuency:CENTer ' + str(center_frequency)
+            self.instr.write(scpi_statement)
+        elif self.operation == 'get':
+            # SCPI syntax -> [:SENSe]:FREQuency:CENTer?
+            scpi_statement = ':SENSe:FREQuency:CENTer?'
+            center_frequency = self.instr.query(scpi_statement)
+            return center_frequency
+        return self
 
-
+    
 
 
 ####################################################

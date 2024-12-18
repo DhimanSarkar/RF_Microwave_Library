@@ -49,10 +49,10 @@ import instruments
 
 # inst0.set(channel=41).frequency('1 GHz')
 
-sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
-pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
-ps = instruments.PS_E36234A('TCPIP::10.10.20.1::5025::SOCKET')
-sa = instruments.SA_MS2720T('TCPIP::10.10.30.1::9001::SOCKET')
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
+# pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+# ps = instruments.PS_E36234A('TCPIP::10.10.20.1::5025::SOCKET')
+sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 
 # sg.set().frequency('1.111 GHz').power('-20 dBm').enable
 # print(sa.get().marker(1))
@@ -77,10 +77,22 @@ sa = instruments.SA_MS2720T('TCPIP::10.10.30.1::9001::SOCKET')
 # ps.set(1).disable
 # ps.set(2).disable
 
-sg.disable
-# while(True):
-for i in range(1,10):
-    sg.set().power(-40+3*i).enable
-    y = sa.get().marker(1)
-    sg.disable
-    print(y)
+# sg.disable
+# # while(True):
+# for i in range(1,10):
+#     sg.set().power(-40+3*i).enable
+#     y = sa.get().marker(1)
+#     sg.disable
+#     print(y)
+
+sa.id
+sa.set().marker(3, '810 MHz')
+
+# u = sa.debug('q',':SENSe:FREQuency:CENTer?')
+# print(u)
+# u = sa.debug('q',':SENSe:ACPower:BANDwidth:MAIN?')
+# print(u)
+# u = sa.debug('q',':SENSe:SWEep:STATus?')
+# print(u)
+# u = sa.debug('q',':SENSe:SWEep:TIME:ACTual?')
+# print(u)

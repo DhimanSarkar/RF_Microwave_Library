@@ -32,9 +32,9 @@ class scpi():
         self.instr.chunk_size = 102400          # Data read packet size.
         self.instr.read_termination = '\n'      # Instrument str-out termination character.
         self.instr.write_termination = '\n'     # Instrument str-in termination character.
-        # self.instr.query_delay = 0.1 #sec.        # Delay between two write() statements.
+        # self.instr.query_delay = 0.1 #sec.    # Delay between two write() statements.
                                                 # Ref. https://pyvisa.readthedocs.cio/en/latest/introduction/resources.html
-
+    
     def __del__(self):
         self.instr.close()
         pass
@@ -82,3 +82,14 @@ class scpi():
     def power(self,*args,**kwargs):
         pass
         return self
+    
+    def debug(self,mode,command,*args,**kwargs):
+        if(mode == 'w'):
+            self.instr.write(command)
+            debug_return = 0
+        elif(mode == 'q'):
+            debug_return = self.instr.query(command)
+        else:
+            print('command type in debug() not mentioned!')
+            debug_return = -1
+        return debug_return
