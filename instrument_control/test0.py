@@ -1,5 +1,6 @@
 import scpi
 import instruments
+import time
 
 # instrument1 = scpi.scpi('TCPIP::XXXX.XXXX.XXXX::instr0::INSTR',backend='@py(default)|@sim')
 # instrument2 = instruments.E36234A('TCPIP::XXXX.XXXX.XXXX::instr0::INSTR',backend='@py(default)|@sim')
@@ -52,7 +53,8 @@ import instruments
 # sg = instruments.SG_SGS100A("TCPIP::10.10.10.1::5025::SOCKET")
 # pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
 # ps = instruments.PS_E36234A('TCPIP::10.10.20.1::5025::SOCKET')
-sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
+# sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 
 # sg.set().frequency('1.111 GHz').power('-20 dBm').enable
 # print(sa.get().marker(1))
@@ -85,8 +87,8 @@ sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 #     sg.disable
 #     print(y)
 
-sa.id
-sa.set().marker(3, '810 MHz')
+# sa.id
+# sa.set().marker(3, '810 MHz')
 
 # u = sa.debug('q',':SENSe:FREQuency:CENTer?')
 # print(u)
@@ -96,3 +98,19 @@ sa.set().marker(3, '810 MHz')
 # print(u)
 # u = sa.debug('q',':SENSe:SWEep:TIME:ACTual?')
 # print(u)
+
+# sg.disable
+# sa.set().frequency('500 MHz')
+# sa.set().marker(1,'500 MHz')
+# sg.set().frequency('0.5 GHz').power(10).enable
+
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
+pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+# ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
+# sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
+
+pm.set().config(average = 10)
+start_time = time.time()
+print(pm.instr.query('READ:SCALar:POWer:AC?'))
+end_time = time.time()
+print(end_time - start_time)

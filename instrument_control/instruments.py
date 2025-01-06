@@ -110,7 +110,7 @@ class PM_U8488A(scpi.scpi):
         if self.operation == 'set':
             print(' \'set()\' Operation Not Allowed!')
         elif self.operation == 'get':
-            scpi_statement = ':MEASure:SCALar:POWer:AC?'
+            scpi_statement = ':READ:SCALar:POWer:AC?' # FETCh -> fastest READ -> moderate with configuratble data aquisition MEASure -> most accurate not configurable
             now_pwr = self.instr.query(scpi_statement)
             self.power_status = now_pwr
             return now_pwr
@@ -126,6 +126,19 @@ class PM_U8488A(scpi.scpi):
             now_pwr_unit = self.instr.query(scpi_statement)
             self.power_unit = now_pwr_unit
             return now_pwr_unit
+        else:
+            pass
+        return self
+    
+    def config(self, *args, **kwargs):
+        if self.operation == 'set':
+            if 'average' in kwargs: 
+                scpi_statement = 'SENSe:AVERage:COUNt ' + str(kwargs['average'])
+                self.instr.write(scpi_statement)
+            else:
+                print("No configuration attributes defined!")
+        elif self.operation == 'get':
+            pass
         else:
             pass
         return self

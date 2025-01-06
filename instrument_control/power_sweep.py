@@ -4,7 +4,7 @@ import time
 
 sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
 pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
-ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
+# ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
 sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 
 pwr_cal_data = []
@@ -77,19 +77,19 @@ def pOut_power_calibration(pSrc_min,pSrc_max,nPoints):
 # print(pwr_cal_data)
 
 
-sg.disable
-ps.set(2).disable
-ps.set(1).disable
+# sg.disable
+# ps.set(2).disable
+# ps.set(1).disable
 
-for n in range(0,16):
-    freq = str(0.5 + n*0.1) + " GHz"
+# for n in range(0,16):
+#     freq = str(0.5 + n*0.1) + " GHz"
 
-    print(freq)
-    sg.set().frequency(freq)
-    # source_power_calibration(-10, 0, 10)
-    # pIn_power_calibration(-10, 0, 10)
-    sa.set().frequency(freq)
-    pOut_power_calibration(-10, 0, 10)
+#     print(freq)
+#     sg.set().frequency(freq)
+#     # source_power_calibration(-10, 0, 10)
+#     # pIn_power_calibration(-10, 0, 10)
+#     sa.set().frequency(freq)
+#     pOut_power_calibration(-10, 0, 10)
 
     # print(freq)
     # sg.set().frequency(freq)
@@ -111,3 +111,9 @@ for n in range(0,16):
     # ps.set(2).disable
     # time.sleep(1)
     # ps.set(1).disable
+
+sg.disable
+sa.set().frequency('1 GHz')
+sg.set(1).frequency('1 GHz')
+pOut_power_calibration(0,10,100)
+sg.disable

@@ -1,0 +1,166 @@
+import matplotlib.pyplot
+import scpi
+import instruments
+import time
+import matplotlib
+import numpy
+import numpy
+import tkinter
+
+# sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
+pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+# ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
+# sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
+# pm.set().config(average=10)
+
+pin_corr = 18
+pout_corr = 38
+
+p1 = p1_max = -999 # init
+p2 = p2_max = -999 # init
+p3 = p3_max = -999 # init
+bar_width = 0.25
+
+
+window = tkinter.Tk()
+window.title("FOM Viewer")
+
+frame1 = tkinter.Frame(window)
+frame1.pack(side=tkinter.LEFT)
+frame2 = tkinter.Frame(window)
+frame2.pack(side=tkinter.LEFT)
+frame3 = tkinter.Frame(window)
+frame3.pack(side=tkinter.LEFT)
+
+
+label11 = tkinter.Label(frame1, text='FOM')
+label21 = tkinter.Label(frame1, text='Gain (dB) :')
+label31 = tkinter.Label(frame1, text='Pout (dBm) :')
+label41 = tkinter.Label(frame1, text='PAE (%) :')
+label11.pack(side=tkinter.TOP)
+label21.pack(side=tkinter.TOP)
+label31.pack(side=tkinter.TOP)
+label41.pack(side=tkinter.TOP)
+
+label12 = tkinter.Label(frame2, text='LIVE', width=20)
+label22 = tkinter.Label(frame2, text=p1)
+label32 = tkinter.Label(frame2, text=p2)
+label42 = tkinter.Label(frame2, text=p3)
+label12.pack(side=tkinter.TOP)
+label22.pack(side=tkinter.TOP)
+label32.pack(side=tkinter.TOP)
+label42.pack(side=tkinter.TOP)
+
+
+label13 = tkinter.Label(frame3, text='MAX', width=20)
+label23 = tkinter.Label(frame3, text=p1_max)
+label33 = tkinter.Label(frame3, text=p2_max)
+label43 = tkinter.Label(frame3, text=p3_max)
+label13.pack(side=tkinter.TOP)
+label23.pack(side=tkinter.TOP)
+label33.pack(side=tkinter.TOP)
+label43.pack(side=tkinter.TOP)
+
+label_meas_11 = tkinter.Label(frame1, text="Pin_meas (dBm) :")
+label_meas_21 = tkinter.Label(frame1, text="Pout_meas (dBm) :")
+label_meas_31 = tkinter.Label(frame1, text="Vg_meas (V) :")
+label_meas_41 = tkinter.Label(frame1, text="Ig_meas (A) :")
+label_meas_51 = tkinter.Label(frame1, text="Vd_meas (V) :")
+label_meas_61 = tkinter.Label(frame1, text="Id_meas (A) :")
+label_meas_11.pack(side=tkinter.TOP)
+label_meas_21.pack(side=tkinter.TOP)
+label_meas_31.pack(side=tkinter.TOP)
+label_meas_41.pack(side=tkinter.TOP)
+label_meas_51.pack(side=tkinter.TOP)
+label_meas_61.pack(side=tkinter.TOP)
+
+label_meas_12 = tkinter.Label(frame2, text=0)
+label_meas_22 = tkinter.Label(frame2, text=0)
+label_meas_32 = tkinter.Label(frame2, text=0)
+label_meas_42 = tkinter.Label(frame2, text=0)
+label_meas_52 = tkinter.Label(frame2, text=0)
+label_meas_62 = tkinter.Label(frame2, text=0)
+label_meas_12.pack(side=tkinter.TOP)
+label_meas_22.pack(side=tkinter.TOP)
+label_meas_32.pack(side=tkinter.TOP)
+label_meas_42.pack(side=tkinter.TOP)
+label_meas_52.pack(side=tkinter.TOP)
+label_meas_62.pack(side=tkinter.TOP)
+
+label_meas_13 = tkinter.Label(frame3, text='--')
+label_meas_23 = tkinter.Label(frame3, text='--')
+label_meas_33 = tkinter.Label(frame3, text='--')
+label_meas_43 = tkinter.Label(frame3, text='--')
+label_meas_53 = tkinter.Label(frame3, text='--')
+label_meas_63 = tkinter.Label(frame3, text='--')
+label_meas_13.pack(side=tkinter.TOP)
+label_meas_23.pack(side=tkinter.TOP)
+label_meas_33.pack(side=tkinter.TOP)
+label_meas_43.pack(side=tkinter.TOP)
+label_meas_53.pack(side=tkinter.TOP)
+label_meas_63.pack(side=tkinter.TOP)
+
+
+
+# fig, ax = matplotlib.pyplot.subplots()
+# x = numpy.array([0, 1])
+# matplotlib.pyplot.ion()
+
+while True:
+    # test purpose only
+    # pin_meas = numpy.random.uniform(1,100)    # test purpose only
+    pout_meas = numpy.random.uniform(1,100)    # test purpose only
+    vg_meas = numpy.random.uniform(1,100)    # test purpose only
+    ig_meas = numpy.random.uniform(1,100)    # test purpose only
+    vd_meas = numpy.random.uniform(1,100)    # test purpose only
+    id_meas = numpy.random.uniform(1,100)    # test purpose only
+
+    pin_meas = numpy.float16(pm.get().power())         # dBm
+    # pout_meas = numpy.float16(sa.get().marker(1)[1])   # dBm
+    # vg_meas = numpy.float16(ps.get(1).voltage())       # V
+    # ig_meas = numpy.float16(ps.get(1).current())       # A
+    # vd_meas = numpy.float16(ps.get(2).voltage())       # V
+    # id_meas = numpy.float16(ps.get(2).current())       # A
+
+    pin = pin_meas + pin_corr                           # dBm
+    pout = pout_meas + pout_corr                        # dBm
+    pdc = numpy.abs(vg_meas * ig_meas) + numpy.abs(vd_meas * id_meas) # W
+
+
+    p1 = pout - pin     # Available Gain (dB)
+    p2 = pout           # Output Power (dBm)
+    p3 = numpy.float16((10**(pout/10 - 3) - 10**(pin/10 - 3))/pdc * 100)   # PAE (%)
+    print([p1, p2, p3])
+
+    p1_max = p1 if(p1>=p1_max) else p1_max
+    p2_max = p2 if(p2>=p2_max) else p2_max
+    p3_max = p3 if(p3>=p3_max) else p3_max
+
+    label22.config(text=p1)
+    label32.config(text=p2)
+    label42.config(text=p3)
+    label23.config(text=p1_max)
+    label33.config(text=p2_max)
+    label43.config(text=p3_max)
+    label_meas_12.config(text=pin_meas)
+    label_meas_22.config(text=pout_meas)
+    label_meas_32.config(text=vg_meas)
+    label_meas_42.config(text=ig_meas)
+    label_meas_52.config(text=vg_meas)
+    label_meas_62.config(text=ig_meas)
+
+    window.update()
+
+    # y1 = [p1_max, p1]
+    # y2 = [p2_max, p2]
+    # y3 = [p3_max, p3]
+
+    # matplotlib.pyplot.cla()
+    # ax.bar(x-bar_width, y1, bar_width, color='cyan') 
+    # ax.bar(x, y2, bar_width, color='orange') 
+    # ax.bar(x+bar_width, y3, bar_width, color='green')
+    # matplotlib.pyplot.draw()  
+    # matplotlib.pyplot.pause(0.01)
+
+
+window.mainloop()
