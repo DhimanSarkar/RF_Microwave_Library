@@ -104,13 +104,34 @@ import time
 # sa.set().marker(1,'500 MHz')
 # sg.set().frequency('0.5 GHz').power(10).enable
 
-# sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
-pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
+sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
+# pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
 # ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
-# sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
+sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 
-pm.set().config(average = 10)
-start_time = time.time()
-print(pm.instr.query('READ:SCALar:POWer:AC?'))
-end_time = time.time()
-print(end_time - start_time)
+# pm.set().config(average = 10)
+# start_time = time.time()
+# print(pm.instr.query('READ:SCALar:POWer:AC?'))
+# end_time = time.time()
+# print(end_time - start_time)
+
+# pm.instr.write('*RST')
+# print(pm.instr.query(':read:SCALar:POWer:AC?'))
+# pm.set().config(average = 10)
+# print(pm.get().power())
+
+sg.disable
+
+for _i in range (0,5):
+    freq = str(1 + 0.5 * _i) + ' GHz'
+    pwr = str(-20 + _i) + ' dBm'
+    print(freq)
+
+    sg.set().frequency(freq)
+    sa.set().frequency(freq)
+
+    sg.set().power(pwr).enable
+    p = sa.get().marker(1)[1]
+    print([pwr, p])
+
+sg.disable

@@ -7,14 +7,15 @@ import numpy
 import numpy
 import tkinter
 
-# sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
+sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
 pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
-# ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
-# sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
-# pm.set().config(average=10)
+ps = instruments.PS_E36234A('TCPIP::10.10.10.1::5025::SOCKET')
+sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
+pm.instr.write('*RST')
+pm.set().config(average=10)
 
-pin_corr = 18
-pout_corr = 38
+pin_corr = 17.74147
+pout_corr = 38.26059
 
 p1 = p1_max = -999 # init
 p2 = p2_max = -999 # init
@@ -109,18 +110,21 @@ label_meas_63.pack(side=tkinter.TOP)
 while True:
     # test purpose only
     # pin_meas = numpy.random.uniform(1,100)    # test purpose only
-    pout_meas = numpy.random.uniform(1,100)    # test purpose only
-    vg_meas = numpy.random.uniform(1,100)    # test purpose only
-    ig_meas = numpy.random.uniform(1,100)    # test purpose only
-    vd_meas = numpy.random.uniform(1,100)    # test purpose only
-    id_meas = numpy.random.uniform(1,100)    # test purpose only
-
+    # pout_meas = numpy.random.uniform(1,100)    # test purpose only
+    # vg_meas = numpy.random.uniform(1,100)    # test purpose only
+    # ig_meas = numpy.random.uniform(1,100)    # test purpose only
+    # vd_meas = numpy.random.uniform(1,100)    # test purpose only
+    # id_meas = numpy.random.uniform(1,100)    # test purpose only
+    
+    start_time = time.time()
     pin_meas = numpy.float16(pm.get().power())         # dBm
-    # pout_meas = numpy.float16(sa.get().marker(1)[1])   # dBm
-    # vg_meas = numpy.float16(ps.get(1).voltage())       # V
-    # ig_meas = numpy.float16(ps.get(1).current())       # A
-    # vd_meas = numpy.float16(ps.get(2).voltage())       # V
-    # id_meas = numpy.float16(ps.get(2).current())       # A
+    pout_meas = numpy.float16(sa.get().marker(1)[1])   # dBm
+    vg_meas = numpy.float16(ps.get(1).voltage())       # V
+    ig_meas = numpy.float16(ps.get(1).current())       # A
+    vd_meas = numpy.float16(ps.get(2).voltage())       # V
+    id_meas = numpy.float16(ps.get(2).current())       # A
+    end_time = time.time()
+    print(end_time - start_time)
 
     pin = pin_meas + pin_corr                           # dBm
     pout = pout_meas + pout_corr                        # dBm
@@ -146,8 +150,8 @@ while True:
     label_meas_22.config(text=pout_meas)
     label_meas_32.config(text=vg_meas)
     label_meas_42.config(text=ig_meas)
-    label_meas_52.config(text=vg_meas)
-    label_meas_62.config(text=ig_meas)
+    label_meas_52.config(text=vd_meas)
+    label_meas_62.config(text=id_meas)
 
     window.update()
 

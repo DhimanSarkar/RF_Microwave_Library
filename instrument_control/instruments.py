@@ -1,5 +1,5 @@
 import scpi
-
+import time
 
 ####################################################
 #####   Power Supply         #######################
@@ -177,8 +177,19 @@ class SA_MS2720T(scpi.scpi):
                 markerNum = args[0]
             else:
                 markerNum = 1
+
+            scpi_statement_01 = ':INITiate:IMMediate AVERage'   # Initiate a new average sweep
+            scpi_statement_02 = ':SENSe:SWEep:TIME:ACTual?'     # Get Sweep Time
+            scpi_statement_03 = ':STATus:OPERation?'            # Get sweep status -> 256|0 if sweep complete|incomplete
             scpi_statement_1 = ':CALCulate:MARKer' + str(markerNum) + ':X?' # Get Marker Frequency
             scpi_statement_2 = ':CALCulate:MARKer' + str(markerNum) + ':Y?' # Get Marker Power
+
+            single_sweep_time = self.instr.query(scpi_statement_02) # Get Sweep Time
+            self.instr.write(scpi_statement_01)                     # Initiate a new average sweep
+            while int(self.instr.query(scpi_statement_03)) != 256:
+                # time.sleep(single_sweep_time)                     # Wait for (atleast) single sweep time
+                time.sleep(1)     # Wait for 1s
+            
             now_marker = [self.instr.query(scpi_statement_1),self.instr.query(scpi_statement_2)]
             self.marker_status = now_marker
             return now_marker
