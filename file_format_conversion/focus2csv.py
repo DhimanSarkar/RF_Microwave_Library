@@ -7,6 +7,7 @@ import tkinter.filedialog
 import re
 
 root = tkinter.Tk()
+root.wm_attributes("-topmost", 1)
 root.withdraw()
 
 ifMore = True
