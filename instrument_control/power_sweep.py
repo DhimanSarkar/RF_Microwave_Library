@@ -2,6 +2,9 @@ import scpi
 import instruments
 import time
 import pandas
+from decimal import *
+from fractions import *
+import numpy
 
 sg = instruments.SG_SGS100A("TCPIP::10.10.10.2::5025::SOCKET")
 pm = instruments.PM_U8488A('USB0::0x2A8D::0xA718::MY62040007::0::INSTR')
@@ -10,61 +13,9 @@ sa = instruments.SA_MS2720T('TCPIP::10.10.10.3::9001::SOCKET')
 pm.reset()
 pm.set().config(average=10)
 
-pwr_cal_data = []
-## Absolute Power Calibration
-# src->cable->power_meter
-def source_power_calibration(pSrc_min,pSrc_max,nPoints):
-    swpIndex = 1
-    srcCal = []
-    pSrc_interval = (pSrc_max-pSrc_min)/nPoints
-    pSrc = pSrc_min
-    for _i in range(0,nPoints+1):
-        sg.set(1).power(pSrc).enable
-        pm_data = pm.get().power()
-        srcCal.append([swpIndex, pSrc, pm_data])
-        print(str(pSrc) + "\t" + str(pm_data))
-        # print(str(pm_data))
-        swpIndex = swpIndex + 1
-        pSrc = pSrc + pSrc_interval
-    pwr_cal_data.append(srcCal)
-
-## Input Receiver Power Calibration
-# src->cable->bridge->cable/attn->power_meter
-def pIn_power_calibration(pSrc_min,pSrc_max,nPoints):
-    swpIndex = 1
-    pwrInCal = []
-    pSrc_interval = (pSrc_max-pSrc_min)/nPoints
-    pSrc = pSrc_min
-    for _i in range(0,nPoints+1):
-        sg.set(1).power(pSrc).enable
-        pm_data = pm.get().power()
-        pwrInCal.append([swpIndex, pSrc, pm_data])
-        # print(str(pSrc) + " " + str(pm_data))
-        print(str(pm_data))
-        swpIndex = swpIndex + 1
-        pSrc = pSrc + pSrc_interval
-    pwr_cal_data.append(pwrInCal)
-
-## Input Receiver Power Calibration
-# src->cable->bridge->cable/attn->spectrum_analyzer
-def pOut_power_calibration(pSrc_min,pSrc_max,nPoints):
-    swpIndex = 1
-    pwrOutCal = []
-    pSrc_interval = (pSrc_max-pSrc_min)/nPoints
-    pSrc = pSrc_min
-    for _i in range(0,nPoints+1):
-        sg.set(1).power(pSrc).enable
-        sa_data = sa.get().marker(1)
-        pwrOutCal.append([swpIndex, pSrc, sa_data[1]])
-        print(str(pSrc) + "\t" + str(sa_data[1]))
-        # print(str(sa_data[1]))
-        swpIndex = swpIndex + 1
-        pSrc = pSrc + pSrc_interval
-    pwr_cal_data.append(pwrOutCal)
-
 
 for _i in range(0,12):
-    freq = str(1 + _i * 0.1) + ' GHz'
+    freq = str(Decimal(1) + _i * Decimal(0.1)) + ' GHz'
     print(freq)
     sg.disable
     sg.set().frequency(freq)
@@ -73,12 +24,12 @@ for _i in range(0,12):
     sa.set().frequency(freq)
     # pOut_power_calibration(0, 20, 100)
 
-    pSrc_max = 15
-    pSrc_min = -5
+    pSrc_max = Decimal(15)
+    pSrc_min = Decimal(-5)
     nPoints = 100
+    pSrc_interval = (pSrc_max-pSrc_min)/nPoints
     swpIndex = 1
     pwrOutCal = pandas.DataFrame(columns=['freq','index','p_sg','p_sa','p_pm'])
-    pSrc_interval = (pSrc_max-pSrc_min)/nPoints
     pSrc = pSrc_min
     for _i in range(0,nPoints+1):
         sg.set().power(pSrc).enable
@@ -91,7 +42,60 @@ for _i in range(0,12):
         pSrc = pSrc + pSrc_interval
 
     sg.disable
-    pwrOutCal.to_csv(r'.\out4.csv')
+    pwrOutCal.to_csv(r'.\pCal2.csv', mode='a', header=True)
+
+
+# pwr_cal_data = []
+# ## Absolute Power Calibration
+# # src->cable->power_meter
+# def source_power_calibration(pSrc_min,pSrc_max,nPoints):
+#     swpIndex = 1
+#     srcCal = []
+#     pSrc_interval = (pSrc_max-pSrc_min)/nPoints
+#     pSrc = pSrc_min
+#     for _i in range(0,nPoints+1):
+#         sg.set(1).power(pSrc).enable
+#         pm_data = pm.get().power()
+#         srcCal.append([swpIndex, pSrc, pm_data])
+#         print(str(pSrc) + "\t" + str(pm_data))
+#         # print(str(pm_data))
+#         swpIndex = swpIndex + 1
+#         pSrc = pSrc + pSrc_interval
+#     pwr_cal_data.append(srcCal)
+
+# ## Input Receiver Power Calibration
+# # src->cable->bridge->cable/attn->power_meter
+# def pIn_power_calibration(pSrc_min,pSrc_max,nPoints):
+#     swpIndex = 1
+#     pwrInCal = []
+#     pSrc_interval = (pSrc_max-pSrc_min)/nPoints
+#     pSrc = pSrc_min
+#     for _i in range(0,nPoints+1):
+#         sg.set(1).power(pSrc).enable
+#         pm_data = pm.get().power()
+#         pwrInCal.append([swpIndex, pSrc, pm_data])
+#         # print(str(pSrc) + " " + str(pm_data))
+#         print(str(pm_data))
+#         swpIndex = swpIndex + 1
+#         pSrc = pSrc + pSrc_interval
+#     pwr_cal_data.append(pwrInCal)
+
+# ## Input Receiver Power Calibration
+# # src->cable->bridge->cable/attn->spectrum_analyzer
+# def pOut_power_calibration(pSrc_min,pSrc_max,nPoints):
+#     swpIndex = 1
+#     pwrOutCal = []
+#     pSrc_interval = (pSrc_max-pSrc_min)/nPoints
+#     pSrc = pSrc_min
+#     for _i in range(0,nPoints+1):
+#         sg.set(1).power(pSrc).enable
+#         sa_data = sa.get().marker(1)
+#         pwrOutCal.append([swpIndex, pSrc, sa_data[1]])
+#         print(str(pSrc) + "\t" + str(sa_data[1]))
+#         # print(str(sa_data[1]))
+#         swpIndex = swpIndex + 1
+#         pSrc = pSrc + pSrc_interval
+#     pwr_cal_data.append(pwrOutCal)
 
 
 
@@ -142,3 +146,8 @@ for _i in range(0,12):
 # sg.set(1).frequency('1 GHz')
 # pOut_power_calibration(0,10,100)
 # sg.disable
+
+# sg.disable
+# sg.set().power('-10 dBm').enable
+# y = sa.get().marker()
+# print(y)
