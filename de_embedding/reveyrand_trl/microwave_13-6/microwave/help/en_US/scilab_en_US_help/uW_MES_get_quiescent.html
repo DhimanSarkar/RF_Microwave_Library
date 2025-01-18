@@ -1,0 +1,89 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_MES_get_quiescent</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES2CITI_mes.html">&lt;&lt; uW_MES2CITI</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_plot_mes.html">uW_MES_plot &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a> &gt; uW_MES_get_quiescent</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_MES_get_quiescent</h1><p class="refpurpose">quiescent point informations for a selected IV measurement file (*.mes) network</p></div>
+  
+  
+   
+  
+  
+
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">info</span><span class="default"> = </span><span class="functionid">uW_MES_get_quiescent</span><span class="default">(</span><span class="default">dataset</span><span class="default">,</span><span class="default">n</span><span class="default">)</span></pre></div></div>
+
+  <div class="refsection"><h3 class="title">Parameters</h3>
+  <dl><dt><span class="term">info</span>
+    <dd><p class="para">the vector containing information of the network number n.</p></dd></dt>
+
+    <dt><span class="term">dataset</span>
+    <dd><p class="para">dataset containing the IV curves informations for Scilab.</p></dd></dt>
+	
+	<dt><span class="term">n</span>
+    <dd><p class="para">integer. Number of the selected network.</p></dd></dt></dl></div>
+ 
+  <div class="refsection"><h3 class="title">Description</h3>
+     <ul class="itemizedlist"><li><p class="para">This function analyse a MES data set in order to obtain the quiescent bias point information of a selected network.</p><p class="para">The output vector is the following one :</p><p class="para">[v1,i1,v2,i2,T] with
+	  - v1 : input voltage</p><p class="para">- v2 : output voltage</p><p class="para">- i1 : input current</p><p class="para">- i2 : output current</p><p class="para">- T : Chuck temperature (K)</p><p class="para"></p></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.mes</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">MES</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_MES_read.html">uW_MES_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Get informations of the network number 1</span>
+<span class="scilabmacro">uW_MES_get_quiescent</span><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilabdefault">,</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_MES_select_network.html" class="link">uW_MES_select_network</a></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES2CITI_mes.html">&lt;&lt; uW_MES2CITI</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_plot_mes.html">uW_MES_plot &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

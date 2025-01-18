@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_MES_get_quiescent" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_MES_get_quiescent</refname><refpurpose>  quiescent point informations for a selected IV measurement file (*.mes) network</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>info = uW_MES_get_quiescent(dataset,n)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>info</term>
+    <listitem>
+       <para>the vector containing information of the network number n.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>dataset</term>
+    <listitem>
+       <para>dataset containing the IV curves informations for Scilab.
+       </para>
+    </listitem>
+    </varlistentry>
+	
+	<varlistentry>
+    <term>n</term>
+    <listitem>
+       <para>integer. Number of the selected network.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function analyse a MES data set in order to obtain the quiescent bias point information of a selected network.</para><para>
+	  The output vector is the following one : </para><para>
+	  [v1,i1,v2,i2,T] with
+	  - v1 : input voltage</para><para>
+	  - v2 : output voltage</para><para>
+	  - i1 : input current</para><para>
+	  - i2 : output current</para><para>
+	  - T : Chuck temperature (K)</para><para>
+	  
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   filename=tk_getfile("*.mes");
+   MES=uW_MES_read(filename);
+   
+   // Get informations of the network number 1
+   uW_MES_get_quiescent(MES,1)
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MES_select_network"> uW_MES_select_network</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>

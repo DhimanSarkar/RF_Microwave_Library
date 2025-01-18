@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_MES2CITI_mes" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>15-Jul-2010</pubdate></info><refnamediv><refname>uW_MES2CITI</refname><refpurpose>  Generate a CITIfile from a MES file (*.mes) from XLIM measurements</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES2CITI(MES_filename,CITI_filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES_filename</term>
+    <listitem>
+       <para>String parameter : filename of the MES file including the path (XLIM IV curves file format).
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>CITI_filename</term>
+    <listitem>
+       <para>String parameter : filename of the CITI file including the path for Agilent ADS.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function transform a MES+MPS data of a network in a CITIfile for ADS.</para>
+
+	  
+
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   filename_mes="C:\PUBLIC\IV-test\F53_V6_50v_40mA.mes";
+ filename_citi="c:\test2.citi";
+ uW_MES2CITI(filename_mes,filename_citi);
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MES_read"> uW_MES_read</link> </member>
+ <member> <link linkend="uW_MPS_read"> uW_MPS_read</link> </member>
+ <member> <link linkend="uW_MES_select_network"> uW_MES_select_network</link> </member>
+
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+      <link linkend="uW_MES_read"> uW_MES_read</link> 
+ 	<link linkend="uW_MPS_read"> uW_MPS_read</link> 
+ 	<link linkend="uW_MES_select_network"> uW_MES_select_network</link> 
+     </para>
+  </refsection>
+
+
+
+</refentry>

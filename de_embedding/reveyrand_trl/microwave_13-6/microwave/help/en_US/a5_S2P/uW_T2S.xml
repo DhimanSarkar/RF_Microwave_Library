@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_T2S" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_T2S</refname><refpurpose> Cascade parameter matrix to Scattering matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_T2S(T)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>T</term>
+        <listitem>
+          <para>tlist containing the T parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	</variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a T parameter object into a S parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// It converts S to T and then T to S
+// 
+filename=tk_getfile("*.s2p");
+S_measure=uW_S2P_read(filename);
+T=uW_S2T(S_measure);
+S=uW_T2S(T);
+
+plot2d(S.frequency,abs([S.S11,S_measure.S11]));
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2T">uW_S2T</link>
+    </member>
+  </simplelist></refsection>
+  <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+</refentry>

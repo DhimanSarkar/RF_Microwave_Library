@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_freq_unit" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_freq_unit</refname><refpurpose> Convert frequency unit in scaling factor to get a frequency in Hertz.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>k=uW_freq_unit(unit)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>unit</term>
+        <listitem>
+          <para>String parameter : the unit of the frequency ("GHz" for example).</para>
+        </listitem>
+      </varlistentry>
+ 
+      <varlistentry>
+        <term>k</term>
+        <listitem>
+          <para>Real parameter : the scaling factor of the frequency (10^9 for example).</para>
+        </listitem>
+      </varlistentry>    
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a string frequency unit into a scaling factor to get the frequency in Hz .
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+
+-->uW_freq_unit("GHz")
+ ans  =
+ 
+    1.000D+09  
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_CST2CITI">uW_CST2CITI</link>
+    </member>
+   
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+  
+</refentry>

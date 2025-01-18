@@ -1,0 +1,3897 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<book version='5.0-subset Scilab' xml:lang='en_US' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:xi='http://www.w3.org/2001/XInclude' xmlns:svg='http://www.w3.org/2000/svg' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:html='http://www.w3.org/1999/xhtml' xmlns:db='http://docbook.org/ns/docbook'>
+  <info xml:id='microwave_toolbox_manual'>
+    <title>Microwave Toolbox</title>
+  </info>
+
+<part xml:id='section_e2e2ba8359e9b368b6ac9a99ac2e2e22'>
+<title>Calibration</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_cal_define_standard' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info>
+	<pubdate>October 2007
+	</pubdate>
+	</info>
+
+<refnamediv>
+	<refname>uW_cal_define_standard</refname>
+	
+	<refpurpose> define the set of parameters for a SOLT standard such as C0 for the &quot;open&quot; standard.</refpurpose>
+</refnamediv>
+   
+  
+<refsynopsisdiv>
+	<title>Calling Sequence</title>
+
+      <synopsis>standard=uW_cal_define_standard(type,value[,value2,...])</synopsis>
+</refsynopsisdiv>
+
+<refsection>
+	<title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>standard</term>
+        <listitem>
+          <para>tlist containing the parameter of the standard (see <literal>uW_cal_standard</literal>).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>type</term>
+        <listitem>
+          <para>string defining the standard : &quot;O&quot;, &quot;S&quot; or &quot;L&quot; correspounding respectively for &quot;Open&quot;, &quot;Short&quot; or &quot;Load&quot;.</para>
+        </listitem>
+      </varlistentry>
+	  
+	  <varlistentry>
+        <term>value</term>
+        <listitem>
+          <para>constant numerical value defining the standard.</para>
+        </listitem>
+      </varlistentry>
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function generates a tlist which contain all the data of a calibration standard in order to use this information with &quot;<literal>uW_cal_standard</literal>&quot; function.
+	This function can include delay or losses informations. Those data must appear in the input parameter as a string.
+	Notice that the offset is NOT a parameter. If your Calkit is described with an offset, please convert it in a delay before using this function with &quot;<literal>uW_cal_mm2s</literal>&quot;.
+    </para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Cascade ACP40-A-GSG-100 &quot;Open&quot; definition
+// C0 = -9.30 fF
+open=uW_cal_define_standard(&quot;O&quot;,-9.3e-15);
+
+// You can acces to data as follow :
+typeof(open)
+open.C0
+
+// Calculate the S11 from those data :
+f=2*10^9;  // f=2 GHz
+S11=uW_cal_standard(f,open);
+
+// ========================================
+// Example with with 12ps delay and no loss
+// C0 = 5e-15
+// C1= 60 e-27
+// C2 = -11 e-36
+// C3 = 0.41 e -45
+
+open=uW_cal_define_standard(&quot;O&quot;,5e-15,60e-27,-11e-36,0.41e-45,&apos;delay=12e-12&apos;,&apos;loss=0&apos;);
+
+// Now you can check the values as follow :
+open.C2
+
+// Read the delay
+open.delay
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_cal_standard'>uW_cal_standard</link>
+    </member>
+    <member>
+      <link linkend='uW_cal_offset2delay'>uW_cal_offset2delay</link>
+    </member>
+  </simplelist></refsection>
+  
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_cal_offset2delay' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_cal_offset2delay</refname><refpurpose> Scattering parameter matrix to Cascade matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>t=uW_cal_offset2delay(l)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>t</term>
+        <listitem>
+          <para>time in seconds correspounding to the offset length l.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>l</term>
+        <listitem>
+          <para>standard offset length in millimeters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function converts a standard offset length (millimeter) into a standard delay (second).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// ========================================
+// Example with with 5mm offset
+// C0 = 5e-15
+// C1= 60 e-27
+// C2 = -11 e-36
+// C3 = 0.41 e -45
+// Offset = 5 mm
+
+// Calculate the delay
+my_delay=uW_cal_offset2delay(5);
+
+// Standard definition
+open=uW_cal_define_standard(&quot;O&quot;,5e-15,60e-27,-11e-36,0.41e-45,&apos;delay=&apos;+string(my_delay));
+
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_cal_define_standard'>uW_cal_define_standard</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_cal_standard' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_cal_standard</refname><refpurpose> generate the S1P form of a standard according the definition parameters.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_cal_standard(frequency,standard)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>standard</term>
+        <listitem>
+          <para>tlist containing the parameter of the standard (see <literal>uW_cal_define_standard</literal>).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>frequency</term>
+        <listitem>
+          <para>column vector of frequencies (in Hertz).</para>
+        </listitem>
+      </varlistentry>
+	  
+	  <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>S1P object. This is the reflexion coefficent of the standard for the given frequencies.</para>
+        </listitem>
+      </varlistentry>
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function generates the S1P object of a calibration standard.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Calkit offset
+delay=uW_cal_offset2delay(5);
+
+// Open coefficients
+open_anritsu=uW_cal_define_standard(&quot;O&quot;,5e-15,60e-27,-11e-36,0.41e-45,&apos;delay=&apos;+string(delay)); 
+
+// Frequency
+frequency=(10^9)*linspace(1,20,100).&apos;;
+
+// Reflexion coefficient
+S=uW_cal_standard(frequency,open_anritsu);
+
+// Display
+uW_S2P_display(S)
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_cal_define_standard'>uW_cal_define_standard</link>
+    </member>
+   
+
+  </simplelist></refsection>
+  
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+</part>
+<part xml:id='section_67e17787ed43442fe08d126350f1ecf6'>
+<title>De-embedding</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_AMCAD_CST_deembedding' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+  <info>
+    <pubdate>October 2007</pubdate>
+  </info>
+  <refnamediv>
+    <refname>uW_AMCAD_CST_deembedding</refname>
+
+    <refpurpose>Load-pull measurement de-embedding .</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>uW_AMCAD_CST_deembedding(filename1,filename2,Sin,Sout)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+
+        <listitem>
+          <para>String parameter : filename of the input CST file (IV-CAD
+          load-pull file format before de-embedding) including the
+          path.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>filename2</term>
+
+        <listitem>
+          <para>String parameter : filename of the output CST file (IV-CAD
+          load-pull file format after de-embedding) including the path.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Sin</term>
+
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located
+          between the input port and the DUT.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Sout</term>
+
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located
+          between the DUT and the output port.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function read a CST file and de-embed each RF measured wave
+    according the two S2P file located before and after the DUT.</para>
+
+    <inlinemediaobject>
+      <imageobject>
+        <imagedata fileref='deembebed.gif'></imagedata>
+      </imageobject>
+    </inlinemediaobject>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role='example'>
+
+
+
+// Split the Test-fixture in two equal parts
+// 1. Get the Thru line
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_thru=uW_S2P_read(filename);
+
+
+// 2. Get the Opens
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_opens=uW_S2P_read(filename);
+
+
+// 3. Split the test-fixture
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+// Display the results
+xset(&quot;window&quot;,100);
+xname(&quot;Open @ DUT ref. plane&quot;);
+uW_S2P_display(Gamma_open);
+xset(&quot;window&quot;,101);
+xname(&quot;Input,Output and Total Thru S parameters&quot;);
+uW_S2P_display(Sin,Sout,S_thru);
+
+
+// 4. LOAD-PULL De-embedding 
+// The function remove the effect of Sin (S2P with port 1 is the input of the test-fixture and port 2 is the input of the DUT)
+// and Sout (S2P : port 1 is the output of the DUT and port 2 is the output of the test-fixture).
+// Then, it generate a new IV-CAD file.
+
+filename1=tk_getfile(&quot;*.cst&quot;); // File to read (before de-embedding)
+filename2=tk_getfile(&quot;*.cst&quot;); // File to write (after de-embedding)
+uW_AMCAD_CST_deembedding(filename1,filename2,Sin,Sout);
+
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type='inline'>
+      <member><link linkend='uW_S2P_display'>uW_S2P_display</link></member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Used Functions</title>
+
+    <member><link linkend='uW_unwarp'>uW_unwarp</link></member>
+  </refsection>
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_deembedding' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_deembedding</refname><refpurpose> S2P measurements de-embedding .</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S_DUT=uW_S2P_deembedding(S_Total,Sin,Sout)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S_Total</term>
+        <listitem>
+          <para>S2P Object (tlist) containing the complete chain S2P parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+	    <term>S_DUT</term>
+          <listitem>
+            <para>S2P Object (tlist) containing the de-embedded S2P parameters. The S2P of the DUT.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+		<term>Sin</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the input port and the DUT.</para>
+        </listitem>
+      </varlistentry>
+	   <varlistentry>
+		<term>Sout</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the DUT and the output port.</para>
+        </listitem>
+      </varlistentry>	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function de-embed a S2P data (S_Total) according to the input and output S2P blocks. The result is the de-embedded S2P data.
+	</para>
+	<inlinemediaobject><imageobject><imagedata fileref='S2Pdeembed.gif'></imagedata></imageobject></inlinemediaobject>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role='example'>
+
+
+
+// A - Split the Test-fixture in two equal parts
+// A.1. Get the Thru line
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_thru=uW_S2P_read(filename);
+
+// A.2. Get the Opens
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_opens=uW_S2P_read(filename);
+
+// A.3. Split the test-fixture
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+
+// B - Deembedding
+// B.1. Get the measurements
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_total=uW_S2P_read(filename);
+
+// B.2. De-embedding
+S_DUT=uW_S2P_deembedding(S_total,Sin,Sout); 
+
+// B.3. Display the results
+uW_S2P_display(S_DUT);
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+<refsection><title>Used Functions</title>
+     <member>
+      <link linkend='uW_unwarp'>uW_unwarp</link>
+    </member>
+</refsection>
+  
+  
+</refentry>
+</part>
+<part xml:id='section_b08c74d02c33b9195828a3aa3592e0a1'>
+<title>Display</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES_plot' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>16-Dec-2007</pubdate></info><refnamediv><refname>uW_MES_plot</refname><refpurpose>  Plot graph from IV measurements curves (MES file)</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES_plot(MES,network,my_x,my_y)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES</term>
+    <listitem>
+       <para>Measurements object. Refer to the <literal>uW_MES_read()</literal> function 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>network</term>
+    <listitem>
+       <para>Integer value. The number of the network you want to plot.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_x</term>
+    <listitem>
+       <para>Sting value. The X axis of your plot. Basically my_x=&quot;v2&quot;. 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_y</term>
+    <listitem>
+       <para>Sting value. The Y axis of your plot. Basically my_x=&quot;i2&quot;. 
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function plots the data included into your MES object. You can plot : </para><para>
+	  - Classical I-V curves : my_x=&quot;v2&quot; and my_y=&quot;i2&quot;;</para><para>
+	  - Gm extracted from small signal multi biases optimization : my_x=&quot;v2&quot; and my_y=&quot;Gm&quot;;</para><para>
+	  - Derivates from I-V curves extracted with X : my_x=&quot;v2&quot; and my_y=&quot;di2dv1&quot;;</para><para>
+	  and much more...</para><para>
+	  (my_x=&quot;v2
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename=&quot;C:\USERS\tibo\modele\Q3_2x75\10V10%\2X75.MES&quot;;
+MES=uW_MES_read(filename);
+uW_MES_plot(MES,1,&quot;v2&quot;,&quot;i2&quot;);
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_read'> uW_MES_read</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_display' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_display</refname><refpurpose> Display either S1P or S2P scilab object in the current graphic window as a VNA.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_S2P_display(S1[,S2,...])</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>Si</term>
+        <listitem>
+          <para>S1P or S2P scilab object (tlist). If the user wants to display several objects, each one has to include the same frequency grid and the same port number. </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function displays S1P or S2P data as a classical vectorial network analyser (VNA).
+	S11 and S22 are displayed on a smith chart. S11 is located on top left. S22 is located on bottom right.
+	S21 and S12 are displayed as magnitude (dB) vs frequency (GHz) and phase (degree) versus frequency (GHz). S21 is displayed on bottom left and S12 is displayed on top right.
+	</para>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename1=tk_getfile(&quot;*.s2p&quot;);
+filename2=tk_getfile(&quot;*.s2p&quot;);
+S1=uW_S2P_read(filename1);
+S2=uW_S2P_read(filename2);
+
+// Display the 2 measurements  
+uW_S2P_display(S1,S2);
+
+ 
+  </programlisting></refsection>
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_display_smith'>uW_display_smith</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+      www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_stab_display' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+  <info>
+    <pubdate>October 2010</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>uW_S2P_stab_display</refname>
+
+    <refpurpose>Plot the stability circles from S2P data.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>uW_S2P_stab_display(S)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+
+        <listitem>
+          <para>2 ports S2P data</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function plots the stability circles on a smith chart into the
+    current graphic window. Input stability circles are blue. Output stability
+    circles are red. The frequency list is the one embedded in the S2P
+    data.</para>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role='example'>
+
+// Get the S11 parameter of a measured device
+// 
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+uW_S2P_stab_display(S)
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type='inline'>
+      <member>
+		<link linkend='uW_S2P_display'>uW_S2P_display</link> 
+		<link linkend='uW_display_vsmith'>uW_display_smith</link>
+		<link linkend='uW_S2P_stab'>uW_S2P_stab</link>
+		<link linkend='uW_S2P_flip'>uW_S2P_flip</link>
+	</member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_display_smith' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_display_smith</refname><refpurpose> Plot the smith chart in the current graphic window.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_display_smith(impedances,color)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>impedances</term>
+        <listitem>
+          <para>vector of the normalized impedance to display. Most VNA use impedances=[.2 .5 1 2 5]; </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>color</term>
+        <listitem>
+          <para>numerical value of the color which be used to trace the smith chart.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function plot the smith chart into the current graphic window.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+
+// Trace S11
+plot2d(real(S.S11),imag(S.S11));
+
+// Trace the smith chart
+uW_display_smith([.2 .5 1 2 5],12);
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_display_vsmith' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_display_vsmith</refname><refpurpose> Plot the smith chart in the current graphic window with vectorial arcs.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_display_vsmith(impedances,color)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>impedances</term>
+        <listitem>
+          <para>vector of the normalized impedance to display. Most VNA use impedances=[.2 .5 1 2 5]; </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>color</term>
+        <listitem>
+          <para>numerical value of the color which be used to trace the smith chart.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function plots the smith chart into the current graphic window with vectorial arcs. Well suited for fig or eps exports.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the S11 parameter of a measured device
+// 
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+uW_display_vsmith([.2 .5 1 2 5],12);
+plot2d(real(S.S11),imag(S.S11));
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+	<link linkend='uW_display_smith'>uW_display_smith</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+</part>
+<part xml:id='section_02bcca3a041bc5d8f4f5125f55f65e26'>
+<title>MES files</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES2CITI_mes' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>15-Jul-2010</pubdate></info><refnamediv><refname>uW_MES2CITI</refname><refpurpose>  Generate a CITIfile from a MES file (*.mes) from XLIM measurements</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES2CITI(MES_filename,CITI_filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES_filename</term>
+    <listitem>
+       <para>String parameter : filename of the MES file including the path (XLIM IV curves file format).
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>CITI_filename</term>
+    <listitem>
+       <para>String parameter : filename of the CITI file including the path for Agilent ADS.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function transform a MES+MPS data of a network in a CITIfile for ADS.</para>
+
+	  
+
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename_mes=&quot;C:\PUBLIC\IV-test\F53_V6_50v_40mA.mes&quot;;
+ filename_citi=&quot;c:\test2.citi&quot;;
+ uW_MES2CITI(filename_mes,filename_citi);
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_read'> uW_MES_read</link> </member>
+ <member> <link linkend='uW_MPS_read'> uW_MPS_read</link> </member>
+ <member> <link linkend='uW_MES_select_network'> uW_MES_select_network</link> </member>
+
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+      <link linkend='uW_MES_read'> uW_MES_read</link> 
+ 	<link linkend='uW_MPS_read'> uW_MPS_read</link> 
+ 	<link linkend='uW_MES_select_network'> uW_MES_select_network</link> 
+     </para>
+  </refsection>
+
+
+
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES_get_quiescent' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_MES_get_quiescent</refname><refpurpose>  quiescent point informations for a selected IV measurement file (*.mes) network</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>info = uW_MES_get_quiescent(dataset,n)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>info</term>
+    <listitem>
+       <para>the vector containing information of the network number n.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>dataset</term>
+    <listitem>
+       <para>dataset containing the IV curves informations for Scilab.
+       </para>
+    </listitem>
+    </varlistentry>
+	
+	<varlistentry>
+    <term>n</term>
+    <listitem>
+       <para>integer. Number of the selected network.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function analyse a MES data set in order to obtain the quiescent bias point information of a selected network.</para><para>
+	  The output vector is the following one : </para><para>
+	  [v1,i1,v2,i2,T] with
+	  - v1 : input voltage</para><para>
+	  - v2 : output voltage</para><para>
+	  - i1 : input current</para><para>
+	  - i2 : output current</para><para>
+	  - T : Chuck temperature (K)</para><para>
+	  
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename=tk_getfile(&quot;*.mes&quot;);
+   MES=uW_MES_read(filename);
+   
+   // Get informations of the network number 1
+   uW_MES_get_quiescent(MES,1)
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_select_network'> uW_MES_select_network</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES_plot_mes' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>16-Dec-2007</pubdate></info><refnamediv><refname>uW_MES_plot</refname><refpurpose>  Plot graph from IV measurements curves (MES file)</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES_plot(MES,network,my_x,my_y)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES</term>
+    <listitem>
+       <para>Measurements object. Refer to the <literal>uW_MES_read()</literal> function 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>network</term>
+    <listitem>
+       <para>Integer value. The number of the network you want to plot.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_x</term>
+    <listitem>
+       <para>Sting value. The X axis of your plot. Basically my_x=&quot;v2&quot;. 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_y</term>
+    <listitem>
+       <para>Sting value. The Y axis of your plot. Basically my_x=&quot;i2&quot;. 
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function plots the data included into your MES object. You can plot : </para><para>
+	  - Classical I-V curves : my_x=&quot;v2&quot; and my_y=&quot;i2&quot;;</para><para>
+	  - Gm extracted from small signal multi biases optimization : my_x=&quot;v2&quot; and my_y=&quot;Gm&quot;;</para><para>
+	  - Derivates from I-V curves extracted with X : my_x=&quot;v2&quot; and my_y=&quot;di2dv1&quot;;</para><para>
+	  and much more...</para><para>
+	  (my_x=&quot;v2
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename=&quot;C:\USERS\tibo\modele\Q3_2x75\10V10%\2X75.MES&quot;;
+MES=uW_MES_read(filename);
+uW_MES_plot(MES,1,&quot;v2&quot;,&quot;i2&quot;);
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_read'> uW_MES_read</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES_read' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_MES_read</refname><refpurpose>  read IV measurement file (*.mes) from XLIM measurements</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>dataset = uW_MES_read(filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>filename</term>
+    <listitem>
+       <para>the filename of the MES file (XLIM IV curves file format).
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>dataset</term>
+    <listitem>
+       <para>dataset containing the IV curves informations for Scilab.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function read a MES file in order to manage informations within it with Scilab.
+	  You can acces to some data as follow :</para><para>
+	  dataset.network(number of network).curve(number of curve).plot(number of plot).field</para><para>
+	  
+	  field can be :</para><para>
+	  - v1 : input voltage</para><para>
+	  - v2 : output voltage</para><para>
+	  - i1 : input current</para><para>
+	  - i2 : output current</para><para>
+	  </para><para>
+	  - S2P : index of the S2P file index</para><para>
+	  </para><para>
+	  - di1dv1 : Derivate value if available into the file</para><para>
+	  - di1dv2</para><para>
+  	  - di2dv1</para><para>
+	  - di2dv2</para><para>
+	  </para><para>
+	  - Cgs : intrinsic value from linear modeling</para><para>
+	  - Cgd </para><para>
+	  - Gm</para><para>
+	  - Gd</para><para>
+	  - Cds</para><para>
+	  - Ri</para><para>
+	  - Tau</para><para>
+	  - Rgd
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename=tk_getfile(&quot;*.mes&quot;);
+   MES=uW_MES_read(filename);
+   
+   // Get the number of network
+   size(MES.network)
+   
+   // Get the number of curves in the first network
+   size(MES.network(1).curve)
+   
+   // Get the number of point in the first network and the first curve
+   size(MES.network(1).curve(1).plot)
+	
+   // Plot the network by yourself : Id=f(Vds)
+   for c=1:size(MES.network(1).curve),
+      X=[];
+	  Y=[];
+      for p=1:size(MES.network(1).curve(c).plot),
+	      X=[X;MES.network(1).curve(c).plot(p).v2];
+		  Y=[Y;MES.network(1).curve(c).plot(p).i2];
+      end;
+	  plot2d(X,Y);
+   end;
+
+   // Plot the network with the buid-in function
+   uW_MES_display(MES);
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_plot'> uW_MES_plot</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES_select_network' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+
+<info><pubdate>29-Dec-2007</pubdate></info><refnamediv><refname>uW_MES_select_network</refname><refpurpose>  Display a dialog box to select a measured network</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>network = uW_MES_select_network(data)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>data</term>
+    <listitem>
+       <para>MES object obtain with a <literal>uW_MES_read()</literal> function.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>network</term>
+    <listitem>
+       <para>Integer. Number of the selected network. 
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function generates a dialog box in order to let the user select a network within a complete MES file.
+	  Each line in the dialog box describe a network as follow :
+	  
+
+	  
+	
+     </para>
+     </listitem>
+     <listitem>
+     <para>
+      Add here a paragraph of the function description 
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   Add here scilab instructions and comments
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_read'> uW_MES_read</link> </member>
+    <member> <link linkend='uW_MES_plot'> uW_MES_plot</link> </member>
+   <member> <link linkend='uW_MES_get_quiescent'> uW_MES_get_quiescent</link> </member>
+  </simplelist></refsection>
+  
+
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     <link linkend='uW_MES_get_quiescent'> uW_MES_get_quiescent</link> 
+     </para>
+  </refsection>
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MPS_read' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>12-Mar-2008</pubdate></info><refnamediv><refname>uW_MPS_read</refname><refpurpose>  read a S2P from a multiple S parameter file (MPS)</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S = uW_MPS_read(filename,index)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>filename</term>
+    <listitem>
+       <para>String. Path of the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>index</term>
+    <listitem>
+       <para>String. Index of the required S2P within the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>S</term>
+    <listitem>
+       <para>S parameter object extracted from the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function extract a S2P from a mps filename and the desired index (3 capitals letters). 
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   	mps_filename=SCI+&quot;/contrib/uW/example/S2P/data.mps&quot;;
+	mps_index=&quot;AN0&quot;;
+	S=uW_MPS_read(mps_filename,mps_index);
+	uW_S2P_display(S); 
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_S2P_read'> uW_S2P_read</link> </member>
+  </simplelist></refsection>
+
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+</refentry>
+</part>
+<part xml:id='section_5bd4f60f9b3ed17af22d288d75773578'>
+<title>S2P files</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_CSV_read' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>September 2010</pubdate></info><refnamediv><refname>uW_CSV_read</refname><refpurpose> Read Sij data from a CSV file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_CSV_read(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the CSV file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a CSV file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the Sij parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.CSV&quot;);
+S11=uW_CSV_read(filename);
+
+filename=uigetfile(&quot;*.CSV&quot;);
+S21=uW_CSV_read(filename);
+
+
+filename=uigetfile(&quot;*.CSV&quot;);
+S12=uW_CSV_read(filename);
+
+filename=uigetfile(&quot;*.CSV&quot;);
+S22=uW_CSV_read(filename);
+
+S=S11;
+S.S21=S21.S21;
+S.S12=S12.S12;
+S.S22=S22.S22;
+
+uW_S2P_display(S);
+
+uW_S2P_write(S,&quot;c:\50V.s2p&quot;,&quot;Generated with Scilab Microwave Toolbox - www.microwave.fr&quot;)
+ 
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+ <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+    <member>
+      <link linkend='uW_S2P_write'>uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S1P_read' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_S1P_read</refname><refpurpose> Read data from a S1P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_S1P_read(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S1P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameter.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a S1P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the S11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S=uW_S1P_read(filename);
+uW_S2P_display(S);
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S1P_write'>uW_S1P_write</link>
+    </member>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+    <member>
+      <link linkend='uW_S2P_write'>uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S1P_write' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_S1P_write</refname><refpurpose> Write S data into a S1P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_S1P_write(S,filename,comments)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S1P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameter.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>comments</term>
+        <listitem>
+          <para>vector of string. The comments line to write into the S1P file.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function write S parameter data into a S1P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Calkit offset
+delay=uW_cal_offset2delay(5);
+
+// Open coefficients
+open_anritsu=uW_cal_define_standard(&quot;O&quot;,5e-15,60e-27,-11e-36,0.41e-45,&apos;delay=&apos;+string(delay)); 
+
+// Frequency
+frequency=(10^9)*linspace(1,20,100).&apos;;
+
+// Reflexion coefficient
+S=uW_cal_standard(frequency,open_anritsu);
+
+// Display
+uW_S2P_display(S)
+
+// Save
+uW_S1P_write(S,&quot;toto.s1p&quot;,&quot;Made with Scilab&quot;);
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S1P_read'>uW_S1P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2H' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_S2H</refname><refpurpose> Scattering parameter matrix to Hybrid matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>H=uW_S2H(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>H</term>
+        <listitem>
+          <para>tlist containing the H parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a S parameter object into a H parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+filename=&quot;transistor.s2p&quot;;
+S=uW_S2P_read(filename);
+
+// === Trace for ft
+subplot(211);
+H=uW_S2H(S);
+plot2d(H.frequency,20*log10(abs(H.H21)),logflag=&quot;ln&quot;)
+a=gca();
+a.x_label.text=&quot;Frequency(Hz)&quot;;
+a.y_label.text=&quot;H21(dB)&quot;;
+
+// === Trace for Fmax
+subplot(212);
+M=abs(S.S21)./abs(S.S12);
+plot2d(H.frequency,10*log10(abs(M)),logflag=&quot;ln&quot;)
+a=gca();
+a.x_label.text=&quot;Frequency(Hz)&quot;;
+a.y_label.text=&quot;MSG(dB)&quot;;
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_H2S'>uW_H2S</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_DELTA' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_DELTA</refname><refpurpose> Calculate the determinant of an S2P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>D=uW_S2P_DELTA(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>D</term>
+        <listitem>
+          <para>vector. Value of the determinant according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the determinant of a S2P objet S as follow : D=S.S11*S.S22-S.S12*S.S21.
+    The condition of unconditional stability is achieved when K greater than 1 and abs(D) lower than 1 with :
+    K=uW_S2P_K(S) and D=uW_S2P_DELTA(S).
+
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),abs(uW_S2P_DELTA(S)));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_K'>uW_S2P_K</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_K' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_K</refname><refpurpose> Calculate the stability K factor.</refpurpose></refnamediv>
+ 
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>K=uW_S2P_K(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>K</term>
+        <listitem>
+          <para>vector. Value of the K stability factor according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the K factor. The condition of unconditional stability is achieved when K greater than 1 and abs(D) lower than 1 with : K=uW_S2P_K(S) and D=uW_S2P_DELTA(S).
+	</para>
+  </refsection>
+  
+  
+
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),uW_S2P_K(S));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_MAG' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_MAG</refname><refpurpose> Calculate the Maximum Available Gain (MAG) of a S2P.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>M=uW_S2P_MAG(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>M</term>
+        <listitem>
+          <para>vector. Value of the Maximum Available Gain according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the Maximum Available Gain (MAG) of a S2P object.
+    This gain is defined ONLY for K greater than 1 with :
+    K=uW_S2P_K(S).
+    This function returns MAG=0 for K lower than 1.
+
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),uW_S2P_MAG(S));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_K'>uW_S2P_K</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_MSG' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_MSG</refname><refpurpose> Calculate the Maximum Stable Gain (MSG) of a S2P.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>M=uW_S2P_MSG(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>M</term>
+        <listitem>
+          <para>vector. Value of the Maximum Stable Gain according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the Maximum Stable Gain (MSG) of a S2P object.
+    This gain is defined ONLY for K lower than 1 with :
+    K=uW_S2P_K(S).
+    This function returns MAG=0 for K greater than 1.
+
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),uW_S2P_MSG(S));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_K'>uW_S2P_K</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_deembedding_s2p' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_deembedding</refname><refpurpose> S2P measurements de-embedding .</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S_DUT=uW_S2P_deembedding(S_Total,Sin,Sout)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S_Total</term>
+        <listitem>
+          <para>S2P Object (tlist) containing the complete chain S2P parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+	    <term>S_DUT</term>
+          <listitem>
+            <para>S2P Object (tlist) containing the de-embedded S2P parameters. The S2P of the DUT.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+		<term>Sin</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the input port and the DUT.</para>
+        </listitem>
+      </varlistentry>
+	   <varlistentry>
+		<term>Sout</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the DUT and the output port.</para>
+        </listitem>
+      </varlistentry>	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function de-embed a S2P data (S_Total) according to the input and output S2P blocks. The result is the de-embedded S2P data.
+	</para>
+	<inlinemediaobject><imageobject><imagedata fileref='S2Pdeembed.gif'></imagedata></imageobject></inlinemediaobject>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role='example'>
+
+
+
+// A - Split the Test-fixture in two equal parts
+// A.1. Get the Thru line
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_thru=uW_S2P_read(filename);
+
+// A.2. Get the Opens
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_opens=uW_S2P_read(filename);
+
+// A.3. Split the test-fixture
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+
+// B - Deembedding
+// B.1. Get the measurements
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_total=uW_S2P_read(filename);
+
+// B.2. De-embedding
+S_DUT=uW_S2P_deembedding(S_total,Sin,Sout); 
+
+// B.3. Display the results
+uW_S2P_display(S_DUT);
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+<refsection><title>Used Functions</title>
+     <member>
+      <link linkend='uW_unwarp'>uW_unwarp</link>
+    </member>
+</refsection>
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_display_s2p' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_display</refname><refpurpose> Display either S1P or S2P scilab object in the current graphic window as a VNA.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_S2P_display(S1[,S2,...])</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>Si</term>
+        <listitem>
+          <para>S1P or S2P scilab object (tlist). If the user wants to display several objects, each one has to include the same frequency grid and the same port number. </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function displays S1P or S2P data as a classical vectorial network analyser (VNA).
+	S11 and S22 are displayed on a smith chart. S11 is located on top left. S22 is located on bottom right.
+	S21 and S12 are displayed as magnitude (dB) vs frequency (GHz) and phase (degree) versus frequency (GHz). S21 is displayed on bottom left and S12 is displayed on top right.
+	</para>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename1=tk_getfile(&quot;*.s2p&quot;);
+filename2=tk_getfile(&quot;*.s2p&quot;);
+S1=uW_S2P_read(filename1);
+S2=uW_S2P_read(filename2);
+
+// Display the 2 measurements  
+uW_S2P_display(S1,S2);
+
+ 
+  </programlisting></refsection>
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_display_smith'>uW_display_smith</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+      www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_flip' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2P_flip</refname><refpurpose> Flip port 1 and port 2 of a S2P object.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S2=uW_S2P_flip(S1)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S1</term>
+        <listitem>
+          <para>tlist containing the original S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S2</term>
+        <listitem>
+          <para>tlist containing the S parameters of the flipped data.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert flip a S parameter object. Port1 and port 2 are switched such as S2.S11=S1.S22, S2.S22=S1.S11, S2.S12=S1.S21, and S2.S21=S1.S12.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename=uigetfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+S2=uW_S2P_flip(S_measure);
+
+plot2d(S2.frequency,abs(S2.S11));
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_freq' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2P_freq</refname><refpurpose> Write S data into a S2P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S2=uW_S2P_freq(S,freqlist)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>tlist containing the S parameters for the new freqency list.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>freqlist</term>
+        <listitem>
+          <para>scalar or vector. The new frequency value for to create the new S2P object S2.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function changes the frequency list of a S2P object. If the value of the S2P data are obtained with splines.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Display stability circles for 1 frequency : 1 GHz
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+S2=uW_S2P_freq(S,[1.0]*10^9);
+uW_S2P_stab_display(S2)
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_read' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_read</refname><refpurpose> Read data from a S2P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_S2P_read(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S2P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a S2P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+uW_S2P_display(S1,S2);
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_write'>uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_split' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_split</refname><refpurpose> Split a line into two parts.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>[Sin,Sout[,Open]]=uW_S2P_split(Stotal[,Sopen])</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S2P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a S2P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+
+// Example with one measurement (Thru) 
+// ===================================
+
+filename=tk_getfile(&quot;*.s2p&quot;);
+
+S_thru=uW_S2P_read(filename);
+[S_half_in,S_half_out]=uW_S2P_split(S_thru);
+
+// Display the results  
+uW_S2P_display(S_thru,S_half_in,S_half_out);
+
+
+
+// Example with two measurements (Thru + Open)
+// ===========================================
+
+
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_thru=uW_S2P_read(filename);
+
+
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_opens=uW_S2P_read(filename);
+
+[Sin,Sout,Sopen]=uW_S2P_split(S_thru,S_open);
+
+// Display the results the corrected open
+uW_S2P_display(Sopen);
+
+
+// Example with two methods (Thru + Open)
+// ======================================
+
+
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_thru=uW_S2P_read(filename);
+
+
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_opens=uW_S2P_read(filename);
+
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+// Display the results
+xset(&quot;window&quot;,100);
+xname(&quot;Open @ DUT ref. plane&quot;);
+uW_S2P_display(Gamma_open);
+xset(&quot;window&quot;,101);
+xname(&quot;Input,Output and Total Thru S parameters&quot;);
+uW_S2P_display(Sin,Sout,S_thru);
+
+
+
+// Comparison between the 2 methods
+[Sin2,Sout2]=uW_S2P_split(S_thru);
+xset(&quot;window&quot;,102);
+xname(&quot;Comparison&quot;);
+uW_S2P_display(Sin,Sin2);
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_write'>uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+	<member>
+      <link linkend='uW_unwarp'>uW_unwarp</link>
+    </member>  
+
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     uW_unwarp 
+     </para>
+  </refsection>
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_stab' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+  <info>
+    <pubdate>October 2010</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>uW_S2P_stab</refname>
+
+    <refpurpose>Returns the centers and radius of input stability circles for a S2P.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>output=uW_S2P_stab(S)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+
+        <listitem>
+          <para>2 ports S2P data</para>
+        </listitem>
+      </varlistentry>
+
+<varlistentry>
+        <term>output</term>
+
+        <listitem>
+          <para>2xn matrix. The first column is center of the input stability circle. The second column is the radius. n is the number of frequency into the S2P objet</para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function returns the centers and the radius of input stability circles of a S2P.
+</para>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role='example'>
+
+// Get the S11 parameter of a measured device
+// 
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+uW_S2P_stab_display(S)
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type='inline'>
+      <member>
+		<link linkend='uW_S2P_display'>uW_S2P_display</link> 
+		<link linkend='uW_display_vsmith'>uW_display_smith</link>
+		<link linkend='uW_S2P_stab_display'>uW_S2P_stab_display</link>
+		<link linkend='uW_S2P_flip'>uW_S2P_flip</link>
+	</member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_stab_display' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+  <info>
+    <pubdate>October 2010</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>uW_S2P_stab_display</refname>
+
+    <refpurpose>Plot the stability circles from S2P data.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>uW_S2P_stab_display(S)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+
+        <listitem>
+          <para>2 ports S2P data</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function plots the stability circles on a smith chart into the
+    current graphic window. Input stability circles are blue. Output stability
+    circles are red. The frequency list is the one embedded in the S2P
+    data.</para>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role='example'>
+
+// Display for every frequency values in the S2P file
+// 
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+uW_S2P_stab_display(S)
+
+// Display for 1 frequency : 1 GHz
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+S2=uW_S2P_freq(S,[1.0]*10^9);
+uW_S2P_stab_display(S2)
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type='inline'>
+      <member>
+		<link linkend='uW_S2P_display'>uW_S2P_display</link> 
+		<link linkend='uW_display_vsmith'>uW_display_smith</link>
+		<link linkend='uW_S2P_stab'>uW_S2P_stab</link>
+		<link linkend='uW_S2P_flip'>uW_S2P_flip</link>
+		<link linkend='uW_S2P_freq'>uW_S2P_freq</link>
+	</member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_to_SnP' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>August 2011</pubdate></info><refnamediv><refname>uW_S2P_to_SnP</refname><refpurpose> Create a SnP object from several S2P measurements or datas.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>SnP=uW_S2P_to_SnP(file_list)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>file_list</term>
+        <listitem>
+          <para>String vector : filenames of the S2P files including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>SnP</term>
+        <listitem>
+          <para>tlist containing the SnP parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+     This function read S2P files and gennerate an SnP object. This SnP object can be saved as a SnP file in order to be used in an external software such Agilent ADS.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+
+// === S3P generation
+// Be carefull, the order in the filelist is VERY important
+
+path=&quot;/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/&quot;;
+
+file_12=path+&quot;alla_s_iso_in.s2p&quot;;
+file_13=path+&quot;alla_s_iso_2.s2p&quot;;
+file_23=path+&quot;alla_s_in_2.s2p&quot;;
+
+
+file_out=path+&quot;alla2.s3p&quot;;
+
+file_list=[file_12;file_13;file_23];
+
+S3P=S2P_to_SnP(file_list);
+uW_SnP_write(S3P,file_out,&quot;Generated with Scilab - www.microwave.fr&quot;)
+
+
+
+
+
+
+// === S4P generation
+// Be carefull, the order in the filelist is VERY important
+
+path=&quot;/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/&quot;;
+
+file_12=path+&quot;alla_s_iso_in.s2p&quot;;
+file_13=path+&quot;alla_s_iso_2.s2p&quot;;
+file_14=path+&quot;alla_s_iso_1.s2p&quot;;
+file_23=path+&quot;alla_s_in_2.s2p&quot;;
+file_24=path+&quot;alla_s_in_1.s2p&quot;;
+file_34=path+&quot;alla_s_2_1.s2p&quot;;
+
+file_out=path+&quot;alla2.s4p&quot;;
+
+file_list=[file_12;file_13;file_14;file_23;file_24;file_34];
+
+S4P=S2P_to_SnP(file_list);
+uW_SnP_write(S4P,file_out,&quot;Generated with Scilab - www.microwave.fr&quot;)
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_SnP_write'>uW_SnP_write</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_u1' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2P_u1</refname><refpurpose> Calculate the Edwards-Sinsky stability parameter : µ1 of a S2P.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>M=uW_S2P_u1(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>M</term>
+        <listitem>
+          <para>vector. Value of the Edwards-Sinsky stability parameter : µ1 according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the Edwards-Sinsky stability parameter : µ1 of a S2P object.
+
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),uW_S2P_u1(S));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_K'>uW_S2P_K</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_u2' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2P_u2</refname><refpurpose> Calculate the Edwards-Sinsky stability parameter : µ2 of a S2P.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>M=uW_S2P_u2(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>M</term>
+        <listitem>
+          <para>vector. Value of the Edwards-Sinsky stability parameter : µ2 according to the frequency list of the S2P object.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function calculates the Edwards-Sinsky stability parameter : µ2 of a S2P object.
+
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+
+filename=uigetfile(&quot;*.s2p&quot;);
+S=uW_S2P_read(filename);
+plot2d(S.frequency./(10^9),uW_S2P_u2(S));
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_K'>uW_S2P_K</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_unoise' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>12-Mar-2008</pubdate></info><refnamediv><refname>uW_S2P_unoise</refname><refpurpose>  Cancel noise on a S2P measurement</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S2 = uW_S2P_unoise(S1)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>S1</term>
+    <listitem>
+       <para>The S2P data from which you want to remove noise.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>S2</term>
+    <listitem>
+       <para>S2P data without any noise.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function remove noise from S2P data according a fractional polynomial least square method.
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   
+   	mps_filename=SCI+&quot;/contrib/uW/example/S2P/data.mps&quot;;
+	mps_index=&quot;AN0&quot;;
+	S=uW_MPS_read(mps_filename,mps_index);
+	S2=uW_S2P_unoise(S);
+	uW_S2P_display(S,S2); 
+	
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MPS_read'> uW_MPS_read</link> </member>
+    <member> <link linkend='uW_S2P_display'> uW_S2P_display</link> </member>
+  </simplelist></refsection>
+
+ 
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     None
+     </para>
+  </refsection>
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2P_write' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_write</refname><refpurpose> Write S data into a S2P file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_S2P_write(S,filename,comments)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S2P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>comments</term>
+        <listitem>
+          <para>vector of string. The comments line to write into the S2P file.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function write S parameters data into a S2P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+freq=linspace(1,20,201).&apos;;
+S=uW_cal_thru(freq);
+filename=tk_getfile(&quot;*.s2p&quot;);
+uW_S2P_write(S,filename,&quot;Thru&quot;);
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_display'>uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2T' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2T</refname><refpurpose> Scattering parameter matrix to Cascade matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>T=uW_S2T(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>T</term>
+        <listitem>
+          <para>tlist containing the T parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a S parameter object into a T parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+T=uW_S2T(S_measure);
+
+plot2d(T.frequency,abs(T.T11));
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_T2S'>uW_T2S</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2Y' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2Y</refname><refpurpose> Scattering parameter matrix to Admittance matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>Y=uW_S2T(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Y</term>
+        <listitem>
+          <para>tlist containing the Y parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a S parameter object into a Y parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the Y11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+Y=uW_S2Y(S_measure);
+
+plot2d(Y.frequency,abs(Y.Y11));
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_T2S'>uW_T2S</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_S2Z' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2Z</refname><refpurpose> Scattering parameter matrix to Impedance matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>Z=uW_S2Z(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Z</term>
+        <listitem>
+          <para>tlist containing the Z parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a S parameter object into a Z parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the Z11 parameter of a measured device
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+Z=uW_S2Z(S_measure);
+
+plot2d(Z.frequency,abs(Z.Z11));
+
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_T2S'>uW_T2S</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_SnP_write' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>August 2011</pubdate></info><refnamediv><refname>uW_SnP_write</refname><refpurpose> Write SnP data into a SnP file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_SnP_write(S,filename,comments)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the SnP file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>comments</term>
+        <listitem>
+          <para>vector of string. The comments line to write into the SnP file.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+   This function write S parameters data into a SnP file. n between 3 and 9.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+// === S3P generation
+// Be carefull, the order in the filelist is VERY important
+
+path=&quot;/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/&quot;;
+
+file_12=path+&quot;alla_s_iso_in.s2p&quot;;
+file_13=path+&quot;alla_s_iso_2.s2p&quot;;
+file_23=path+&quot;alla_s_in_2.s2p&quot;;
+
+
+file_out=path+&quot;alla2.s3p&quot;;
+
+file_list=[file_12;file_13;file_23];
+
+S3P=S2P_to_SnP(file_list);
+uW_SnP_write(S3P,file_out,&quot;Generated with Scilab - www.microwave.fr&quot;)
+
+
+
+
+
+
+// === S4P generation
+// Be carefull, the order in the filelist is VERY important
+
+path=&quot;/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/&quot;;
+
+file_12=path+&quot;alla_s_iso_in.s2p&quot;;
+file_13=path+&quot;alla_s_iso_2.s2p&quot;;
+file_14=path+&quot;alla_s_iso_1.s2p&quot;;
+file_23=path+&quot;alla_s_in_2.s2p&quot;;
+file_24=path+&quot;alla_s_in_1.s2p&quot;;
+file_34=path+&quot;alla_s_2_1.s2p&quot;;
+
+file_out=path+&quot;alla2.s4p&quot;;
+
+file_list=[file_12;file_13;file_14;file_23;file_24;file_34];
+
+S4P=S2P_to_SnP(file_list);
+uW_SnP_write(S4P,file_out,&quot;Generated with Scilab - www.microwave.fr&quot;)
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2P_read'>uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend='uW_S2P_to_SnP'>uW_S2P_to_SnP</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_T2S' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_T2S</refname><refpurpose> Cascade parameter matrix to Scattering matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_T2S(T)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>T</term>
+        <listitem>
+          <para>tlist containing the T parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	</variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a T parameter object into a S parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// It converts S to T and then T to S
+// 
+filename=tk_getfile(&quot;*.s2p&quot;);
+S_measure=uW_S2P_read(filename);
+T=uW_S2T(S_measure);
+S=uW_T2S(T);
+
+plot2d(S.frequency,abs([S.S11,S_measure.S11]));
+
+
+
+
+ 
+  </programlisting></refsection>
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_S2T'>uW_S2T</link>
+    </member>
+  </simplelist></refsection>
+  <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+</refentry>
+</part>
+<part xml:id='section_71f99ef042381a793f3b4baecf9d8266'>
+<title>CITIfile</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_CST2CITI' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_CST2CITI</refname><refpurpose> Convert time domain load-pull CST measurement file into a CITIfile for Agilent ADS.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_CST2CITI(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the CST file including the path.</para>
+        </listitem>
+      </varlistentry>
+     
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a time domain load-pull measurement file (*.CST) into a CITI file in order to include measurement in a Agilent ADS Datadisplay.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+// Get the T11 parameter of a measured device
+// 
+filename=&quot;/home/Public/TA3_nuage_f0_2_pck.cst&quot;;
+uW_CST2CITI(filename);
+
+// Then a new file is generated as :
+// /home/Public/TA3_nuage_f0_2_pck.citi
+// You can read this new file with Agilent ADS
+// The Agilent ADS example is available at :
+// http://www.microwave.fr
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_MES2CITI'>uW_MES2CITI</link>
+    </member>
+   
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+ <refsection>
+    <title>Used Functions</title>
+
+    <member>
+      <link linkend='uW_freq_unit'>uW_freq_unit</link>
+    </member>
+  </refsection>
+  
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_MES2CITI' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>15-Jul-2010</pubdate></info><refnamediv><refname>uW_MES2CITI</refname><refpurpose>  Generate a CITIfile from a MES file (*.mes) from XLIM measurements</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES2CITI(MES_filename,CITI_filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES_filename</term>
+    <listitem>
+       <para>String parameter : filename of the MES file including the path (XLIM IV curves file format).
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>CITI_filename</term>
+    <listitem>
+       <para>String parameter : filename of the CITI file including the path for Agilent ADS.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function transform a MES+MPS data of a network in a CITIfile for ADS.</para>
+
+	  
+
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   filename_mes=&quot;C:\PUBLIC\IV-test\F53_V6_50v_40mA.mes&quot;;
+ filename_citi=&quot;c:\test2.citi&quot;;
+ uW_MES2CITI(filename_mes,filename_citi);
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES_read'> uW_MES_read</link> </member>
+ <member> <link linkend='uW_MPS_read'> uW_MPS_read</link> </member>
+ <member> <link linkend='uW_MES_select_network'> uW_MES_select_network</link> </member>
+
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+      <link linkend='uW_MES_read'> uW_MES_read</link> 
+ 	<link linkend='uW_MPS_read'> uW_MPS_read</link> 
+ 	<link linkend='uW_MES_select_network'> uW_MES_select_network</link> 
+     </para>
+  </refsection>
+
+
+
+</refentry>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_mS2P2CITI' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>19-Apr-2011</pubdate></info><refnamediv><refname>uW_mS2P2CITI</refname><refpurpose>  Generate a CITIfile from a S2P directory</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_mS2P2CITI(MEAS_directory,CITI_filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MEAS_directory</term>
+    <listitem>
+       <para>String parameter : path of the MEAS directory including the last separator where the S2P are located.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>CITI_filename</term>
+    <listitem>
+       <para>String parameter : filename of the CITI file including the path for Agilent ADS.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function transform several S2P files (IV network) in a CITIfile for ADS.</para>
+<para>
+S2P file has to include bias values V1, V2, I1 and I2 in comments lines as follow :
+</para>
+<para>
+! V1=-0.2001011  V2=0.1083563  I1=0.0002171  I2=0.0502052
+</para>
+<para>
+# HZ S MA R 50
+</para>
+<para>
+500000000.000000 0.996478 -19.403742 0.199965 167.375826 0.005543 80.119670 0.922611 179.368600 
+</para>
+<para>
+598750000.000000 0.996207 -23.162786 0.207032 165.094030 0.006742 78.820613 0.923241 179.331301 
+</para>
+<para>
+...
+</para>
+
+	  
+
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   dir_meas=&quot;C:\PUBLIC\IV-test\&quot;;
+ filename_citi=&quot;c:\test2.citi&quot;;
+ uW_mS2P2CITI(dir_meas,filename_citi);
+
+// Then you can use this CITIfile in ADS as follow
+// Copy the citifile in the &quot;data&quot; directory
+// - Open the project &quot;IV_prj&quot; in ADS
+// - Open the Data Display &quot;Comparison_S.dds&quot;
+//   - Menu &quot;tools&quot; -&gt; &quot;Datafile tool&quot;
+//     Read the CITIfile and name the Dataset &quot;Measure_IV&quot;
+//     Display the measurements in the Datadisplay
+// - Open the design &quot;Simulate_S&quot;
+// - Put your model
+// - Simulate !
+
+  </programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member> <link linkend='uW_MES2CITI'> uW_MES2CITI</link> </member>
+ <member> <link linkend='uW_MPS_read'> uW_MPS_read</link> </member>
+
+
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+      <link linkend='uW_S2P_read'> uW_S2P_read</link> 
+     </para>
+  </refsection>
+
+
+
+</refentry>
+
+</part>
+<part xml:id='section_e6026e1da9b0f3a9801b0afdb8de6b18'>
+<title>Other</title>
+
+<refentry version='5.0-subset Scilab' xml:id='uW_freq_unit' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_freq_unit</refname><refpurpose> Convert frequency unit in scaling factor to get a frequency in Hertz.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>k=uW_freq_unit(unit)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>unit</term>
+        <listitem>
+          <para>String parameter : the unit of the frequency (&quot;GHz&quot; for example).</para>
+        </listitem>
+      </varlistentry>
+ 
+      <varlistentry>
+        <term>k</term>
+        <listitem>
+          <para>Real parameter : the scaling factor of the frequency (10^9 for example).</para>
+        </listitem>
+      </varlistentry>    
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a string frequency unit into a scaling factor to get the frequency in Hz .
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role='example'>
+
+
+--&gt;uW_freq_unit(&quot;GHz&quot;)
+ ans  =
+ 
+    1.000D+09  
+
+
+
+ 
+  </programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type='inline'>
+    <member>
+      <link linkend='uW_CST2CITI'>uW_CST2CITI</link>
+    </member>
+   
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+  
+</refentry>
+
+
+<refentry version='5.0-subset Scilab' xml:id='uW_unwarp' xml:lang='en' xmlns='http://docbook.org/ns/docbook' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svg='http://www.w3.org/2000/svg' xmlns:ns3='http://www.w3.org/1999/xhtml' xmlns:mml='http://www.w3.org/1998/Math/MathML' xmlns:db='http://docbook.org/ns/docbook'>
+
+
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_unwarp</refname><refpurpose>  Unwarp the phase of a Sij parameter</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uwp = uW_unwarp(Sij)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>Sij</term>
+    <listitem>
+       <para>real vector containning the phase in degree of the Sij parameter.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>uwp</term>
+    <listitem>
+       <para>unwarped phase of the Sij parameter.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function unwarp a phase. It locates the phase warp as a gap higher than 200°.
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role='example'>
+   // Read the file
+   filename=tk_getfile(&quot;*.s2p&quot;);
+   S=uW_S2P_read(filename);
+   
+   // Unwarp the phase of S21
+   Unwarped=uW_unwarp(S.S21);
+   
+  </programlisting></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     None
+     </para>
+  </refsection>
+</refentry>
+</part>
+</book>

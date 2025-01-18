@@ -1,0 +1,114 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_S2P_to_SnP</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_S2P_stab_display_s2p.html">&lt;&lt; uW_S2P_stab_display</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_u1.html">uW_S2P_u1 &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a> &gt; uW_S2P_to_SnP</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_S2P_to_SnP</h1><p class="refpurpose">Create a SnP object from several S2P measurements or datas.</p></div>
+  
+  
+  
+  
+  
+   <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">SnP</span><span class="default">=</span><span class="functionid">uW_S2P_to_SnP</span><span class="default">(</span><span class="default">file_list</span><span class="default">)</span></pre></div></div>
+  <div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">file_list</span>
+        <dd><p class="para">String vector : filenames of the S2P files including the path.</p></dd></dt>
+      <dt><span class="term">SnP</span>
+        <dd><p class="para">tlist containing the SnP parameters.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function read S2P files and gennerate an SnP object. This SnP object can be saved as a SnP file in order to be used in an external software such Agilent ADS.</p></div>
+  
+  
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// === S3P generation</span>
+<span class="scilabcomment">// Be carefull, the order in the filelist is VERY important</span>
+
+<span class="scilabid">path</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_12</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_iso_in.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_13</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_iso_2.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_23</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_in_2.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_out</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla2.s3p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_list</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabid">file_12</span><span class="scilabdefault">;</span><span class="scilabid">file_13</span><span class="scilabdefault">;</span><span class="scilabid">file_23</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">S3P</span><span class="scilaboperator">=</span><span class="scilabid">S2P_to_SnP</span><span class="scilabopenclose">(</span><span class="scilabid">file_list</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<a class="scilabmacro" href="uW_SnP_write.html">uW_SnP_write</a><span class="scilabopenclose">(</span><span class="scilabid">S3P</span><span class="scilabdefault">,</span><span class="scilabid">file_out</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">Generated with Scilab - www.microwave.fr</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span>
+
+<span class="scilabcomment">// === S4P generation</span>
+<span class="scilabcomment">// Be carefull, the order in the filelist is VERY important</span>
+
+<span class="scilabid">path</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_12</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_iso_in.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_13</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_iso_2.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_14</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_iso_1.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_23</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_in_2.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_24</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_in_1.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">file_34</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla_s_2_1.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_out</span><span class="scilaboperator">=</span><span class="scilabid">path</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">alla2.s4p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">file_list</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabid">file_12</span><span class="scilabdefault">;</span><span class="scilabid">file_13</span><span class="scilabdefault">;</span><span class="scilabid">file_14</span><span class="scilabdefault">;</span><span class="scilabid">file_23</span><span class="scilabdefault">;</span><span class="scilabid">file_24</span><span class="scilabdefault">;</span><span class="scilabid">file_34</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+
+<span class="scilabid">S4P</span><span class="scilaboperator">=</span><span class="scilabid">S2P_to_SnP</span><span class="scilabopenclose">(</span><span class="scilabid">file_list</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<a class="scilabmacro" href="uW_SnP_write.html">uW_SnP_write</a><span class="scilabopenclose">(</span><span class="scilabid">S4P</span><span class="scilabdefault">,</span><span class="scilabid">file_out</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">Generated with Scilab - www.microwave.fr</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_SnP_write.html" class="link">uW_SnP_write</a></li></ul></div>
+  
+
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_S2P_stab_display_s2p.html">&lt;&lt; uW_S2P_stab_display</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_u1.html">uW_S2P_u1 &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

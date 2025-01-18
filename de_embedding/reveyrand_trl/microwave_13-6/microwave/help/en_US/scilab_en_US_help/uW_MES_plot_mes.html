@@ -1,0 +1,89 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_MES_plot</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_get_quiescent.html">&lt;&lt; uW_MES_get_quiescent</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_read.html">uW_MES_read &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a> &gt; uW_MES_plot</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_MES_plot</h1><p class="refpurpose">Plot graph from IV measurements curves (MES file)</p></div>
+  
+  
+  
+  
+  
+
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="functionid">uW_MES_plot</span><span class="default">(</span><span class="default">MES</span><span class="default">,</span><span class="default">network</span><span class="default">,</span><span class="default">my_x</span><span class="default">,</span><span class="default">my_y</span><span class="default">)</span></pre></div></div>
+
+  <div class="refsection"><h3 class="title">Parameters</h3>
+  <dl><dt><span class="term">MES</span>
+    <dd><p class="para">Measurements object. Refer to the <code class="literal">uW_MES_read()</code> function</p></dd></dt>
+
+    <dt><span class="term">network</span>
+    <dd><p class="para">Integer value. The number of the network you want to plot.</p></dd></dt>
+
+    <dt><span class="term">my_x</span>
+    <dd><p class="para">Sting value. The X axis of your plot. Basically my_x=&#0034;v2&#0034;.</p></dd></dt>
+
+    <dt><span class="term">my_y</span>
+    <dd><p class="para">Sting value. The Y axis of your plot. Basically my_x=&#0034;i2&#0034;.</p></dd></dt></dl></div>
+ 
+  <div class="refsection"><h3 class="title">Description</h3>
+     <ul class="itemizedlist"><li><p class="para">This function plots the data included into your MES object. You can plot :</p><p class="para">- Classical I-V curves : my_x=&#0034;v2&#0034; and my_y=&#0034;i2&#0034;;</p><p class="para">- Gm extracted from small signal multi biases optimization : my_x=&#0034;v2&#0034; and my_y=&#0034;Gm&#0034;;</p><p class="para">- Derivates from I-V curves extracted with X : my_x=&#0034;v2&#0034; and my_y=&#0034;di2dv1&#0034;;</p><p class="para">and much more...</p><p class="para">(my_x=&#0034;v2</p></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">C:\USERS\tibo\modele\Q3_2x75\10V10%\2X75.MES</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">MES</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_MES_read.html">uW_MES_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabmacro">uW_MES_plot</span><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilabdefault">,</span><span class="scilabnumber">1</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">v2</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabstring">&#0034;</span><span class="scilabstring">i2</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_MES_read.html" class="link">uW_MES_read</a></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_get_quiescent.html">&lt;&lt; uW_MES_get_quiescent</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_read.html">uW_MES_read &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

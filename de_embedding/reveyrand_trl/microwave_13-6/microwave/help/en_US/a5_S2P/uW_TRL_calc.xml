@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_TRL_calc" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>July 2013</pubdate></info><refnamediv><refname>uW_TRL_calc</refname><refpurpose> Extract input and output [S] parameters of a test-fixture thanks to the TRL algorithm.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>[Sin,[Sout,[Sreflect]]]=uW_TRL_calc(S_thru,S_line,S_reflect,REFLECT_STD)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S_thru</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P) of the measured THRU.</para>
+        </listitem>
+      </varlistentry>
+     <varlistentry>
+        <term>S_line</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P) of the measured LINE.</para>
+        </listitem>
+      </varlistentry>
+     <varlistentry>
+        <term>S_reflect</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P) of the measured REFLECT.</para>
+        </listitem>
+      </varlistentry>	
+     <varlistentry>
+        <term>REFLECT_STD</term>
+        <listitem>
+          <para>String.Either "OPEN" or "SHORT" depending of your TRL Cal-Kit measurements.</para>
+        </listitem>
+      </varlistentry>
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function extracts a test-fixture [S] parameters according to 3 S2P measurements : THRU, REFLECT and LINE.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// TRL-based Test-fixture S-parameter Extraction
+// =============================================
+// July 2013 - T. Reveyrand / CU-Boulder
+// www.microwave.fr
+// #############################################
+
+// Working directory
+path="C:\Users\tibo\CU-Boulder\Test_Fixture\";
+
+// 1. Load S2P files
+S_thru=uW_S2P_read(path+"THRU.S2P");
+S_line=uW_S2P_read(path+"LINE.S2P");
+S_reflect=uW_S2P_read(path+"REFLECT.S2P");
+
+// 2. Select frequencies of interrest : here 1.5 - 10 GHz 
+freqlist=S_thru.frequency(find((S_thru.frequency<10e9)&(S_thru.frequency>1.5e9)));
+
+S_thru=uW_S2P_freq(S_thru,freqlist);
+S_line=uW_S2P_freq(S_line,freqlist);
+S_reflect=uW_S2P_freq(S_reflect,freqlist);
+
+// 3. Plot, as a VNA, all measurements
+clf;
+uW_S2P_display(S_thru,S_line,S_reflect);
+
+// 4. Apply TRL Algorithm to extract S_IN and S_OUT
+// Here the reflect is a "SHORT". You can use "OPEN" depending of your 
+// TRL cal-kit
+[S_IN,S_OUT,S_REFLECT]=uW_TRL_calc(S_thru,S_line,S_reflect,"SHORT");
+
+// 5. Plot the test-fixure parameters : Input and Output. The de-embedded reflect is pictured as well.
+clf;
+uW_S2P_display(S_IN,S_OUT,S_REFLECT);
+
+// 6. You can save those extracted S-parameters
+uW_S2P_write(S_IN,path+"Port1.s2p","Test-fixture P1");
+uW_S2P_write(S_OUT,path+"Port2.s2p","Test-fixture P2");
+
+// 7. You can de-embed the LINE in order to check the TRL algorithm validity
+// Here is an example
+S_L=uW_S2P_deembedding(S_line,S_IN,S_OUT);
+
+delay=[S_L.frequency,phasemag(S_L.S21)];
+est=pinv([delay(:,1)])*[delay(:,2)];
+est_tau=(-1)*(%pi*est(1)/180)/(2*%pi); // Delay en sec
+est_line=est_tau*3*10^8;
+est_freq=[1/(16*est_tau);1/(4*est_tau);1/(2.27*est_tau)]
+
+disp("Estimated delay : "+string(est_tau/(10^(-12)))+" ps");
+disp("Estimated lenght : "+string(est_line/(10^(-3)))+" mm");
+disp("Frequencies [ Min | Opt | Max ] GHz : "+string(est_freq(1)/(10^(9)))+" - "+string(est_freq(2)/(10^(9)))+" - "+string(est_freq(3)/(10^(9)))+" - ");
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2P_write">uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend="uW_S2P_display">uW_S2P_display</link>
+    </member>   
+	<member>
+      <link linkend="uW_S2P_split">uW_S2P_split</link>
+    </member>  
+	<member>
+      <link linkend="uW_S2P_split">uW_S2P_deembedding</link>
+    </member>
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     uW_S2T 
+     </para>
+     <para>
+     uW_T2S 
+     </para>
+     <para>
+     uW_S2P_deembedding 
+     </para>
+  </refsection>
+  
+</refentry>

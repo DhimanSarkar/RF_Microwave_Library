@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_MPS_read" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+<info><pubdate>12-Mar-2008</pubdate></info><refnamediv><refname>uW_MPS_read</refname><refpurpose>  read a S2P from a multiple S parameter file (MPS)</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S = uW_MPS_read(filename,index)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>filename</term>
+    <listitem>
+       <para>String. Path of the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>index</term>
+    <listitem>
+       <para>String. Index of the required S2P within the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>S</term>
+    <listitem>
+       <para>S parameter object extracted from the mps file.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function extract a S2P from a mps filename and the desired index (3 capitals letters). 
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   	mps_filename=SCI+"/contrib/uW/example/S2P/data.mps";
+	mps_index="AN0";
+	S=uW_MPS_read(mps_filename,mps_index);
+	uW_S2P_display(S); 
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_S2P_read"> uW_S2P_read</link> </member>
+  </simplelist></refsection>
+
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+</refentry>

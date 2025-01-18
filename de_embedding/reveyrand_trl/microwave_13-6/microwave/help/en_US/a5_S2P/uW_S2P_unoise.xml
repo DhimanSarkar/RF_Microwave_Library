@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_unoise" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>12-Mar-2008</pubdate></info><refnamediv><refname>uW_S2P_unoise</refname><refpurpose>  Cancel noise on a S2P measurement</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S2 = uW_S2P_unoise(S1)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>S1</term>
+    <listitem>
+       <para>The S2P data from which you want to remove noise.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>S2</term>
+    <listitem>
+       <para>S2P data without any noise.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function remove noise from S2P data according a fractional polynomial least square method.
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   
+   	mps_filename=SCI+"/contrib/uW/example/S2P/data.mps";
+	mps_index="AN0";
+	S=uW_MPS_read(mps_filename,mps_index);
+	S2=uW_S2P_unoise(S);
+	uW_S2P_display(S,S2); 
+	
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MPS_read"> uW_MPS_read</link> </member>
+    <member> <link linkend="uW_S2P_display"> uW_S2P_display</link> </member>
+  </simplelist></refsection>
+
+ 
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     None
+     </para>
+  </refsection>
+</refentry>

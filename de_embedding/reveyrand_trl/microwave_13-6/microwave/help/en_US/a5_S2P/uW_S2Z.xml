@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2Z" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2Z</refname><refpurpose> Scattering parameter matrix to Impedance matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>Z=uW_S2Z(S)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Z</term>
+        <listitem>
+          <para>tlist containing the Z parameters calculated from the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a S parameter object into a Z parameter one. It works only for 2 ports devices (S2P).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the Z11 parameter of a measured device
+// 
+filename=tk_getfile("*.s2p");
+S_measure=uW_S2P_read(filename);
+Z=uW_S2Z(S_measure);
+
+plot2d(Z.frequency,abs(Z.Z11));
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_T2S">uW_T2S</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

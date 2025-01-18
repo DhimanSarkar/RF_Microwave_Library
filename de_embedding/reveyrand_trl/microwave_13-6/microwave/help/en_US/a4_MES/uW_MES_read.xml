@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_MES_read" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_MES_read</refname><refpurpose>  read IV measurement file (*.mes) from XLIM measurements</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>dataset = uW_MES_read(filename)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>filename</term>
+    <listitem>
+       <para>the filename of the MES file (XLIM IV curves file format).
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>dataset</term>
+    <listitem>
+       <para>dataset containing the IV curves informations for Scilab.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function read a MES file in order to manage informations within it with Scilab.
+	  You can acces to some data as follow :</para><para>
+	  dataset.network(number of network).curve(number of curve).plot(number of plot).field</para><para>
+	  
+	  field can be :</para><para>
+	  - v1 : input voltage</para><para>
+	  - v2 : output voltage</para><para>
+	  - i1 : input current</para><para>
+	  - i2 : output current</para><para>
+	  </para><para>
+	  - S2P : index of the S2P file index</para><para>
+	  </para><para>
+	  - di1dv1 : Derivate value if available into the file</para><para>
+	  - di1dv2</para><para>
+  	  - di2dv1</para><para>
+	  - di2dv2</para><para>
+	  </para><para>
+	  - Cgs : intrinsic value from linear modeling</para><para>
+	  - Cgd </para><para>
+	  - Gm</para><para>
+	  - Gd</para><para>
+	  - Cds</para><para>
+	  - Ri</para><para>
+	  - Tau</para><para>
+	  - Rgd
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   filename=tk_getfile("*.mes");
+   MES=uW_MES_read(filename);
+   
+   // Get the number of network
+   size(MES.network)
+   
+   // Get the number of curves in the first network
+   size(MES.network(1).curve)
+   
+   // Get the number of point in the first network and the first curve
+   size(MES.network(1).curve(1).plot)
+	
+   // Plot the network by yourself : Id=f(Vds)
+   for c=1:size(MES.network(1).curve),
+      X=[];
+	  Y=[];
+      for p=1:size(MES.network(1).curve(c).plot),
+	      X=[X;MES.network(1).curve(c).plot(p).v2];
+		  Y=[Y;MES.network(1).curve(c).plot(p).i2];
+      end;
+	  plot2d(X,Y);
+   end;
+
+   // Plot the network with the buid-in function
+   uW_MES_display(MES);
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MES_plot"> uW_MES_plot</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_SnP_write" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>August 2011</pubdate></info><refnamediv><refname>uW_SnP_write</refname><refpurpose> Write SnP data into a SnP file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_SnP_write(S,filename,comments)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the SnP file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>comments</term>
+        <listitem>
+          <para>vector of string. The comments line to write into the SnP file.</para>
+        </listitem>
+      </varlistentry>	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+   This function write S parameters data into a SnP file. n between 3 and 9.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+// === S3P generation
+// Be carefull, the order in the filelist is VERY important
+
+path="/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/";
+
+file_12=path+"alla_s_iso_in.s2p";
+file_13=path+"alla_s_iso_2.s2p";
+file_23=path+"alla_s_in_2.s2p";
+
+
+file_out=path+"alla2.s3p";
+
+file_list=[file_12;file_13;file_23];
+
+S3P=S2P_to_SnP(file_list);
+uW_SnP_write(S3P,file_out,"Generated with Scilab - www.microwave.fr")
+
+
+
+
+
+
+// === S4P generation
+// Be carefull, the order in the filelist is VERY important
+
+path="/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/";
+
+file_12=path+"alla_s_iso_in.s2p";
+file_13=path+"alla_s_iso_2.s2p";
+file_14=path+"alla_s_iso_1.s2p";
+file_23=path+"alla_s_in_2.s2p";
+file_24=path+"alla_s_in_1.s2p";
+file_34=path+"alla_s_2_1.s2p";
+
+file_out=path+"alla2.s4p";
+
+file_list=[file_12;file_13;file_14;file_23;file_24;file_34];
+
+S4P=S2P_to_SnP(file_list);
+uW_SnP_write(S4P,file_out,"Generated with Scilab - www.microwave.fr")
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2P_read">uW_S2P_read</link>
+    </member>
+     <member>
+      <link linkend="uW_S2P_to_SnP">uW_S2P_to_SnP</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

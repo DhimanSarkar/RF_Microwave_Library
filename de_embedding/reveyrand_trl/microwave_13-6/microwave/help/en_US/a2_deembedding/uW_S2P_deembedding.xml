@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_deembedding" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_deembedding</refname><refpurpose> S2P measurements de-embedding .</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S_DUT=uW_S2P_deembedding(S_Total,Sin,Sout)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S_Total</term>
+        <listitem>
+          <para>S2P Object (tlist) containing the complete chain S2P parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+	    <term>S_DUT</term>
+          <listitem>
+            <para>S2P Object (tlist) containing the de-embedded S2P parameters. The S2P of the DUT.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+		<term>Sin</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the input port and the DUT.</para>
+        </listitem>
+      </varlistentry>
+	   <varlistentry>
+		<term>Sout</term>
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located between the DUT and the output port.</para>
+        </listitem>
+      </varlistentry>	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function de-embed a S2P data (S_Total) according to the input and output S2P blocks. The result is the de-embedded S2P data.
+	</para>
+	<inlinemediaobject><imageobject><imagedata fileref="./images/S2Pdeembed.gif"/></imageobject></inlinemediaobject>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+
+
+// A - Split the Test-fixture in two equal parts
+// A.1. Get the Thru line
+filename=tk_getfile("*.s2p");
+S_thru=uW_S2P_read(filename);
+
+// A.2. Get the Opens
+filename=tk_getfile("*.s2p");
+S_opens=uW_S2P_read(filename);
+
+// A.3. Split the test-fixture
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+
+// B - Deembedding
+// B.1. Get the measurements
+filename=tk_getfile("*.s2p");
+S_total=uW_S2P_read(filename);
+
+// B.2. De-embedding
+S_DUT=uW_S2P_deembedding(S_total,Sin,Sout); 
+
+// B.3. Display the results
+uW_S2P_display(S_DUT);
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+     <member>
+      <link linkend="uW_S2P_display">uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+<refsection><title>Used Functions</title>
+     <member>
+      <link linkend="uW_unwarp">uW_unwarp</link>
+    </member>
+</refsection>
+  
+  
+</refentry>

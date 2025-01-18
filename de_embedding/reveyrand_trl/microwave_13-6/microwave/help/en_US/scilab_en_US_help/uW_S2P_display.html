@@ -1,0 +1,83 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_S2P_display</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_plot.html">&lt;&lt; uW_MES_plot</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_31b731cd1676b04fc1357cd2308d736a.html">Display</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_stab_display.html">uW_S2P_stab_display &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_31b731cd1676b04fc1357cd2308d736a.html">Display</a> &gt; uW_S2P_display</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_S2P_display</h1><p class="refpurpose">Display either S1P or S2P scilab object in the current graphic window as a VNA.</p></div>
+  
+  
+  
+  
+  
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="functionid">uW_S2P_display</span><span class="default">(</span><span class="default">S1</span><span class="default">[,</span><span class="default">S2</span><span class="default">,...])</span></pre></div></div>
+  <div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">Si</span>
+        <dd><p class="para">S1P or S2P scilab object (tlist). If the user wants to display several objects, each one has to include the same frequency grid and the same port number.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function displays S1P or S2P data as a classical vectorial network analyser (VNA).
+	S11 and S22 are displayed on a smith chart. S11 is located on top left. S22 is located on bottom right.
+	S21 and S12 are displayed as magnitude (dB) vs frequency (GHz) and phase (degree) versus frequency (GHz). S21 is displayed on bottom left and S12 is displayed on top right.</p></div>
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Get the T11 parameter of a measured device</span>
+<span class="scilabcomment">// </span>
+<span class="scilabid">filename1</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">filename2</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">S1</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename1</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">S2</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename2</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Display the 2 measurements  </span>
+<span class="scilabmacro">uW_S2P_display</span><span class="scilabopenclose">(</span><span class="scilabid">S1</span><span class="scilabdefault">,</span><span class="scilabid">S2</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_display_smith.html" class="link">uW_display_smith</a></li></ul></div>
+  <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_plot.html">&lt;&lt; uW_MES_plot</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_31b731cd1676b04fc1357cd2308d736a.html">Display</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_stab_display.html">uW_S2P_stab_display &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

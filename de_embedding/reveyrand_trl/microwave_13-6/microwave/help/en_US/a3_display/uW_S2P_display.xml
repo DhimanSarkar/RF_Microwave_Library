@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_display" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_display</refname><refpurpose> Display either S1P or S2P scilab object in the current graphic window as a VNA.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_S2P_display(S1[,S2,...])</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>Si</term>
+        <listitem>
+          <para>S1P or S2P scilab object (tlist). If the user wants to display several objects, each one has to include the same frequency grid and the same port number. </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function displays S1P or S2P data as a classical vectorial network analyser (VNA).
+	S11 and S22 are displayed on a smith chart. S11 is located on top left. S22 is located on bottom right.
+	S21 and S12 are displayed as magnitude (dB) vs frequency (GHz) and phase (degree) versus frequency (GHz). S21 is displayed on bottom left and S12 is displayed on top right.
+	</para>
+  </refsection>
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the T11 parameter of a measured device
+// 
+filename1=tk_getfile("*.s2p");
+filename2=tk_getfile("*.s2p");
+S1=uW_S2P_read(filename1);
+S2=uW_S2P_read(filename2);
+
+// Display the 2 measurements  
+uW_S2P_display(S1,S2);
+
+ 
+  ]]></programlisting></refsection>
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_display_smith">uW_display_smith</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+      www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+  
+</refentry>

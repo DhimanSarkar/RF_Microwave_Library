@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_cal_define_standard" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info>
+	<pubdate>October 2007
+	</pubdate>
+	</info>
+
+<refnamediv>
+	<refname>uW_cal_define_standard</refname>
+	
+	<refpurpose> define the set of parameters for a SOLT standard such as C0 for the "open" standard.</refpurpose>
+</refnamediv>
+   
+  
+<refsynopsisdiv>
+	<title>Calling Sequence</title>
+
+      <synopsis>standard=uW_cal_define_standard(type,value[,value2,...])</synopsis>
+</refsynopsisdiv>
+
+<refsection>
+	<title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>standard</term>
+        <listitem>
+          <para>tlist containing the parameter of the standard (see <literal>uW_cal_standard</literal>).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>type</term>
+        <listitem>
+          <para>string defining the standard : "O", "S" or "L" correspounding respectively for "Open", "Short" or "Load".</para>
+        </listitem>
+      </varlistentry>
+	  
+	  <varlistentry>
+        <term>value</term>
+        <listitem>
+          <para>constant numerical value defining the standard.</para>
+        </listitem>
+      </varlistentry>
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function generates a tlist which contain all the data of a calibration standard in order to use this information with "<literal>uW_cal_standard</literal>" function.
+	This function can include delay or losses informations. Those data must appear in the input parameter as a string.
+	Notice that the offset is NOT a parameter. If your Calkit is described with an offset, please convert it in a delay before using this function with "<literal>uW_cal_mm2s</literal>".
+    </para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Cascade ACP40-A-GSG-100 "Open" definition
+// C0 = -9.30 fF
+open=uW_cal_define_standard("O",-9.3e-15);
+
+// You can acces to data as follow :
+typeof(open)
+open.C0
+
+// Calculate the S11 from those data :
+f=2*10^9;  // f=2 GHz
+S11=uW_cal_standard(f,open);
+
+// ========================================
+// Example with with 12ps delay and no loss
+// C0 = 5e-15
+// C1= 60 e-27
+// C2 = -11 e-36
+// C3 = 0.41 e -45
+
+open=uW_cal_define_standard("O",5e-15,60e-27,-11e-36,0.41e-45,'delay=12e-12','loss=0');
+
+// Now you can check the values as follow :
+open.C2
+
+// Read the delay
+open.delay
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_cal_standard">uW_cal_standard</link>
+    </member>
+    <member>
+      <link linkend="uW_cal_offset2delay">uW_cal_offset2delay</link>
+    </member>
+  </simplelist></refsection>
+  
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab" xml:id="uW_AMCAD_CST_deembedding"
+          xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <info>
+    <pubdate>October 2007</pubdate>
+  </info>
+  <refnamediv>
+    <refname>uW_AMCAD_CST_deembedding</refname>
+
+    <refpurpose>Load-pull measurement de-embedding .</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>uW_AMCAD_CST_deembedding(filename1,filename2,Sin,Sout)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+
+        <listitem>
+          <para>String parameter : filename of the input CST file (IV-CAD
+          load-pull file format before de-embedding) including the
+          path.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>filename2</term>
+
+        <listitem>
+          <para>String parameter : filename of the output CST file (IV-CAD
+          load-pull file format after de-embedding) including the path.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Sin</term>
+
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located
+          between the input port and the DUT.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>Sout</term>
+
+        <listitem>
+          <para>tlist containing the S parameters (S2P : 2 ports) located
+          between the DUT and the output port.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function read a CST file and de-embed each RF measured wave
+    according the two S2P file located before and after the DUT.</para>
+
+    <inlinemediaobject>
+      <imageobject>
+        <imagedata fileref="./images/deembebed.gif" />
+      </imageobject>
+    </inlinemediaobject>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role="example">
+
+
+
+// Split the Test-fixture in two equal parts
+// 1. Get the Thru line
+filename=tk_getfile("*.s2p");
+S_thru=uW_S2P_read(filename);
+
+
+// 2. Get the Opens
+filename=tk_getfile("*.s2p");
+S_opens=uW_S2P_read(filename);
+
+
+// 3. Split the test-fixture
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+// Display the results
+xset("window",100);
+xname("Open @ DUT ref. plane");
+uW_S2P_display(Gamma_open);
+xset("window",101);
+xname("Input,Output and Total Thru S parameters");
+uW_S2P_display(Sin,Sout,S_thru);
+
+
+// 4. LOAD-PULL De-embedding 
+// The function remove the effect of Sin (S2P with port 1 is the input of the test-fixture and port 2 is the input of the DUT)
+// and Sout (S2P : port 1 is the output of the DUT and port 2 is the output of the test-fixture).
+// Then, it generate a new IV-CAD file.
+
+filename1=tk_getfile("*.cst"); // File to read (before de-embedding)
+filename2=tk_getfile("*.cst"); // File to write (after de-embedding)
+uW_AMCAD_CST_deembedding(filename1,filename2,Sin,Sout);
+
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type="inline">
+      <member><link linkend="uW_S2P_display">uW_S2P_display</link></member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Used Functions</title>
+
+    <member><link linkend="uW_unwarp">uW_unwarp</link></member>
+  </refsection>
+</refentry>

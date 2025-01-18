@@ -1,0 +1,19 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>uW_S2P_stab_display</title><link rel="stylesheet" href="javahelp.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"><link rel="start" href="index.html" title="Microwave Toolbox"><link rel="up" href="section_f1a2ca50fdda22a6cd666cbccbed14c1.html" title="Part&nbsp;III.&nbsp;Display"><link rel="prev" href="uW_S2P_display.html" title="uW_S2P_display"><link rel="next" href="uW_display_smith.html" title="uW_display_smith"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="uW_S2P_stap_display"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>uW_S2P_stab_display &#8212; Plot the stability circles from S2P data.</p></div><div class="refsynopsisdiv"><h2>Calling Sequence</h2><pre class="synopsis">uW_S2P_stab_display(S)</pre></div><div class="refsection" lang="en"><a name="d0e535"></a><h2>Parameters</h2><div class="variablelist"><dl><dt><span class="term">S</span></dt><dd><p>2 ports S2P data</p></dd></dl></div></div><div class="refsection" lang="en"><a name="d0e545"></a><h2>Description</h2><p>This function plots the stability circles on a smith chart into the
+    current graphic window. Input stability circles are blue. Output stability
+    circles are red. The frequency list is the one embedded in the S2P
+    data.</p></div><div class="refsection" lang="en"><a name="d0e550"></a><h2>Examples</h2><pre class="programlisting">
+
+// Get the S11 parameter of a measured device
+// 
+filename=uigetfile("*.s2p");
+S=uW_S2P_read(filename);
+uW_S2P_stab_display(S)
+ 
+  </pre></div><div class="refsection" lang="en"><a name="d0e555"></a><h2>See Also</h2><span class="simplelist">
+		<a class="link" href="uW_S2P_display.html" title="uW_S2P_display">uW_S2P_display</a> 
+		<a class="link" href="uW_display_vsmith.html" title="uW_display_vsmith">uW_display_smith</a>
+		<a class="link" href="">uW_S2P_stab</a>
+		<a class="link" href="">uW_S2P_flip</a>
+	</span></div><div class="refsection" lang="en"><a name="d0e573"></a><h2>Authors</h2><div class="variablelist"><dl><dt><span class="term">Tibault Reveyrand</span></dt><dd><p>www.reveyrand.fr</p></dd></dl></div></div></div></body></html>

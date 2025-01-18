@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_CSV_read" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>September 2010</pubdate></info><refnamediv><refname>uW_CSV_read</refname><refpurpose> Read Sij data from a CSV file.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_CSV_read(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the CSV file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a CSV file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the Sij parameter of a measured device
+// 
+
+filename=uigetfile("*.CSV");
+S11=uW_CSV_read(filename);
+
+filename=uigetfile("*.CSV");
+S21=uW_CSV_read(filename);
+
+
+filename=uigetfile("*.CSV");
+S12=uW_CSV_read(filename);
+
+filename=uigetfile("*.CSV");
+S22=uW_CSV_read(filename);
+
+S=S11;
+S.S21=S21.S21;
+S.S12=S12.S12;
+S.S22=S22.S22;
+
+uW_S2P_display(S);
+
+uW_S2P_write(S,"c:\50V.s2p","Generated with Scilab Microwave Toolbox - www.microwave.fr")
+ 
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+ <member>
+      <link linkend="uW_S2P_read">uW_S2P_read</link>
+    </member>
+    <member>
+      <link linkend="uW_S2P_write">uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend="uW_S2P_display">uW_S2P_display</link>
+    </member>   
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

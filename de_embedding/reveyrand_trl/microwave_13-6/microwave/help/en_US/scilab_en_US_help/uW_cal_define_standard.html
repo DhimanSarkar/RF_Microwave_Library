@@ -1,0 +1,116 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_cal_define_standard</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_b6432e524b05dfb2f613ce130cbc3384.html">&lt;&lt; Calibration</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_b6432e524b05dfb2f613ce130cbc3384.html">Calibration</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_cal_offset2delay.html">uW_cal_offset2delay &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_b6432e524b05dfb2f613ce130cbc3384.html">Calibration</a> &gt; uW_cal_define_standard</span>
+
+    <br /><br />
+    <div class="info"></div>
+
+<div class="refnamediv"><h1 class="refname">uW_cal_define_standard</h1>
+	
+	<p class="refpurpose">define the set of parameters for a SOLT standard such as C0 for the &#0034;open&#0034; standard.</p></div>
+   
+  
+<div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3>
+
+      <div class="synopsis"><pre><span class="default">standard</span><span class="default">=</span><span class="functionid">uW_cal_define_standard</span><span class="default">(</span><span class="default">type</span><span class="default">,</span><span class="default">value</span><span class="default">[,</span><span class="default">value2</span><span class="default">,...])</span></pre></div></div>
+
+<div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">standard</span>
+        <dd><p class="para">tlist containing the parameter of the standard (see <code class="literal">uW_cal_standard</code>).</p></dd></dt>
+      <dt><span class="term">type</span>
+        <dd><p class="para">string defining the standard : &#0034;O&#0034;, &#0034;S&#0034; or &#0034;L&#0034; correspounding respectively for &#0034;Open&#0034;, &#0034;Short&#0034; or &#0034;Load&#0034;.</p></dd></dt>
+	  
+	  <dt><span class="term">value</span>
+        <dd><p class="para">constant numerical value defining the standard.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function generates a tlist which contain all the data of a calibration standard in order to use this information with &#0034;<code class="literal">uW_cal_standard</code>&#0034; function.
+	This function can include delay or losses informations. Those data must appear in the input parameter as a string.
+	Notice that the offset is NOT a parameter. If your Calkit is described with an offset, please convert it in a delay before using this function with &#0034;<code class="literal">uW_cal_mm2s</code>&#0034;.</p></div>
+  
+  
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Cascade ACP40-A-GSG-100 </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">Open</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> definition</span>
+<span class="scilabcomment">// C0 = -9.30 fF</span>
+<span class="scilabid">open</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_cal_define_standard</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">O</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilaboperator">-</span><span class="scilabnumber">9.3e-15</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// You can acces to data as follow :</span>
+<a class="scilabmacro" href="scilab://typeof">typeof</a><span class="scilabopenclose">(</span><span class="scilabid">open</span><span class="scilabopenclose">)</span>
+<span class="scilabid">open</span><span class="scilaboperator">.</span><span class="scilabfield">C0</span>
+
+<span class="scilabcomment">// Calculate the S11 from those data :</span>
+<span class="scilabid">f</span><span class="scilaboperator">=</span><span class="scilabnumber">2</span><span class="scilaboperator">*</span><span class="scilabnumber">10</span><span class="scilaboperator">^</span><span class="scilabnumber">9</span><span class="scilabdefault">;</span>  <span class="scilabcomment">// f=2 GHz</span>
+<span class="scilabid">S11</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_cal_standard.html">uW_cal_standard</a><span class="scilabopenclose">(</span><span class="scilabid">f</span><span class="scilabdefault">,</span><span class="scilabid">open</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// ========================================</span>
+<span class="scilabcomment">// Example with with 12ps delay and no loss</span>
+<span class="scilabcomment">// C0 = 5e-15</span>
+<span class="scilabcomment">// C1= 60 e-27</span>
+<span class="scilabcomment">// C2 = -11 e-36</span>
+<span class="scilabcomment">// C3 = 0.41 e -45</span>
+
+<span class="scilabid">open</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_cal_define_standard</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">O</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">,</span><span class="scilabnumber">5e-15</span><span class="scilabdefault">,</span><span class="scilabnumber">60e-27</span><span class="scilabdefault">,</span><span class="scilaboperator">-</span><span class="scilabnumber">11e-36</span><span class="scilabdefault">,</span><span class="scilabnumber">0.41e-45</span><span class="scilabdefault">,</span><span class="scilabstring">&#0039;</span><span class="scilabstring">delay=12e-12</span><span class="scilabstring">&#0039;</span><span class="scilabdefault">,</span><span class="scilabstring">&#0039;</span><span class="scilabstring">loss=0</span><span class="scilabstring">&#0039;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Now you can check the values as follow :</span>
+<span class="scilabid">open</span><span class="scilaboperator">.</span><span class="scilabfield">C2</span>
+
+<span class="scilabcomment">// Read the delay</span>
+<span class="scilabid">open</span><span class="scilaboperator">.</span><span class="scilabfield">delay</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_cal_standard.html" class="link">uW_cal_standard</a></li>
+    <li class="member"><a href="uW_cal_offset2delay.html" class="link">uW_cal_offset2delay</a></li></ul></div>
+  
+  
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_b6432e524b05dfb2f613ce130cbc3384.html">&lt;&lt; Calibration</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_b6432e524b05dfb2f613ce130cbc3384.html">Calibration</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_cal_offset2delay.html">uW_cal_offset2delay &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

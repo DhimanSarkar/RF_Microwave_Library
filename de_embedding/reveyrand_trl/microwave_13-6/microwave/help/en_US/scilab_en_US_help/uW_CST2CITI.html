@@ -1,0 +1,92 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_CST2CITI</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">&lt;&lt; CITIfile</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES2CITI.html">uW_MES2CITI &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a> &gt; uW_CST2CITI</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_CST2CITI</h1><p class="refpurpose">Convert time domain load-pull CST measurement file into a CITIfile for Agilent ADS.</p></div>
+  
+  
+  
+  
+  
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="functionid">uW_CST2CITI</span><span class="default">(</span><span class="default">filename</span><span class="default">)</span></pre></div></div>
+  <div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">filename</span>
+        <dd><p class="para">String parameter : filename of the CST file including the path.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function convert a time domain load-pull measurement file (*.CST) into a CITI file in order to include measurement in a Agilent ADS Datadisplay.</p></div>
+  
+  
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// Get the T11 parameter of a measured device</span>
+<span class="scilabcomment">// </span>
+<span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">/home/Public/TA3_nuage_f0_2_pck.cst</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabmacro">uW_CST2CITI</span><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Then a new file is generated as :</span>
+<span class="scilabcomment">// /home/Public/TA3_nuage_f0_2_pck.citi</span>
+<span class="scilabcomment">// You can read this new file with Agilent ADS</span>
+<span class="scilabcomment">// The Agilent ADS example is available at :</span>
+<span class="scilabcomment">// http://www.microwave.fr</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_MES2CITI.html" class="link">uW_MES2CITI</a></li></ul></div>
+  
+
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+
+ <div class="refsection"><h3 class="title">Used Functions</h3>
+
+    <li class="member"><a href="uW_freq_unit.html" class="link">uW_freq_unit</a></li></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">&lt;&lt; CITIfile</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES2CITI.html">uW_MES2CITI &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

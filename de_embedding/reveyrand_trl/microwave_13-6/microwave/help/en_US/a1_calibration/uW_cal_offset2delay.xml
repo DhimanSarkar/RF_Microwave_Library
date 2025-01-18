@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_cal_offset2delay" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_cal_offset2delay</refname><refpurpose> Scattering parameter matrix to Cascade matrix convertion for 2 ports matrix.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>t=uW_cal_offset2delay(l)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>t</term>
+        <listitem>
+          <para>time in seconds correspounding to the offset length l.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>l</term>
+        <listitem>
+          <para>standard offset length in millimeters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function converts a standard offset length (millimeter) into a standard delay (second).
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// ========================================
+// Example with with 5mm offset
+// C0 = 5e-15
+// C1= 60 e-27
+// C2 = -11 e-36
+// C3 = 0.41 e -45
+// Offset = 5 mm
+
+// Calculate the delay
+my_delay=uW_cal_offset2delay(5);
+
+// Standard definition
+open=uW_cal_define_standard("O",5e-15,60e-27,-11e-36,0.41e-45,'delay='+string(my_delay));
+
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_cal_define_standard">uW_cal_define_standard</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

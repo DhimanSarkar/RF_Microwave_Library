@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_CST2CITI" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>February 2011</pubdate></info><refnamediv><refname>uW_CST2CITI</refname><refpurpose> Convert time domain load-pull CST measurement file into a CITIfile for Agilent ADS.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_CST2CITI(filename)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the CST file including the path.</para>
+        </listitem>
+      </varlistentry>
+     
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert a time domain load-pull measurement file (*.CST) into a CITI file in order to include measurement in a Agilent ADS Datadisplay.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the T11 parameter of a measured device
+// 
+filename="/home/Public/TA3_nuage_f0_2_pck.cst";
+uW_CST2CITI(filename);
+
+// Then a new file is generated as :
+// /home/Public/TA3_nuage_f0_2_pck.citi
+// You can read this new file with Agilent ADS
+// The Agilent ADS example is available at :
+// http://www.microwave.fr
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_MES2CITI">uW_MES2CITI</link>
+    </member>
+   
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+ <refsection>
+    <title>Used Functions</title>
+
+    <member>
+      <link linkend="uW_freq_unit">uW_freq_unit</link>
+    </member>
+  </refsection>
+  
+  
+</refentry>

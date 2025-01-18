@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_display_vsmith" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_display_vsmith</refname><refpurpose> Plot the smith chart in the current graphic window with vectorial arcs.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_display_vsmith(impedances,color)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>impedances</term>
+        <listitem>
+          <para>vector of the normalized impedance to display. Most VNA use impedances=[.2 .5 1 2 5]; </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>color</term>
+        <listitem>
+          <para>numerical value of the color which be used to trace the smith chart.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function plots the smith chart into the current graphic window with vectorial arcs. Well suited for fig or eps exports.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the S11 parameter of a measured device
+// 
+filename=uigetfile("*.s2p");
+S=uW_S2P_read(filename);
+uW_display_vsmith([.2 .5 1 2 5],12);
+plot2d(real(S.S11),imag(S.S11));
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2P_display">uW_S2P_display</link>
+	<link linkend="uW_display_smith">uW_display_smith</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

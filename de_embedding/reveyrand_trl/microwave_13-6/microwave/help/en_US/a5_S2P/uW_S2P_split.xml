@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_split" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_S2P_split</refname><refpurpose> Split a line into two parts.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>[Sin,Sout[,Open]]=uW_S2P_split(Stotal[,Sopen])</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>filename</term>
+        <listitem>
+          <para>String parameter : filename of the S2P file including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>tlist containing the S parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function read S parameters from a S2P file.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the T11 parameter of a measured device
+// 
+
+
+// Example with one measurement (Thru) 
+// ===================================
+
+filename=tk_getfile("*.s2p");
+
+S_thru=uW_S2P_read(filename);
+[S_half_in,S_half_out]=uW_S2P_split(S_thru);
+
+// Display the results  
+uW_S2P_display(S_thru,S_half_in,S_half_out);
+
+
+
+// Example with two measurements (Thru + Open)
+// ===========================================
+
+
+filename=tk_getfile("*.s2p");
+S_thru=uW_S2P_read(filename);
+
+
+filename=tk_getfile("*.s2p");
+S_opens=uW_S2P_read(filename);
+
+[Sin,Sout,Sopen]=uW_S2P_split(S_thru,S_open);
+
+// Display the results the corrected open
+uW_S2P_display(Sopen);
+
+
+// Example with two methods (Thru + Open)
+// ======================================
+
+
+filename=tk_getfile("*.s2p");
+S_thru=uW_S2P_read(filename);
+
+
+filename=tk_getfile("*.s2p");
+S_opens=uW_S2P_read(filename);
+
+[Sin,Sout,Gamma_open]=uW_S2P_split(S_thru,S_opens);
+
+// Display the results
+xset("window",100);
+xname("Open @ DUT ref. plane");
+uW_S2P_display(Gamma_open);
+xset("window",101);
+xname("Input,Output and Total Thru S parameters");
+uW_S2P_display(Sin,Sout,S_thru);
+
+
+
+// Comparison between the 2 methods
+[Sin2,Sout2]=uW_S2P_split(S_thru);
+xset("window",102);
+xname("Comparison");
+uW_S2P_display(Sin,Sin2);
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2P_write">uW_S2P_write</link>
+    </member>
+     <member>
+      <link linkend="uW_S2P_display">uW_S2P_display</link>
+    </member>   
+	<member>
+      <link linkend="uW_unwarp">uW_unwarp</link>
+    </member>  
+
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     uW_unwarp 
+     </para>
+  </refsection>
+  
+</refentry>

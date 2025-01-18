@@ -1,0 +1,109 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_mS2P2CITI</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES2CITI.html">&lt;&lt; uW_MES2CITI</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_4664112ee535e60d59eef27461396832.html">Other &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a> &gt; uW_mS2P2CITI</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_mS2P2CITI</h1><p class="refpurpose">Generate a CITIfile from a S2P directory</p></div>
+  
+  
+   
+  
+  
+
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="functionid">uW_mS2P2CITI</span><span class="default">(</span><span class="default">MEAS_directory</span><span class="default">,</span><span class="default">CITI_filename</span><span class="default">[,</span><span class="default">setup</span><span class="default">])</span></pre></div></div>
+
+  <div class="refsection"><h3 class="title">Parameters</h3>
+  <dl><dt><span class="term">MEAS_directory</span>
+    <dd><p class="para">String parameter : path of the MEAS directory including the last separator where the S2P are located.</p></dd></dt>
+
+    <dt><span class="term">CITI_filename</span>
+    <dd><p class="para">String parameter : filename of the CITI file including the path for Agilent ADS.</p></dd></dt>
+
+    <dt><span class="term">setup</span>
+    <dd><p class="para">String parameter : put &#0034;DIVA&#0034; if your S2P files comes from DIVA IV pulsed mesurement setup.</p></dd></dt></dl></div>
+ 
+  <div class="refsection"><h3 class="title">Description</h3>
+     <ul class="itemizedlist"><li><p class="para">This function transform several S2P files (IV network) in a CITIfile for ADS.</p>
+<p class="para">S2P file has to include bias values V1, V2, I1 and I2 in comments lines as follow :</p>
+<p class="para">! V1=-0.2001011  V2=0.1083563  I1=0.0002171  I2=0.0502052</p>
+<p class="para"># HZ S MA R 50</p>
+<p class="para">500000000.000000 0.996478 -19.403742 0.199965 167.375826 0.005543 80.119670 0.922611 179.368600</p>
+<p class="para">598750000.000000 0.996207 -23.162786 0.207032 165.094030 0.006742 78.820613 0.923241 179.331301</p>
+<p class="para">...</p></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">dir_meas</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">C:\PUBLIC\IV-test\</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">filename_citi</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">c:\test2.citi</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabmacro">uW_mS2P2CITI</span><span class="scilabopenclose">(</span><span class="scilabid">dir_meas</span><span class="scilabdefault">,</span><span class="scilabid">filename_citi</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Then you can use this CITIfile in ADS as follow</span>
+<span class="scilabcomment">// Copy the citifile in the </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">data</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> directory</span>
+<span class="scilabcomment">// - Open the project </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">IV_prj</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> in ADS</span>
+<span class="scilabcomment">// - Open the Data Display </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">Comparison_S.dds</span><span class="scilabcomment">&#0034;</span>
+<span class="scilabcomment">//   - Menu </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">tools</span><span class="scilabcomment">&#0034;</span><span class="scilabcomment"> -</span><span class="scilabcomment">&#0062;</span><span class="scilabcomment"> </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">Datafile tool</span><span class="scilabcomment">&#0034;</span>
+<span class="scilabcomment">//     Read the CITIfile and name the Dataset </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">Measure_IV</span><span class="scilabcomment">&#0034;</span>
+<span class="scilabcomment">//     Display the measurements in the Datadisplay</span>
+<span class="scilabcomment">// - Open the design </span><span class="scilabcomment">&#0034;</span><span class="scilabcomment">Simulate_S</span><span class="scilabcomment">&#0034;</span>
+<span class="scilabcomment">// - Put your model</span>
+<span class="scilabcomment">// - Simulate !</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_MES2CITI.html" class="link">uW_MES2CITI</a></li>
+ <li class="member"><a href="uW_MPS_read.html" class="link">uW_MPS_read</a></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+
+
+
+  <div class="refsection"><h3 class="title">Used Functions</h3>
+     <p class="para"><a href="uW_S2P_read.html" class="link">uW_S2P_read</a></p></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES2CITI.html">&lt;&lt; uW_MES2CITI</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_9ccaf095ad55437da3d4cd0ca783e90e.html">CITIfile</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_4664112ee535e60d59eef27461396832.html">Other &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

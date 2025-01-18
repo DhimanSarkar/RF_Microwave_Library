@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_unwarp" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+
+<info><pubdate>15-Oct-2007</pubdate></info><refnamediv><refname>uW_unwarp</refname><refpurpose>  Unwarp the phase of a Sij parameter</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uwp = uW_unwarp(Sij)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>Sij</term>
+    <listitem>
+       <para>real vector containning the phase in degree of the Sij parameter.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>uwp</term>
+    <listitem>
+       <para>unwarped phase of the Sij parameter.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function unwarp a phase. It locates the phase warp as a gap higher than 200°.
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   // Read the file
+   filename=tk_getfile("*.s2p");
+   S=uW_S2P_read(filename);
+   
+   // Unwarp the phase of S21
+   Unwarped=uW_unwarp(S.S21);
+   
+  ]]></programlisting></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+     None
+     </para>
+  </refsection>
+</refentry>

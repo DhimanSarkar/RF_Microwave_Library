@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_flip" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>October 2010</pubdate></info><refnamediv><refname>uW_S2P_flip</refname><refpurpose> Flip port 1 and port 2 of a S2P object.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>S2=uW_S2P_flip(S1)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>S1</term>
+        <listitem>
+          <para>tlist containing the original S parameters.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>S2</term>
+        <listitem>
+          <para>tlist containing the S parameters of the flipped data.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function convert flip a S parameter object. Port1 and port 2 are switched such as S2.S11=S1.S22, S2.S22=S1.S11, S2.S12=S1.S21, and S2.S21=S1.S12.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Get the T11 parameter of a measured device
+// 
+filename=uigetfile("*.s2p");
+S_measure=uW_S2P_read(filename);
+S2=uW_S2P_flip(S_measure);
+
+plot2d(S2.frequency,abs(S2.S11));
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_S2P_read">uW_S2P_read</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

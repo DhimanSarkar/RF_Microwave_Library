@@ -1,0 +1,98 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_S2H</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_S1P_write.html">&lt;&lt; uW_S1P_write</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_DELTA.html">uW_S2P_DELTA &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a> &gt; uW_S2H</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_S2H</h1><p class="refpurpose">Scattering parameter matrix to Hybrid matrix convertion for 2 ports matrix.</p></div>
+  
+  
+  
+  
+  
+   <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">H</span><span class="default">=</span><span class="functionid">uW_S2H</span><span class="default">(</span><span class="default">S</span><span class="default">)</span></pre></div></div>
+  <div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">S</span>
+        <dd><p class="para">tlist containing the S parameters.</p></dd></dt>
+      <dt><span class="term">H</span>
+        <dd><p class="para">tlist containing the H parameters calculated from the S parameters.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function convert a S parameter object into a H parameter one. It works only for 2 ports devices (S2P).</p></div>
+  
+  
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">transistor.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">S</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// === Trace for ft</span>
+<a class="scilabmacro" href="scilab://subplot">subplot</a><span class="scilabopenclose">(</span><span class="scilabnumber">211</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">H</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_S2H</span><span class="scilabopenclose">(</span><span class="scilabid">S</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<a class="scilabcommand" href="scilab://plot2d">plot2d</a><span class="scilabopenclose">(</span><span class="scilabid">H</span><span class="scilaboperator">.</span><span class="scilabfield">frequency</span><span class="scilabdefault">,</span><span class="scilabnumber">20</span><span class="scilaboperator">*</span><a class="scilabmacro" href="scilab://log10">log10</a><span class="scilabopenclose">(</span><a class="scilabcommand" href="scilab://abs">abs</a><span class="scilabopenclose">(</span><span class="scilabid">H</span><span class="scilaboperator">.</span><span class="scilabfield">H21</span><span class="scilabopenclose">)</span><span class="scilabopenclose">)</span><span class="scilabdefault">,</span><span class="scilabid">logflag</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">ln</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span>
+<span class="scilabid">a</span><span class="scilaboperator">=</span><a class="scilabmacro" href="scilab://gca">gca</a><span class="scilabopenclose">(</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">a</span><span class="scilaboperator">.</span><span class="scilabfield">x_label</span><span class="scilaboperator">.</span><span class="scilabfield">text</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">Frequency(Hz)</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">a</span><span class="scilaboperator">.</span><span class="scilabfield">y_label</span><span class="scilaboperator">.</span><span class="scilabfield">text</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">H21(dB)</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// === Trace for Fmax</span>
+<a class="scilabmacro" href="scilab://subplot">subplot</a><span class="scilabopenclose">(</span><span class="scilabnumber">212</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">M</span><span class="scilaboperator">=</span><a class="scilabcommand" href="scilab://abs">abs</a><span class="scilabopenclose">(</span><span class="scilabid">S</span><span class="scilaboperator">.</span><span class="scilabfield">S21</span><span class="scilabopenclose">)</span><span class="scilaboperator">./</span><a class="scilabcommand" href="scilab://abs">abs</a><span class="scilabopenclose">(</span><span class="scilabid">S</span><span class="scilaboperator">.</span><span class="scilabfield">S12</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<a class="scilabcommand" href="scilab://plot2d">plot2d</a><span class="scilabopenclose">(</span><span class="scilabid">H</span><span class="scilaboperator">.</span><span class="scilabfield">frequency</span><span class="scilabdefault">,</span><span class="scilabnumber">10</span><span class="scilaboperator">*</span><a class="scilabmacro" href="scilab://log10">log10</a><span class="scilabopenclose">(</span><a class="scilabcommand" href="scilab://abs">abs</a><span class="scilabopenclose">(</span><span class="scilabid">M</span><span class="scilabopenclose">)</span><span class="scilabopenclose">)</span><span class="scilabdefault">,</span><span class="scilabid">logflag</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">ln</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span>
+<span class="scilabid">a</span><span class="scilaboperator">=</span><a class="scilabmacro" href="scilab://gca">gca</a><span class="scilabopenclose">(</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">a</span><span class="scilaboperator">.</span><span class="scilabfield">x_label</span><span class="scilaboperator">.</span><span class="scilabfield">text</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">Frequency(Hz)</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">a</span><span class="scilaboperator">.</span><span class="scilabfield">y_label</span><span class="scilaboperator">.</span><span class="scilabfield">text</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">MSG(dB)</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"></li></ul></div>
+  
+
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_S1P_write.html">&lt;&lt; uW_S1P_write</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_S2P_DELTA.html">uW_S2P_DELTA &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

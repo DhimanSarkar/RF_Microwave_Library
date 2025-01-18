@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab" xml:id="uW_S2P_stab_display_s2p" xml:lang="en"
+          xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+  <info>
+    <pubdate>October 2010</pubdate>
+  </info>
+
+  <refnamediv>
+    <refname>uW_S2P_stab_display</refname>
+
+    <refpurpose>Plot the stability circles from S2P data.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <title>Calling Sequence</title>
+
+    <synopsis>uW_S2P_stab_display(S)</synopsis>
+  </refsynopsisdiv>
+
+  <refsection>
+    <title>Parameters</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>S</term>
+
+        <listitem>
+          <para>2 ports S2P data</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection>
+    <title>Description</title>
+
+    <para>This function plots the stability circles on a smith chart into the
+    current graphic window. Input stability circles are blue. Output stability
+    circles are red. The frequency list is the one embedded in the S2P
+    data.</para>
+  </refsection>
+
+  <refsection>
+    <title>Examples</title>
+
+    <programlisting role="example">
+
+// Display for every frequency values in the S2P file
+// 
+filename=uigetfile("*.s2p");
+S=uW_S2P_read(filename);
+uW_S2P_stab_display(S)
+
+// Display for 1 frequency : 1 GHz
+
+filename=uigetfile("*.s2p");
+S=uW_S2P_read(filename);
+S2=uW_S2P_freq(S,[1.0]*10^9);
+uW_S2P_stab_display(S2)
+ 
+  </programlisting>
+  </refsection>
+
+  <refsection>
+    <title>See Also</title>
+
+    <simplelist type="inline">
+      <member>
+		<link linkend="uW_S2P_display">uW_S2P_display</link> 
+		<link linkend="uW_display_vsmith">uW_display_smith</link>
+		<link linkend="uW_S2P_stab">uW_S2P_stab</link>
+		<link linkend="uW_S2P_flip">uW_S2P_flip</link>
+		<link linkend="uW_S2P_freq">uW_S2P_freq</link>
+	</member>
+    </simplelist>
+  </refsection>
+
+  <refsection>
+    <title>Authors</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>Tibault Reveyrand</term>
+
+        <listitem>
+          <para>www.reveyrand.fr</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+</refentry>

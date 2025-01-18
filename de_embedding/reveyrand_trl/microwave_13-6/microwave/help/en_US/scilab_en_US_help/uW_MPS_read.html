@@ -1,0 +1,89 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_MPS_read</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_select_network.html">&lt;&lt; uW_MES_select_network</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a> &gt; uW_MPS_read</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_MPS_read</h1><p class="refpurpose">read a S2P from a multiple S parameter file (MPS)</p></div>
+  
+  
+  
+  
+  
+
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">S</span><span class="default"> = </span><span class="functionid">uW_MPS_read</span><span class="default">(</span><span class="default">filename</span><span class="default">,</span><span class="default">index</span><span class="default">)</span></pre></div></div>
+
+  <div class="refsection"><h3 class="title">Parameters</h3>
+  <dl><dt><span class="term">filename</span>
+    <dd><p class="para">String. Path of the mps file.</p></dd></dt>
+
+    <dt><span class="term">index</span>
+    <dd><p class="para">String. Index of the required S2P within the mps file.</p></dd></dt>
+
+    <dt><span class="term">S</span>
+    <dd><p class="para">S parameter object extracted from the mps file.</p></dd></dt></dl></div>
+ 
+  <div class="refsection"><h3 class="title">Description</h3>
+     <ul class="itemizedlist"><li><p class="para">This function extract a S2P from a mps filename and the desired index (3 capitals letters).</p></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">mps_filename</span><span class="scilaboperator">=</span><span class="scilabconstants">SCI</span><span class="scilaboperator">+</span><span class="scilabstring">&#0034;</span><span class="scilabstring">/contrib/uW/example/S2P/data.mps</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">mps_index</span><span class="scilaboperator">=</span><span class="scilabstring">&#0034;</span><span class="scilabstring">AN0</span><span class="scilabstring">&#0034;</span><span class="scilabdefault">;</span>
+<span class="scilabid">S</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_MPS_read</span><span class="scilabopenclose">(</span><span class="scilabid">mps_filename</span><span class="scilabdefault">,</span><span class="scilabid">mps_index</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<a class="scilabmacro" href="uW_S2P_display.html">uW_S2P_display</a><span class="scilabopenclose">(</span><span class="scilabid">S</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_S2P_read.html" class="link">uW_S2P_read</a></li></ul></div>
+
+
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_select_network.html">&lt;&lt; uW_MES_select_network</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_3e4ea2d243383cc823acbf23aa7bbb21.html">S2P files &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

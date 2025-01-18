@@ -16,18 +16,47 @@ class network():
     def s_matrix(self):
         pass
 
-class test():
-    def __init__(self,path,*args,**kwargs):
-        self.path = path
-        # self.network = skrf.Network(str(self.path) + '\\THRU.s2p')
+    def s2t(S):     #####################
+        s11 = numpy.complex128(S[0][0])
+        s12 = numpy.complex128(S[0][1])
+        s21 = numpy.complex128(S[1][0])
+        s22 = numpy.complex128(S[1][1])
+
+        t11 = numpy.reciprocal(s21)
+        t12 = numpy.divide(-s22, s21)
+        t21 = numpy.divide(s11, s21)
+        t22 = numpy.divide(-numpy.subtract(numpy.multiply(s11, s22), numpy.multiply(s12, s21)), s21)
+        T = [[t11, t12], [t21, t22]]
+
+        return T
+    #####################################
+    
+    def t2s(T):     #####################
+        t11 = numpy.complex128(T[0][0])
+        t12 = numpy.complex128(T[0][1])
+        t21 = numpy.complex128(T[1][0])
+        t22 = numpy.complex128(T[1][1])
+
+        s11 = numpy.divide(t21, t11)
+        s12 = numpy.divide(numpy.subtract(numpy.multiply(t11, t22), numpy.multiply(t12, t21)), t11)
+        s21 = numpy.reciprocal(t11)
+        s22 = numpy.divide(-t12, t11)
+        S = [[s11, s12], [s21, s22]]
+
+        return S
+    ####################################
+
+class TRL():
+    def __init__(self,*args,**kwargs):
+        pass
 
     def __del__(self):
         pass
 
-    def test0(self):    
+    def thru2x(self):    
         f_points = self.network.frequency.npoints
         f_list   = self.network.frequency
-        s_fxtr = np.zeros([f_points,2,2],dtype=np.complex128)
+        s_fxtr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
         for i in range(0,f_points):
             s11_thru = self.network.s[i][0][0]
             s12_thru = self.network.s[i][0][1]
@@ -35,7 +64,7 @@ class test():
             s22_thru = self.network.s[i][1][1]
 
             s11_fxtr = (s11_thru + s22_thru)/(2 + s12_thru + s21_thru)              # Ref. (5) in [1]
-            s12_fxtr = np.sqrt(0.5 * (s12_thru + s21_thru) * (1 - s11_fxtr**2))     # Ref. (6) in [1]
+            s12_fxtr = numpy.sqrt(0.5 * (s12_thru + s21_thru) * (1 - s11_fxtr**2))     # Ref. (6) in [1]
             s21_fxtr = s12_fxtr
             s22_fxtr = s11_fxtr
             s_fxtr[i] = [[s11_fxtr, s12_fxtr],[s21_fxtr,s22_fxtr]]
@@ -91,49 +120,71 @@ class test():
         fixture_circuit.plot_graph(network_labels=True, port_labels=True, edge_labels=True)
         plt.show()
 
+
+
+    def reveyrandTRL(self,thru,refl,line,*args,**kwargs):
+        # s_thru_meas = [[numpy.complex128(-0.22576-0.14387j), numpy.complex128(0.48758-0.81555j)], [numpy.complex128(0.48758-0.81555j), numpy.complex128(-0.22576-0.14387j)]]
+        # s_line_meas = [[numpy.complex128(0.10827+0.13325j), numpy.complex128(0.76582-0.61971j)], [numpy.complex128(0.76582-0.61971j), numpy.complex128(0.10827+0.13325j)]]
+        # s_refl_meas = [[numpy.complex128(-0.80925+0.58747j), 0], [0, numpy.complex128(-0.80925+0.58747j)]]
+        s_thru_meas = thru
+        s_line_meas = refl
+        s_refl_meas = line
+
+        
+
+        t_thru_meas = network.s2t(s_thru_meas)
+        t_line_meas = network.s2t(s_line_meas)
+
+        M = numpy.matmul(numpy.linalg.inv(t_thru_meas), t_line_meas)
+        N = numpy.matmul(t_line_meas, numpy.linalg.inv(t_thru_meas))
+
+        M_coeff = [M[1][0], (M[0][0]-M[1][1]), -M[0][1]]
+        N_coeff = [N[1][0], (N[0][0]-N[1][1]), -N[0][1]]
+
+        M_sol = numpy.roots(M_coeff)
+        N_sol = numpy.roots(N_coeff)
+
+        M_sol_abs = list(numpy.abs(M_sol))
+        M_sol_abs_max = numpy.max(numpy.abs(M_sol))
+        M_max_index = M_sol_abs.index(M_sol_abs_max)
+        M_min_index = numpy.mod((M_max_index + 1), 2)
+        c1 = M_sol[M_max_index] # T22/T21 | abs(T22/T21) > abs(T12/T11) [output block]
+        c2 = M_sol[M_min_index] # T12/T11 | abs(T12/T11) > abs(T12/T11) [output block]
+
+        N_sol_abs = list(numpy.abs(M_sol))
+        N_sol_abs_max = numpy.max(numpy.abs(M_sol))
+        M_max_index = N_sol_abs.index(N_sol_abs_max)
+        M_min_index = numpy.mod((M_max_index + 1), 2)
+        c3 = M_sol[M_max_index] # TT22/TT21 | abs(TT22/TT21) > abs(TT12/T11) [input block]
+        c4 = M_sol[M_min_index] # TT12/TT11 | abs(TT12/TT11) > abs(TT12/T11) [input block]
+
+        c5 = numpy.divide((1 + c4 * s_thru_meas[0][0]), s_thru_meas[1][0])  # T11/TT11 [input block]
+        c6 = numpy.divide(s_thru_meas[0][1], (s_thru_meas[1][1] + c1))      # T21/TT22 [input block]
+
+        c7_num = c5 * numpy.divide((s_refl_meas[1][1] + c2), (s_refl_meas[1][1] + c1))
+        c7_den = c6 * c3 * numpy.divide((1 + c3 * s_refl_meas[0][0]), (1 + c4 * s_refl_meas[0][0]))
+        c7 = numpy.sqrt(numpy.divide(c7_num, c7_den))   # TT21/TT11 [output block]
+
+        gamma_std_verify = c7 * numpy.divide((1 + c3 * s_refl_meas[0][0]), (1 + c4 * s_refl_meas[0][0]))
+
+        if(numpy.real(gamma_std_verify) > 0):   # real(gamma) = 1 for OPEN, real(gamma) = -1 for SHRT
+            c7 = -c7                            # if real(gamma) > 0 choose alternate sign of c7 for SHRT
+        else:
+            pass
+
+        # IMPORTANT
+        k = numpy.sqrt(numpy.reciprocal(c3 * c7 - c4 * c7))
+        # need to implement K unwrapping verification
+
+        TT_in = numpy.divide([[1, c4], [c7, c3*c7]], k)
+        T_in = numpy.linalg.inv(TT_in)
+        T_out = [[c5, c2*c5], [c6*c3*c7, c1*c6*c7]]
+        S_in = network.t2s(T_in)
+        S_out = network.t2s(T_out)
+        
+        return S_in
     
-    def GlennCletusTRL(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
-        std_thru = skrf.Network(str(kwargs['thru']))
-        std_refl = skrf.Network(str(kwargs['refl']))
-        std_line = skrf.Network(str(kwargs['line']))
-        refl_s11 = numpy.complex128(-1+0j)
 
-        f_points = std_thru.frequency.npoints
-        # print(f_points)
-
-        for f_index in range(0,f_points):
-            # print(f_index)
-            # print(std_thru.s[f_index])
-
-            # print((std_line[f_index].t)[0])
-
-            LT = numpy.linalg.matmul((std_line[f_index].t)[0], numpy.linalg.inv(std_thru[f_index].t)[0])  # Ref. (24) of [3]
-            # check = numpy.linalg.det(LT)
-            # print(numpy.abs(check))
-
-            quadratic_coeff = [LT[1,0], (LT[1,1]-LT[0,0]), LT[0,1]]     # Ref. (30, 31) of [3]
-            # print(quadratic_coeff)
-            roots = numpy.roots(quadratic_coeff)
-            # print(roots)
-
-            # PATH 1
-            for _i in range(0,2):
-                s = roots[_i%2]
-                q = roots[(_i+1) %2]
-
-                # print((std_refl[f_index].s[0][0][0]))
-                r = (q - (std_refl[f_index].s[0][0][0])) / (refl_s11 * ((std_refl[f_index].s[0][0][0]) - s))
-                # print(r)
-
-                root_choice_check = numpy.abs((LT[0][0] * q + LT[0][1]) / (LT[0][0] * r * s + LT[0][1] * r))    # Ref. (57) of [3] 
-                if(root_choice_check < 1):
-                    break
-                else:
-                    continue
-            
-            print(root_choice_check)
-        return 0
-    
     def GlennCletusTSD(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
         std_thru = skrf.Network(str(kwargs['thru']))
         std_refl = skrf.Network(str(kwargs['refl']))
@@ -186,11 +237,6 @@ class test():
 
         fixture_A.write_touchstone(filename='A.s2p', dir=r'C:\Users\GEECI\Desktop', form='db', skrf_comment=False)
         return 0
-
-        
-net1 = test(path='')
-net1.GlennCletusTSD(thru=r'.\de_embedding\cal_std\thru.s2p', refl=r'.\de_embedding\cal_std\shrt.s1p', line=r'.\de_embedding\cal_std\line.s2p')
-
 
 
 ####################################################################

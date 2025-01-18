@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_cal_standard" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>October 2007</pubdate></info><refnamediv><refname>uW_cal_standard</refname><refpurpose> generate the S1P form of a standard according the definition parameters.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>S=uW_cal_standard(frequency,standard)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>standard</term>
+        <listitem>
+          <para>tlist containing the parameter of the standard (see <literal>uW_cal_define_standard</literal>).</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>frequency</term>
+        <listitem>
+          <para>column vector of frequencies (in Hertz).</para>
+        </listitem>
+      </varlistentry>
+	  
+	  <varlistentry>
+        <term>S</term>
+        <listitem>
+          <para>S1P object. This is the reflexion coefficent of the standard for the given frequencies.</para>
+        </listitem>
+      </varlistentry>
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+    This function generates the S1P object of a calibration standard.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+// Calkit offset
+delay=uW_cal_offset2delay(5);
+
+// Open coefficients
+open_anritsu=uW_cal_define_standard("O",5e-15,60e-27,-11e-36,0.41e-45,'delay='+string(delay)); 
+
+// Frequency
+frequency=(10^9)*linspace(1,20,100).';
+
+// Reflexion coefficient
+S=uW_cal_standard(frequency,open_anritsu);
+
+// Display
+uW_S2P_display(S)
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_cal_define_standard">uW_cal_define_standard</link>
+    </member>
+   
+
+  </simplelist></refsection>
+  
+  
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

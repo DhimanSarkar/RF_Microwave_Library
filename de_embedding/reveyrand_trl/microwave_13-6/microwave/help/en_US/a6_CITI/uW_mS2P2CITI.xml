@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_mS2P2CITI" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>19-Apr-2011</pubdate></info><refnamediv><refname>uW_mS2P2CITI</refname><refpurpose>  Generate a CITIfile from a S2P directory</refpurpose></refnamediv>
+  
+  
+   
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_mS2P2CITI(MEAS_directory,CITI_filename[,setup])</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MEAS_directory</term>
+    <listitem>
+       <para>String parameter : path of the MEAS directory including the last separator where the S2P are located.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>CITI_filename</term>
+    <listitem>
+       <para>String parameter : filename of the CITI file including the path for Agilent ADS.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>setup</term>
+    <listitem>
+       <para>String parameter : put "DIVA" if your S2P files comes from DIVA IV pulsed mesurement setup.
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function transform several S2P files (IV network) in a CITIfile for ADS.</para>
+<para>
+S2P file has to include bias values V1, V2, I1 and I2 in comments lines as follow :
+</para>
+<para>
+! V1=-0.2001011  V2=0.1083563  I1=0.0002171  I2=0.0502052
+</para>
+<para>
+# HZ S MA R 50
+</para>
+<para>
+500000000.000000 0.996478 -19.403742 0.199965 167.375826 0.005543 80.119670 0.922611 179.368600 
+</para>
+<para>
+598750000.000000 0.996207 -23.162786 0.207032 165.094030 0.006742 78.820613 0.923241 179.331301 
+</para>
+<para>
+...
+</para>
+
+	  
+
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   dir_meas="C:\PUBLIC\IV-test\";
+ filename_citi="c:\test2.citi";
+ uW_mS2P2CITI(dir_meas,filename_citi);
+
+// Then you can use this CITIfile in ADS as follow
+// Copy the citifile in the "data" directory
+// - Open the project "IV_prj" in ADS
+// - Open the Data Display "Comparison_S.dds"
+//   - Menu "tools" -> "Datafile tool"
+//     Read the CITIfile and name the Dataset "Measure_IV"
+//     Display the measurements in the Datadisplay
+// - Open the design "Simulate_S"
+// - Put your model
+// - Simulate !
+
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MES2CITI"> uW_MES2CITI</link> </member>
+ <member> <link linkend="uW_MPS_read"> uW_MPS_read</link> </member>
+
+
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+
+
+  <refsection><title>Used Functions</title>
+     <para>
+      <link linkend="uW_S2P_read"> uW_S2P_read</link> 
+     </para>
+  </refsection>
+
+
+
+</refentry>

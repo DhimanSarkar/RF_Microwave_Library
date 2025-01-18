@@ -1,0 +1,107 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_S2P_deembedding</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_AMCAD_CST_deembedding.html">&lt;&lt; uW_AMCAD_CST_deembedding</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_51844096bcfdd8455e80c8e0bd1b05ed.html">De-embedding</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_31b731cd1676b04fc1357cd2308d736a.html">Display &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_51844096bcfdd8455e80c8e0bd1b05ed.html">De-embedding</a> &gt; uW_S2P_deembedding</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_S2P_deembedding</h1><p class="refpurpose">S2P measurements de-embedding .</p></div>
+  
+  
+  
+  
+  
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">S_DUT</span><span class="default">=</span><span class="functionid">uW_S2P_deembedding</span><span class="default">(</span><span class="default">S_Total</span><span class="default">,</span><span class="default">Sin</span><span class="default">,</span><span class="default">Sout</span><span class="default">)</span></pre></div></div>
+  <div class="refsection"><h3 class="title">Parameters</h3>
+    <dl><dt><span class="term">S_Total</span>
+        <dd><p class="para">S2P Object (tlist) containing the complete chain S2P parameters.</p></dd></dt>
+      <dt><span class="term">S_DUT</span>
+          <dd><p class="para">S2P Object (tlist) containing the de-embedded S2P parameters. The S2P of the DUT.</p></dd></dt>
+        <dt><span class="term">Sin</span>
+        <dd><p class="para">tlist containing the S parameters (S2P : 2 ports) located between the input port and the DUT.</p></dd></dt>
+	   <dt><span class="term">Sout</span>
+        <dd><p class="para">tlist containing the S parameters (S2P : 2 ports) located between the DUT and the output port.</p></dd></dt></dl></div>
+  <div class="refsection"><h3 class="title">Description</h3>
+    <p class="para">This function de-embed a S2P data (S_Total) according to the input and output S2P blocks. The result is the de-embedded S2P data.</p>
+	<span></span></div>
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabcomment">// A - Split the Test-fixture in two equal parts</span>
+<span class="scilabcomment">// A.1. Get the Thru line</span>
+<span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">S_thru</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// A.2. Get the Opens</span>
+<span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">S_opens</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// A.3. Split the test-fixture</span>
+<span class="scilabopenclose">[</span><span class="scilabid">Sin</span><span class="scilabdefault">,</span><span class="scilabid">Sout</span><span class="scilabdefault">,</span><span class="scilabid">Gamma_open</span><span class="scilabopenclose">]</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_split.html">uW_S2P_split</a><span class="scilabopenclose">(</span><span class="scilabid">S_thru</span><span class="scilabdefault">,</span><span class="scilabid">S_opens</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// B - Deembedding</span>
+<span class="scilabcomment">// B.1. Get the measurements</span>
+<span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.s2p</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">S_total</span><span class="scilaboperator">=</span><a class="scilabmacro" href="uW_S2P_read.html">uW_S2P_read</a><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// B.2. De-embedding</span>
+<span class="scilabid">S_DUT</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_S2P_deembedding</span><span class="scilabopenclose">(</span><span class="scilabid">S_total</span><span class="scilabdefault">,</span><span class="scilabid">Sin</span><span class="scilabdefault">,</span><span class="scilabid">Sout</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span> 
+
+<span class="scilabcomment">// B.3. Display the results</span>
+<a class="scilabmacro" href="uW_S2P_display.html">uW_S2P_display</a><span class="scilabopenclose">(</span><span class="scilabid">S_DUT</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+  
+  
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_S2P_display.html" class="link">uW_S2P_display</a></li></ul></div>
+  
+  
+ <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+
+<div class="refsection"><h3 class="title">Used Functions</h3>
+     <li class="member"><a href="uW_unwarp.html" class="link">uW_unwarp</a></li></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_AMCAD_CST_deembedding.html">&lt;&lt; uW_AMCAD_CST_deembedding</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_51844096bcfdd8455e80c8e0bd1b05ed.html">De-embedding</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="section_31b731cd1676b04fc1357cd2308d736a.html">Display &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

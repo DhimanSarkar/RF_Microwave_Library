@@ -1,0 +1,106 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>uW_MES_read</title>
+    <style type="text/css" media="all">
+      @import url("scilab_code.css");
+      @import url("xml_code.css");
+      @import url("c_code.css");
+      @import url("style.css");
+    </style>
+  </head>
+  <body>
+    <div class="manualnavbar">
+    <table width="100%"><tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_plot_mes.html">&lt;&lt; uW_MES_plot</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_select_network.html">uW_MES_select_network &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+
+
+
+    <span class="path"><a href="index.html">Microwave Toolbox</a> &gt;&gt; <a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a> &gt; uW_MES_read</span>
+
+    <br /><br />
+    <div class="info"></div><div class="refnamediv"><h1 class="refname">uW_MES_read</h1><p class="refpurpose">read IV measurement file (*.mes) from XLIM measurements</p></div>
+  
+  
+   
+  
+  
+
+  <div class="refsynopsisdiv"><h3 class="title">Calling Sequence</h3><div class="synopsis"><pre><span class="default">dataset</span><span class="default"> = </span><span class="functionid">uW_MES_read</span><span class="default">(</span><span class="default">filename</span><span class="default">)</span></pre></div></div>
+
+  <div class="refsection"><h3 class="title">Parameters</h3>
+  <dl><dt><span class="term">filename</span>
+    <dd><p class="para">the filename of the MES file (XLIM IV curves file format).</p></dd></dt>
+
+    <dt><span class="term">dataset</span>
+    <dd><p class="para">dataset containing the IV curves informations for Scilab.</p></dd></dt></dl></div>
+ 
+  <div class="refsection"><h3 class="title">Description</h3>
+     <ul class="itemizedlist"><li><p class="para">This function read a MES file in order to manage informations within it with Scilab.
+	  You can acces to some data as follow :</p><p class="para">dataset.network(number of network).curve(number of curve).plot(number of plot).field</p><p class="para">field can be :</p><p class="para">- v1 : input voltage</p><p class="para">- v2 : output voltage</p><p class="para">- i1 : input current</p><p class="para">- i2 : output current</p><p class="para"></p><p class="para">- S2P : index of the S2P file index</p><p class="para"></p><p class="para">- di1dv1 : Derivate value if available into the file</p><p class="para">- di1dv2</p><p class="para">- di2dv1</p><p class="para">- di2dv2</p><p class="para"></p><p class="para">- Cgs : intrinsic value from linear modeling</p><p class="para">- Cgd</p><p class="para">- Gm</p><p class="para">- Gd</p><p class="para">- Cds</p><p class="para">- Ri</p><p class="para">- Tau</p><p class="para">- Rgd</p></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Examples</h3><div class="programlisting"><table border="0" width="100%"><tr><td width="98%"><pre class="scilabcode"><span class="scilabid">filename</span><span class="scilaboperator">=</span><span class="scilabid">tk_getfile</span><span class="scilabopenclose">(</span><span class="scilabstring">&#0034;</span><span class="scilabstring">*.mes</span><span class="scilabstring">&#0034;</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabid">MES</span><span class="scilaboperator">=</span><span class="scilabmacro">uW_MES_read</span><span class="scilabopenclose">(</span><span class="scilabid">filename</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Get the number of network</span>
+<a class="scilabcommand" href="scilab://size">size</a><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">)</span>
+
+<span class="scilabcomment">// Get the number of curves in the first network</span>
+<a class="scilabcommand" href="scilab://size">size</a><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">)</span>
+
+<span class="scilabcomment">// Get the number of point in the first network and the first curve</span>
+<a class="scilabcommand" href="scilab://size">size</a><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">plot</span><span class="scilabopenclose">)</span>
+
+<span class="scilabcomment">// Plot the network by yourself : Id=f(Vds)</span>
+<span class="scilabskeyword">for</span> <span class="scilabid">c</span><span class="scilaboperator">=</span><span class="scilabnumber">1</span><span class="scilabspecial">:</span><a class="scilabcommand" href="scilab://size">size</a><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">)</span><span class="scilabdefault">,</span>
+   <span class="scilabid">X</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+<span class="scilabid">Y</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+   <span class="scilabskeyword">for</span> <span class="scilabid">p</span><span class="scilaboperator">=</span><span class="scilabnumber">1</span><span class="scilabspecial">:</span><a class="scilabcommand" href="scilab://size">size</a><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">(</span><span class="scilabid">c</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">plot</span><span class="scilabopenclose">)</span><span class="scilabdefault">,</span>
+    <span class="scilabid">X</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabid">X</span><span class="scilabdefault">;</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">(</span><span class="scilabid">c</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">plot</span><span class="scilabopenclose">(</span><span class="scilabid">p</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">v2</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+ <span class="scilabid">Y</span><span class="scilaboperator">=</span><span class="scilabopenclose">[</span><span class="scilabid">Y</span><span class="scilabdefault">;</span><span class="scilabid">MES</span><span class="scilaboperator">.</span><span class="scilabfield">network</span><span class="scilabopenclose">(</span><span class="scilabnumber">1</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">curve</span><span class="scilabopenclose">(</span><span class="scilabid">c</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">plot</span><span class="scilabopenclose">(</span><span class="scilabid">p</span><span class="scilabopenclose">)</span><span class="scilaboperator">.</span><span class="scilabfield">i2</span><span class="scilabopenclose">]</span><span class="scilabdefault">;</span>
+   <span class="scilabskeyword">end</span><span class="scilabdefault">;</span>
+<a class="scilabcommand" href="scilab://plot2d">plot2d</a><span class="scilabopenclose">(</span><span class="scilabid">X</span><span class="scilabdefault">,</span><span class="scilabid">Y</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span>
+<span class="scilabskeyword">end</span><span class="scilabdefault">;</span>
+
+<span class="scilabcomment">// Plot the network with the buid-in function</span>
+<span class="scilabid">uW_MES_display</span><span class="scilabopenclose">(</span><span class="scilabid">MES</span><span class="scilabopenclose">)</span><span class="scilabdefault">;</span></pre></td><td valign="top"><a href="scilab://scilab.execexample/"><img src="ScilabExecute.png" border="0"/></a></td><td valign="top"><a href="scilab://scilab.editexample/"><img src="ScilabEdit.png" border="0"/></a></td><td></td></tr></table></div></div>
+
+  <div class="refsection"><h3 class="title">See Also</h3><ul class="itemizedlist"><li class="member"><a href="uW_MES_plot.html" class="link">uW_MES_plot</a></li></ul></div>
+
+  <div class="refsection"><h3 class="title">Authors</h3><dl><dt><span class="term">Tibault Reveyrand</span><dd><p class="para">www.reveyrand.fr</p></dd></dt></dl></div>
+    <br />
+
+    <div class="manualnavbar">
+    <table width="100%">
+    <tr><td colspan="3" class="next"><a href="http://bugzilla.scilab.org/enter_bug.cgi?product=Scilab%20software&component=Documentation%20pages" class="ulink">Report an issue</a></td></tr>
+<tr>
+      <td width="30%">
+    	<span class="previous"><a href="uW_MES_plot_mes.html">&lt;&lt; uW_MES_plot</a></span>
+
+      </td>
+      <td width="40%" class="center">
+      	<span class="top"><a href="section_50ce728c84bc0142f4c504dca32801df.html">MES files</a></span>
+
+      </td>
+      <td width="30%" class="next">
+      	<span class="next"><a href="uW_MES_select_network.html">uW_MES_select_network &gt;&gt;</a></span>
+
+      </td>
+    </tr></table>
+      <hr />
+    </div>
+  </body>
+</html>

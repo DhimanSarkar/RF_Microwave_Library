@@ -1,0 +1,32 @@
+Toolbox: microwave
+
+Title: Microwave Toolbox
+
+Summary: RF and Microwave Tools for Data Analysis
+
+Version: 13.6
+
+Author: Tibault Reveyrand
+
+Maintainer: Tibault Reveyrand <reveyrand@gmail.com>
+
+Category: Data Analysis And Statistics
+ Data Handling
+
+Entity: www.microwave.fr
+
+WebSite: http://www.reveyrand.fr/uW.html
+
+URL: http://atoms.scilab.org/toolboxes/microwave/13.6
+
+License: Public Domain
+
+ScilabVersion: >= 5.2
+
+Depends: 
+
+Date: 2013-07-12 00:09:47
+
+Description: This toolbox enable efficient data anlysis for RF and microwave data, such as
+ S2P file read/write and display, stability circles, de-embedding...
+

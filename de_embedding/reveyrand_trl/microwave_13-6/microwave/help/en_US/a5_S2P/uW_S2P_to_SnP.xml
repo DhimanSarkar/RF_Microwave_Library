@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_S2P_to_SnP" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+<info><pubdate>August 2011</pubdate></info><refnamediv><refname>uW_S2P_to_SnP</refname><refpurpose> Create a SnP object from several S2P measurements or datas.</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+   <refsynopsisdiv><title>Calling Sequence</title><synopsis>SnP=uW_S2P_to_SnP(file_list)</synopsis></refsynopsisdiv>
+  <refsection><title>Parameters</title>
+    <variablelist>
+      <varlistentry>
+        <term>file_list</term>
+        <listitem>
+          <para>String vector : filenames of the S2P files including the path.</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>SnP</term>
+        <listitem>
+          <para>tlist containing the SnP parameters.</para>
+        </listitem>
+      </varlistentry>
+	
+	  
+    </variablelist>
+  </refsection>
+  <refsection><title>Description</title>
+    <para>
+     This function read S2P files and gennerate an SnP object. This SnP object can be saved as a SnP file in order to be used in an external software such Agilent ADS.
+	</para>
+  </refsection>
+  
+  
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+
+
+// === S3P generation
+// Be carefull, the order in the filelist is VERY important
+
+path="/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/";
+
+file_12=path+"alla_s_iso_in.s2p";
+file_13=path+"alla_s_iso_2.s2p";
+file_23=path+"alla_s_in_2.s2p";
+
+
+file_out=path+"alla2.s3p";
+
+file_list=[file_12;file_13;file_23];
+
+S3P=S2P_to_SnP(file_list);
+uW_SnP_write(S3P,file_out,"Generated with Scilab - www.microwave.fr")
+
+
+
+
+
+
+// === S4P generation
+// Be carefull, the order in the filelist is VERY important
+
+path="/home/tibo/Documents/XLIM/Ramadan/S4P/ramadan_s4p/";
+
+file_12=path+"alla_s_iso_in.s2p";
+file_13=path+"alla_s_iso_2.s2p";
+file_14=path+"alla_s_iso_1.s2p";
+file_23=path+"alla_s_in_2.s2p";
+file_24=path+"alla_s_in_1.s2p";
+file_34=path+"alla_s_2_1.s2p";
+
+file_out=path+"alla2.s4p";
+
+file_list=[file_12;file_13;file_14;file_23;file_24;file_34];
+
+S4P=S2P_to_SnP(file_list);
+uW_SnP_write(S4P,file_out,"Generated with Scilab - www.microwave.fr")
+
+
+
+
+ 
+  ]]></programlisting></refsection>
+  
+  
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member>
+      <link linkend="uW_SnP_write">uW_SnP_write</link>
+    </member>
+    
+
+  </simplelist></refsection>
+  
+
+  
+ <refsection><title>Authors</title><variablelist>
+<varlistentry><term>Tibault Reveyrand</term><listitem><para>
+www.reveyrand.fr
+</para></listitem></varlistentry>
+</variablelist></refsection>
+
+
+  
+  
+</refentry>

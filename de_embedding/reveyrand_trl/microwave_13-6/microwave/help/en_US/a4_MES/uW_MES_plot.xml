@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry version="5.0-subset Scilab"  xml:id="uW_MES_plot_mes" xml:lang="en"
+ 	    xmlns="http://docbook.org/ns/docbook"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:svg="http://www.w3.org/2000/svg"
+          xmlns:ns3="http://www.w3.org/1999/xhtml"
+          xmlns:mml="http://www.w3.org/1998/Math/MathML"
+          xmlns:db="http://docbook.org/ns/docbook">
+
+
+<info><pubdate>16-Dec-2007</pubdate></info><refnamediv><refname>uW_MES_plot</refname><refpurpose>  Plot graph from IV measurements curves (MES file)</refpurpose></refnamediv>
+  
+  
+  
+  
+  
+
+  <refsynopsisdiv><title>Calling Sequence</title><synopsis>uW_MES_plot(MES,network,my_x,my_y)</synopsis></refsynopsisdiv>
+
+  <refsection><title>Parameters</title>
+  <variablelist>
+
+    <varlistentry>
+    <term>MES</term>
+    <listitem>
+       <para>Measurements object. Refer to the <literal>uW_MES_read()</literal> function 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>network</term>
+    <listitem>
+       <para>Integer value. The number of the network you want to plot.
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_x</term>
+    <listitem>
+       <para>Sting value. The X axis of your plot. Basically my_x="v2". 
+       </para>
+    </listitem>
+    </varlistentry>
+
+    <varlistentry>
+    <term>my_y</term>
+    <listitem>
+       <para>Sting value. The Y axis of your plot. Basically my_x="i2". 
+       </para>
+    </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsection>
+ 
+  <refsection><title>Description</title>
+     <itemizedlist>
+     <listitem>
+     <para>
+      This function plots the data included into your MES object. You can plot : </para><para>
+	  - Classical I-V curves : my_x="v2" and my_y="i2";</para><para>
+	  - Gm extracted from small signal multi biases optimization : my_x="v2" and my_y="Gm";</para><para>
+	  - Derivates from I-V curves extracted with X : my_x="v2" and my_y="di2dv1";</para><para>
+	  and much more...</para><para>
+	  (my_x="v2
+     </para>
+     </listitem>
+     </itemizedlist>
+  </refsection>
+
+  <refsection><title>Examples</title><programlisting role="example"><![CDATA[
+   filename="C:\USERS\tibo\modele\Q3_2x75\10V10%\2X75.MES";
+MES=uW_MES_read(filename);
+uW_MES_plot(MES,1,"v2","i2");
+  ]]></programlisting></refsection>
+
+  <refsection><title>See Also</title><simplelist type="inline">
+    <member> <link linkend="uW_MES_read"> uW_MES_read</link> </member>
+  </simplelist></refsection>
+
+  <refsection><title>Authors</title><variablelist>
+    <varlistentry><term>Tibault Reveyrand</term><listitem><para>
+    www.reveyrand.fr
+    </para></listitem></varlistentry>
+  </variablelist></refsection>
+
+</refentry>
