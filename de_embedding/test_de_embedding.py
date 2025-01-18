@@ -13,7 +13,7 @@ import matplotlib
 
 
 thru = skrf.Network(r'.\de_embedding\cal_std\thru.s2p')
-refl = skrf.Network(r'.\de_embedding\cal_std\shrt.s1p')
+refl = skrf.Network(r'.\de_embedding\cal_std\refl.s2p')
 line = skrf.Network(r'.\de_embedding\cal_std\line.s2p')
 S = None
 
@@ -23,7 +23,7 @@ f_list   = thru.frequency
 for _i in range(0, f_points):
     s_thru_meas = thru.s[_i]
     s_line_meas = line.s[_i]
-    s_refl_meas = [[refl.s[_i][0][0], 0], [0, refl.s[_i][0][0]]]
+    s_refl_meas = refl.s[_i]
 
     _S = de_embedding_algorithms.TRL().reveyrandTRL(s_thru_meas,s_line_meas,s_refl_meas)
     
