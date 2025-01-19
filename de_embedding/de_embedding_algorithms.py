@@ -53,29 +53,41 @@ class TRL():
     def __del__(self):
         pass
 
-    def thru2x(self):    
-        f_points = self.network.frequency.npoints
-        f_list   = self.network.frequency
-        s_fxtr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
+    def thru2x(self, thru_path, *args, **kwargs):
+        if 'export_path' in kwargs:
+            export_path = kwargs['export_path']
+        else:
+            export_path = '.\\'
+
+        thru =  skrf.Network(thru_path)
+        
+        f_points = thru.frequency.npoints
+        f_list   = thru.frequency
+
+        s_fxr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
+        s21_phase = []
+
         for i in range(0,f_points):
-            s11_thru = self.network.s[i][0][0]
-            s12_thru = self.network.s[i][0][1]
-            s21_thru = self.network.s[i][1][0]
-            s22_thru = self.network.s[i][1][1]
+            s11_t = numpy.complex128(thru.s[i][0][0])
+            s12_t = numpy.complex128(thru.s[i][0][1])
+            s21_t = numpy.complex128(thru.s[i][1][0])
+            s22_t = numpy.complex128(thru.s[i][1][1])
 
-            s11_fxtr = (s11_thru + s22_thru)/(2 + s12_thru + s21_thru)              # Ref. (5) in [1]
-            s12_fxtr = numpy.sqrt(0.5 * (s12_thru + s21_thru) * (1 - s11_fxtr**2))     # Ref. (6) in [1]
-            s21_fxtr = s12_fxtr
-            s22_fxtr = s11_fxtr
-            s_fxtr[i] = [[s11_fxtr, s12_fxtr],[s21_fxtr,s22_fxtr]]
+            s11_fxr = numpy.divide((s11_t + s22_t), (2 + s12_t + s21_t))        # Ref. (5) in [1]
+            s21_fxr = numpy.sqrt(0.5 * (s12_t + s21_t) * (1 - s11_fxr**2))      # Ref. (6) in [1]
+            
+            #s21_fxr = numpy.abs(s21_fxr) * numpy.exp(1j * s21_phase[i])
+
+            s12_fxr = s21_fxr
+            s22_fxr = s11_fxr
+            s_fxr[i] = [[s11_fxr, s12_fxr],[s21_fxr,s22_fxr]]
         pass
-        fxtr = skrf.Network(frequency=f_list, s=s_fxtr, z0=50)
+        print(s21_phase)
+        fxr = skrf.Network(frequency=f_list, s=s_fxr, z0=50)
 
-        fxtr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', dir=self.path, form='db', skrf_comment=False)
+        fxr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', form='ma', dir=export_path, skrf_comment=False)
 
-        # Debug Purpose
-        fxtr.plot_s_db()
-        plt.show()
+        return fxr.to_dataframe
 
     
     def ChoBurk(self): # Ref. [2]
@@ -123,20 +135,20 @@ class TRL():
 
 
     def reveyrandTRL(self,thru,refl,line,*args,**kwargs):
-        # s_thru_meas = [[numpy.complex128(-0.22576-0.14387j), numpy.complex128(0.48758-0.81555j)], [numpy.complex128(0.48758-0.81555j), numpy.complex128(-0.22576-0.14387j)]]
+        # s_t_meas = [[numpy.complex128(-0.22576-0.14387j), numpy.complex128(0.48758-0.81555j)], [numpy.complex128(0.48758-0.81555j), numpy.complex128(-0.22576-0.14387j)]]
         # s_line_meas = [[numpy.complex128(0.10827+0.13325j), numpy.complex128(0.76582-0.61971j)], [numpy.complex128(0.76582-0.61971j), numpy.complex128(0.10827+0.13325j)]]
         # s_refl_meas = [[numpy.complex128(-0.80925+0.58747j), 0], [0, numpy.complex128(-0.80925+0.58747j)]]
-        s_thru_meas = thru
+        s_t_meas = thru
         s_line_meas = refl
         s_refl_meas = line
 
         
 
-        t_thru_meas = network.s2t(s_thru_meas)
+        t_t_meas = network.s2t(s_t_meas)
         t_line_meas = network.s2t(s_line_meas)
 
-        M = numpy.matmul(numpy.linalg.inv(t_thru_meas), t_line_meas)
-        N = numpy.matmul(t_line_meas, numpy.linalg.inv(t_thru_meas))
+        M = numpy.matmul(numpy.linalg.inv(t_t_meas), t_line_meas)
+        N = numpy.matmul(t_line_meas, numpy.linalg.inv(t_t_meas))
 
         M_coeff = [M[1][0], (M[0][0]-M[1][1]), -M[0][1]]
         N_coeff = [N[1][0], (N[0][0]-N[1][1]), -N[0][1]]
@@ -158,8 +170,8 @@ class TRL():
         c3 = M_sol[M_max_index] # TT22/TT21 | abs(TT22/TT21) > abs(TT12/T11) [input block]
         c4 = M_sol[M_min_index] # TT12/TT11 | abs(TT12/TT11) > abs(TT12/T11) [input block]
 
-        c5 = numpy.divide((1 + c4 * s_thru_meas[0][0]), s_thru_meas[1][0])  # T11/TT11 [input block]
-        c6 = numpy.divide(s_thru_meas[0][1], (s_thru_meas[1][1] + c1))      # T21/TT22 [input block]
+        c5 = numpy.divide((1 + c4 * s_t_meas[0][0]), s_t_meas[1][0])  # T11/TT11 [input block]
+        c6 = numpy.divide(s_t_meas[0][1], (s_t_meas[1][1] + c1))      # T21/TT22 [input block]
 
         c7_num = c5 * numpy.divide((s_refl_meas[1][1] + c2), (s_refl_meas[1][1] + c1))
         c7_den = c6 * c3 * numpy.divide((1 + c3 * s_refl_meas[0][0]), (1 + c4 * s_refl_meas[0][0]))
@@ -174,33 +186,35 @@ class TRL():
 
         # IMPORTANT
         k = numpy.sqrt(numpy.reciprocal(c3 * c7 - c4 * c7))
+
+        print(numpy.angle(k))
         # need to implement K unwrapping verification
 
-        TT_in = numpy.divide([[1, c4], [c7, c3*c7]], k)
+        TT_in = numpy.multiply([[1, c4], [c7, c3*c7]], k)
         T_in = numpy.linalg.inv(TT_in)
         T_out = [[c5, c2*c5], [c6*c3*c7, c1*c6*c7]]
         S_in = network.t2s(T_in)
         S_out = network.t2s(T_out)
         
-        return S_in
+        return S_out
     
 
     def GlennCletusTSD(self,*args,**kwargs):    # GlennCletusTRL(thru='location\file.s2p', refl='location\file.s1p', line='location\file.s2p')
-        std_thru = skrf.Network(str(kwargs['thru']))
+        std_t = skrf.Network(str(kwargs['thru']))
         std_refl = skrf.Network(str(kwargs['refl']))
         std_line = skrf.Network(str(kwargs['line']))
         refl_s11 = numpy.complex128(-1+0j)
 
 
-        # print((std_thru.t)[1])
-        # print((std_thru.s)[1])
+        # print((std_t.t)[1])
+        # print((std_t.s)[1])
 
-        f_list = std_thru.frequency
-        f_points = std_thru.frequency.npoints
+        f_list = std_t.frequency
+        f_points = std_t.frequency.npoints
         # print(f_points)
 
         for f_index in range(0,f_points):
-            TX = numpy.linalg.matmul((std_line[f_index].t)[0], numpy.linalg.inv(std_thru[f_index].t)[0])  # Ref. (24) of [3]
+            TX = numpy.linalg.matmul((std_line[f_index].t)[0], numpy.linalg.inv(std_t[f_index].t)[0])  # Ref. (24) of [3]
             
             quadratic_coeff = [TX[1,0], (TX[1,1]-TX[0,0]), -TX[0,1]]     # Ref. (30, 31) of [3]
             roots = numpy.roots(quadratic_coeff)
@@ -226,7 +240,7 @@ class TRL():
             else:
                 T_A = numpy.append(T_A, [[[a * TA_scaling, b*c*TA_scaling],[1*TA_scaling, c*TA_scaling]]], axis=0)
         
-        T_B = numpy.linalg.matmul(numpy.linalg.inv(T_A), std_thru.t)
+        T_B = numpy.linalg.matmul(numpy.linalg.inv(T_A), std_t.t)
         
         fixture_A = skrf.network.Network(s=skrf.network.t2s(T_A), frequency=f_list, z0=50)
         fixture_B = skrf.network.Network(s=skrf.network.t2s(T_B), frequency=f_list, z0=50)
