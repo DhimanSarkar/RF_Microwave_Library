@@ -65,7 +65,6 @@ class TRL():
         f_list   = thru.frequency
 
         s_fxr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
-        s21_phase = []
 
         for i in range(0,f_points):
             s11_t = numpy.complex128(thru.s[i][0][0])
@@ -82,7 +81,7 @@ class TRL():
             s22_fxr = s11_fxr
             s_fxr[i] = [[s11_fxr, s12_fxr],[s21_fxr,s22_fxr]]
         pass
-        print(s21_phase)
+
         fxr = skrf.Network(frequency=f_list, s=s_fxr, z0=50)
 
         fxr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', form='ma', dir=export_path, skrf_comment=False)
