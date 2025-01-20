@@ -66,20 +66,33 @@ class TRL():
 
         s_fxr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
 
+        s11_fxr = numpy.array([])
+        s21_fxr = numpy.array([])
+        s21_fxr_angle = numpy.array([])
+
         for i in range(0,f_points):
             s11_t = numpy.complex128(thru.s[i][0][0])
             s12_t = numpy.complex128(thru.s[i][0][1])
             s21_t = numpy.complex128(thru.s[i][1][0])
             s22_t = numpy.complex128(thru.s[i][1][1])
 
-            s11_fxr = numpy.divide((s11_t + s22_t), (2 + s12_t + s21_t))        # Ref. (5) in [1]
-            s21_fxr = numpy.sqrt(0.5 * (s12_t + s21_t) * (1 - s11_fxr**2))      # Ref. (6) in [1]
+            s11 = numpy.divide((s11_t + s22_t), (2 + s12_t + s21_t))        # Ref. (5) in [1]
+            s21 = numpy.sqrt(0.5 * (s12_t + s21_t) * (1 - s11**2))          # Ref. (6) in [1]
             
-            #s21_fxr = numpy.abs(s21_fxr) * numpy.exp(1j * s21_phase[i])
+            s11_fxr = numpy.append(s11_fxr, s11)
+            s21_fxr = numpy.append(s21_fxr, s21)
+            s21_fxr_angle = numpy.append(s21_fxr_angle, numpy.angle(s21))
+        pass
 
-            s12_fxr = s21_fxr
-            s22_fxr = s11_fxr
-            s_fxr[i] = [[s11_fxr, s12_fxr],[s21_fxr,s22_fxr]]
+        s21_fxr_angle_unwarpped = numpy.unwrap(s21_fxr_angle, period=numpy.pi/4)
+
+        for i in range(0,f_points):
+            s11 = s11_fxr[i]
+            s21 = numpy.abs(s21_fxr[i]) * numpy.exp(1j*s21_fxr_angle_unwarpped[i])
+            s12 = s21
+            s22 = s11
+
+            s_fxr[i] = [[s11, s12],[s21,s22]]
         pass
 
         fxr = skrf.Network(frequency=f_list, s=s_fxr, z0=50)
@@ -264,3 +277,5 @@ class TRL():
 #       IEEE Transactions on Microwave Theory and Techniques, vol. 27, no. 12, Dec. 1979, pp. 987–93. 
 #       DOI: 10.1109/tmtt.1979.1129778.
 ####################################################################
+
+y = TRL().thru2x(r'.\de_embedding\cal_std\sim\thru.s2p', export_path=r'.\de_embedding\cal_std\sim') 
