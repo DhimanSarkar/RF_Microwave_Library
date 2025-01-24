@@ -71,6 +71,36 @@ class data():
 
         return self
 
+    def parseLPWAVE(self,*args,**kwargs):
+
+        data_ascii = open(kwargs['file'], 'r',encoding="utf-8")
+        data_string = str(data_ascii.read())
+        data_line = open(kwargs['file'], 'r').readlines()
+
+        header_start_string = r'Point\s{2}'
+        ###########################
+        # https://dzone.com/articles/finding-line-number-when
+        src = data_string
+        pattern = header_start_string
+        for m in re.finditer(pattern, src):
+            start = m.start()
+            lineno = src.count('\n', 0, start) + 1
+        ###########################
+        header_line_index = lineno - 1
+
+        data_comment_block = data_line[0:header_line_index-3]
+        self.attrs['metadata'] = data_comment_block
+
+        header_dataframe = pandas.read_csv(io.StringIO(data_line[header_line_index]), sep='\\s+')
+        header_columns = header_dataframe.columns.to_list()
+        
+        self.dataframe = pandas.DataFrame(columns=header_columns)
+
+        _data = pandas.read_csv(io.StringIO(data_line[header_line_index+2]), sep='\\s+', header=None, float_precision='high').loc[0].fillna(0).to_list()
+
+
+        self.dataframe.loc[0] = _data
+
     def parseLP(self,*args,**kwargs):
         # if 'file' exists and 'type' lpcwave/loadpull
         data_ascii = open(kwargs['file'], 'r',encoding="utf-8")

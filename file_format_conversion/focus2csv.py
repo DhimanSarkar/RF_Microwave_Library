@@ -13,19 +13,22 @@ root.withdraw()
 ifMore = True
 
 while(ifMore == True):
-    file_path = tkinter.filedialog.askopenfilenames(parent=root, title='Choose a Focus Microwaves Data File', filetypes=[("Focus Microwaves Data File", "*.satwave"),("Focus Microwaves Data File", "*.lpcwave")])
+    file_path = tkinter.filedialog.askopenfilenames(parent=root, title='Choose a Focus Microwaves Data File', filetypes=[("Focus Microwaves Data File", "*.satwave"),("Focus Microwaves Data File", "*.lpcwave"),("Focus Microwaves Data File", "*.lpwave")])
     file = list(file_path)
+    
 
 
     for i in range(1,len(file)+1):
         focusData = focusdatatypes.data()
         filename = file[i-1]
-        fileext = re.search('(\\.(lpc)?(sat)?wave$)', filename).group(1)
+        fileext = re.search(r'(?i)(.(lp)?(lpc)?(sat)?wave$)', filename).group(1)
 
-        if(fileext == '.lpcwave'):
-            focusData.parseLP(file = file[i-1], type=fileext)
-        elif(fileext == '.satwave'):
-            focusData.parsePS(file = file[i-1], type=fileext)
+        if(fileext.lower() == '.lpcwave'):
+            focusData.parseLPCWAVE(file = file[i-1], type=fileext)
+        elif(fileext.lower() == '.lpwave'):
+            focusData.parseLPWAVE(file = file[i-1], type=fileext)
+        elif(fileext.lower() == '.satwave'):
+            focusData.parseSATWAVE(file = file[i-1], type=fileext)
         else:
             print('Wrong data format selected')
 
