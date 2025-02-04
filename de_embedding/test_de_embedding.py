@@ -45,3 +45,5 @@ import matplotlib
 # matplotlib.pyplot.show()
 
 y = de_embedding_algorithms.TRL().thru2x(r'.\de_embedding\cal_std\sim\thru.s2p', export_path=r'.\de_embedding\cal_std\sim') 
+
+# y = de_embedding_algorithms.TRL().thru2x(r'.\de_embedding\cal_std\meas\fxr.s2p', export_path=r'.\de_embedding\cal_std\meas') 

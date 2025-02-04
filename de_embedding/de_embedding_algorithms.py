@@ -7,7 +7,7 @@ import skrf
 
 class network():
 
-    def __init__(self):
+    def ___(self):
         pass
 
     def __del__(self):
@@ -47,7 +47,7 @@ class network():
     ####################################
 
 class TRL():
-    def __init__(self,*args,**kwargs):
+    def ___(self,*args,**kwargs):
         pass
 
     def __del__(self):
@@ -66,10 +66,6 @@ class TRL():
 
         s_fxr = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
 
-        s11_fxr = numpy.array([])
-        s21_fxr = numpy.array([])
-        s21_fxr_angle = numpy.array([])
-
         for i in range(0,f_points):
             s11_t = numpy.complex128(thru.s[i][0][0])
             s12_t = numpy.complex128(thru.s[i][0][1])
@@ -79,22 +75,47 @@ class TRL():
             s11 = numpy.divide((s11_t + s22_t), (2 + s12_t + s21_t))        # Ref. (5) in [1]
             s21 = numpy.sqrt(0.5 * (s12_t + s21_t) * (1 - s11**2))          # Ref. (6) in [1]
             
-            s11_fxr = numpy.append(s11_fxr, s11)
-            s21_fxr = numpy.append(s21_fxr, s21)
-            s21_fxr_angle = numpy.append(s21_fxr_angle, numpy.angle(s21))
+            if(i == 0):
+                s21_ang1 = numpy.angle(s21)
+                s21_ang2 = numpy.angle(-s21)
+                s21_ang_min  = numpy.minimum(numpy.abs(s21_ang1),numpy.abs(s21_ang2))
+                s21_ang = s21_ang1 * (numpy.abs(s21_ang1) == s21_ang_min) + s21_ang2 * (numpy.abs(s21_ang1) != s21_ang_min)
+
+                s21 = numpy.abs(s21) * numpy.exp(s21_ang*1j)
+            else:
+                s21_ang1 = numpy.angle(s21)
+                s21_ang2 = numpy.angle(-s21)
+
+                s21_prev_ang = numpy.angle(s_fxr[i-1][0][1])
+
+                ang_delta1 = s21_prev_ang - s21_ang1
+                ang_delta2 = s21_prev_ang - s21_ang2
+                s21_ang_min  = numpy.minimum(numpy.abs(ang_delta1),numpy.abs(ang_delta2))
+                if_ang1_min = bool (numpy.abs(ang_delta1) == s21_ang_min)
+
+                if((numpy.abs(ang_delta1) < numpy.deg2rad(200)) and (numpy.abs(ang_delta2) < numpy.deg2rad(200))):
+                    s21_ang = s21_ang1 * if_ang1_min + s21_ang2 * (not(if_ang1_min))
+                else:
+                    s21_ang = s21_ang1 * (numpy.abs(ang_delta1) >= numpy.deg2rad(180)) + s21_ang2 * (numpy.abs(ang_delta1)  < numpy.deg2rad(180))
+                    print('gotcha!!')
+
+                s21 = numpy.abs(s21) * numpy.exp(s21_ang*1j)
+
+                # print(numpy.rad2deg(s21_ang1), end='\t')
+                # print(numpy.rad2deg(s21_ang2), end='\t')
+                # print(numpy.rad2deg(s21_ang), end='\n')
+                # print(numpy.rad2deg(ang_delta1), end='\t')
+                # print(numpy.rad2deg(ang_delta2), end='\n')
+                # print("  ", end="\n")
+                # print("  ", end="\n")
+
+
+
+
+            s_fxr[i] = [[s11, s21],[s21,s11]]
         pass
 
-        s21_fxr_angle_unwarpped = numpy.unwrap(s21_fxr_angle, period=numpy.pi/4)
-
-        for i in range(0,f_points):
-            s11 = s11_fxr[i]
-            s21 = numpy.abs(s21_fxr[i]) * numpy.exp(1j*s21_fxr_angle_unwarpped[i])
-            s12 = s21
-            s22 = s11
-
-            s_fxr[i] = [[s11, s12],[s21,s22]]
-        pass
-
+        
         fxr = skrf.Network(frequency=f_list, s=s_fxr, z0=50)
 
         fxr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', form='ma', dir=export_path, skrf_comment=False)
@@ -261,7 +282,7 @@ class TRL():
         # fixture_B.plot_s_db()
         # plt.show()
 
-        fixture_A.write_touchstone(filename='A.s2p', dir=r'C:\Users\GEECI\Desktop', form='db', skrf_comment=False)
+        fixture_A.write_touchstone(filename='A.s2p', dir=r'C:\Users\GEECI\Desktop', form='ma', skrf_comment=False)
         return 0
 
 
