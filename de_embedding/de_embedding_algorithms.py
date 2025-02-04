@@ -97,7 +97,6 @@ class TRL():
                     s21_ang = s21_ang1 * if_ang1_min + s21_ang2 * (not(if_ang1_min))
                 else:
                     s21_ang = s21_ang1 * (numpy.abs(ang_delta1) >= numpy.deg2rad(180)) + s21_ang2 * (numpy.abs(ang_delta1)  < numpy.deg2rad(180))
-                    print('gotcha!!')
 
                 s21 = numpy.abs(s21) * numpy.exp(s21_ang*1j)
 
@@ -114,12 +113,9 @@ class TRL():
 
             s_fxr[i] = [[s11, s21],[s21,s11]]
         pass
-
         
         fxr = skrf.Network(frequency=f_list, s=s_fxr, z0=50)
-
         fxr.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', form='ma', dir=export_path, skrf_comment=False)
-
         return fxr.to_dataframe
 
     
@@ -298,5 +294,3 @@ class TRL():
 #       IEEE Transactions on Microwave Theory and Techniques, vol. 27, no. 12, Dec. 1979, pp. 987–93. 
 #       DOI: 10.1109/tmtt.1979.1129778.
 ####################################################################
-
-y = TRL().thru2x(r'.\de_embedding\cal_std\sim\thru.s2p', export_path=r'.\de_embedding\cal_std\sim') 
