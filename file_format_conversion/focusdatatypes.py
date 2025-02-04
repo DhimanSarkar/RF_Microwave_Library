@@ -33,7 +33,7 @@ class data():
             return 0
         return self
 
-    def parsePS(self,*args,**kwargs):
+    def parseSATWAVE(self,*args,**kwargs):
         # if 'file' exists and 'type' satwave/powersweep
         data_ascii = open(kwargs['file'], 'r',encoding="utf-8")
         data_string = str(data_ascii.read())
@@ -101,7 +101,7 @@ class data():
 
         self.dataframe.loc[0] = _data
 
-    def parseLP(self,*args,**kwargs):
+    def parseLPCWAVE(self,*args,**kwargs):
         # if 'file' exists and 'type' lpcwave/loadpull
         data_ascii = open(kwargs['file'], 'r',encoding="utf-8")
         data_string = str(data_ascii.read())
