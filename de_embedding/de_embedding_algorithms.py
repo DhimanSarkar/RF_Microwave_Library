@@ -75,14 +75,21 @@ class TRL():
             s11 = numpy.divide((s11_t + s22_t), (2 + s12_t + s21_t))        # Ref. (5) in [1]
             s21 = numpy.sqrt(0.5 * (s12_t + s21_t) * (1 - s11**2))          # Ref. (6) in [1]
             
-            if(i == 0):
+            if(i == 0): # choosing the phase of the first/initial frequency
                 s21_ang1 = numpy.angle(s21)
                 s21_ang2 = numpy.angle(-s21)
                 s21_ang_min  = numpy.minimum(numpy.abs(s21_ang1),numpy.abs(s21_ang2))
                 s21_ang = s21_ang1 * (numpy.abs(s21_ang1) == s21_ang_min) + s21_ang2 * (numpy.abs(s21_ang1) != s21_ang_min)
 
                 s21 = numpy.abs(s21) * numpy.exp(s21_ang*1j)
-            else:
+
+                # print(numpy.rad2deg(s21_ang1), end='\t')
+                # print(numpy.rad2deg(s21_ang2), end='\t')
+                # print(numpy.rad2deg(s21_ang), end='\n')
+                # print("  ", end="\n")
+                # print("  ", end="\n")
+
+            else: # choosing the phase of the consequent frequencies in relative to previous frequency point
                 s21_ang1 = numpy.angle(s21)
                 s21_ang2 = numpy.angle(-s21)
 
@@ -92,11 +99,11 @@ class TRL():
                 ang_delta2 = s21_prev_ang - s21_ang2
                 s21_ang_min  = numpy.minimum(numpy.abs(ang_delta1),numpy.abs(ang_delta2))
                 if_ang1_min = bool (numpy.abs(ang_delta1) == s21_ang_min)
-
-                if((numpy.abs(ang_delta1) < numpy.deg2rad(200)) and (numpy.abs(ang_delta2) < numpy.deg2rad(200))):
-                    s21_ang = s21_ang1 * if_ang1_min + s21_ang2 * (not(if_ang1_min))
+                
+                if(numpy.abs(ang_delta1+ang_delta2) >= numpy.deg2rad(360)):
+                    s21_ang = s21_ang1 * (not(if_ang1_min)) + s21_ang2 * ((if_ang1_min))
                 else:
-                    s21_ang = s21_ang1 * (numpy.abs(ang_delta1) >= numpy.deg2rad(180)) + s21_ang2 * (numpy.abs(ang_delta1)  < numpy.deg2rad(180))
+                    s21_ang = s21_ang1 * if_ang1_min + s21_ang2 * (not(if_ang1_min))
 
                 s21 = numpy.abs(s21) * numpy.exp(s21_ang*1j)
 
