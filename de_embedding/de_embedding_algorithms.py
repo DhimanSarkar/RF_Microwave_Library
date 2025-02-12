@@ -53,7 +53,7 @@ class TRL():
     def __del__(self):
         pass
 
-    def thru2x(self, thru_path, *args, **kwargs):
+    def thru2x(self, thru_path, *args, **kwargs):   # 2X THRU Implementation
         if 'export_path' in kwargs:
             export_path = kwargs['export_path']
         else:
@@ -287,6 +287,151 @@ class TRL():
 
         fixture_A.write_touchstone(filename='A.s2p', dir=r'C:\Users\GEECI\Desktop', form='ma', skrf_comment=False)
         return 0
+    
+    def TRL(self, thru_path,refl_path,line_path, *args, **kwargs):   # TRL
+        if 'export_path' in kwargs:
+            export_path = kwargs['export_path']
+        else:
+            export_path = '.\\'
+
+        thru =  skrf.Network(thru_path)
+        refl =  skrf.Network(refl_path)
+        line =  skrf.Network(line_path)
+        
+        f_points = thru.frequency.npoints
+        f_list   = thru.frequency
+
+        s_fxr_in = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
+        s_fxr_out = numpy.zeros([f_points,2,2],dtype=numpy.complex128)
+
+        for i in range(0,f_points):
+            s11_t = numpy.complex128(thru.s[i][0][0])
+            s12_t = numpy.complex128(thru.s[i][0][1])
+            s21_t = numpy.complex128(thru.s[i][1][0])
+            s22_t = numpy.complex128(thru.s[i][1][1])
+            s_t = [[s11_t, s12_t],[s21_t, s22_t]]
+            t_t = network.s2t(s_t)
+
+            s11_r = numpy.complex128(refl.s[i][0][0])
+            s12_r = numpy.complex128(refl.s[i][0][1])
+            s21_r = numpy.complex128(refl.s[i][1][0])
+            s22_r = numpy.complex128(refl.s[i][1][1])
+            s_r = [[s11_r, s12_r],[s21_r, s22_r]]
+
+            s11_l = numpy.complex128(line.s[i][0][0])
+            s12_l = numpy.complex128(line.s[i][0][1])
+            s21_l = numpy.complex128(line.s[i][1][0])
+            s22_l = numpy.complex128(line.s[i][1][1])
+            s_l = [[s11_l, s12_l],[s21_l, s22_l]]
+            t_l = network.s2t(s_l)
+
+            M = numpy.matmul(numpy.linalg.inv(t_t), t_l)
+            N = numpy.matmul(t_l, numpy.linalg.inv(t_t))
+
+            M_coeff = [M[1][0], (M[0][0]-M[1][1]), -M[0][1]]
+            N_coeff = [N[1][0], (N[0][0]-N[1][1]), -N[0][1]]
+
+            M_sol = numpy.roots(M_coeff)
+            N_sol = numpy.roots(N_coeff)
+
+            M_sol_abs = list(numpy.abs(M_sol))
+            M_sol_abs_min = numpy.min(numpy.abs(M_sol))
+            M_sol_min_index = M_sol_abs.index(M_sol_abs_min)
+            M_sol_max_index = numpy.mod((M_sol_min_index + 1), 2)
+
+            c1 = M_sol[M_sol_max_index] # T22/T21 | abs(T22/T21) > abs(T12/T11) [output block]
+            c2 = M_sol[M_sol_min_index] # T12/T11 | abs(T12/T11) > abs(T12/T11) [output block]
+
+            N_sol_abs = list(numpy.abs(N_sol))
+            N_sol_abs_min = numpy.min(numpy.abs(N_sol))
+            N_sol_min_index = N_sol_abs.index(N_sol_abs_min)
+            N_sol_max_index = numpy.mod((N_sol_min_index + 1), 2)
+
+            c3 = N_sol[N_sol_max_index] # TT22/TT21 | abs(TT22/TT21) > abs(TT12/T11) [input block]
+            c4 = N_sol[N_sol_min_index] # TT12/TT11 | abs(TT12/TT11) > abs(TT12/T11) [input block]
+
+            c5 = numpy.divide((1 + c4 * s_t[0][0]), s_t[1][0])  # T11/TT11 [input block]
+            c6 = numpy.divide(s_t[0][1], (s_t[1][1] + c1))      # T21/TT22 [input block]
+
+            c7_num = c5 * numpy.divide((s_r[1][1] + c2), (s_r[1][1] + c1))
+            c7_den = c6 * c3 * numpy.divide((1 + c3 * s_r[0][0]), (1 + c4 * s_r[0][0]))
+            c7 = numpy.sqrt(numpy.divide(c7_num, c7_den))       # TT21/TT11 [input block]
+
+            gamma_std_verify = c7 * numpy.divide((1 + c3 * s_r[0][0]), (1 + c4 * s_r[0][0]))
+            # assuming REFL standard used is SHRT
+            if(numpy.real(gamma_std_verify) > 0):   # real(gamma) = 1 for OPEN, real(gamma) = -1 for SHRT
+                c7 = -c7                            # if real(gamma) > 0 choose alternate sign of c7 for SHRT
+            else:
+                pass
+
+            # IMPORTANT
+            if(i == 0): # fixing inital value of 'k' such that ang(s21) is minimum
+                k = numpy.sqrt(numpy.reciprocal(c3 * c7 - c4 * c7))
+
+                TT_in1 = numpy.multiply([[1, c4], [c7, c3*c7]], k)
+                T_in1 = numpy.linalg.inv(TT_in1)
+                S_in1 = network.t2s(T_in1)
+
+                TT_in2 = numpy.multiply([[1, c4], [c7, c3*c7]], -k)
+                T_in2 = numpy.linalg.inv(TT_in2)
+                S_in2 = network.t2s(T_in2)
+
+                s21_ang1 = numpy.angle(S_in1[1][0])
+                s21_ang2 = numpy.angle(S_in2[1][0])
+                s21_ang_min  = numpy.minimum(numpy.abs(s21_ang1),numpy.abs(s21_ang2))
+
+                if(numpy.abs(s21_ang1) == s21_ang_min):
+                    S_in = S_in1
+                    T_in = T_in1
+                else:
+                    S_in = S_in2
+                    T_in = T_in2
+
+                s_fxr_in[i] = S_in
+
+
+            else: # choosing the phase of the consequent frequencies in relative to previous frequency point
+                k = numpy.sqrt(numpy.reciprocal(c3 * c7 - c4 * c7))
+
+                TT_in1 = numpy.multiply([[1, c4], [c7, c3*c7]], k)
+                T_in1 = numpy.linalg.inv(TT_in1)
+                S_in1 = network.t2s(T_in1)
+
+                TT_in2 = numpy.multiply([[1, c4], [c7, c3*c7]], -k)
+                T_in2 = numpy.linalg.inv(TT_in2)
+                S_in2 = network.t2s(T_in2)
+
+                s21_ang1 = numpy.angle(S_in1[1][0])
+                s21_ang2 = numpy.angle(S_in2[1][0])
+
+                s21_prev_ang = numpy.angle(s_fxr_in[i-1][0][1])
+
+                ang_delta1 = s21_prev_ang - s21_ang1
+                ang_delta2 = s21_prev_ang - s21_ang2
+                s21_ang_min  = numpy.minimum(numpy.abs(ang_delta1),numpy.abs(ang_delta2))
+                if_ang1_min = bool (numpy.abs(ang_delta1) == s21_ang_min)
+                
+                if(numpy.abs(ang_delta1+ang_delta2) >= numpy.deg2rad(360)):
+                    S_in = S_in1 * (not(if_ang1_min)) + S_in2 * ((if_ang1_min))
+                else:
+                    S_in = S_in1 * if_ang1_min + S_in2 * (not(if_ang1_min))
+
+                s_fxr_in[i] = S_in
+        
+            t_in = network.s2t(S_in)
+            t_out = numpy.matmul(numpy.linalg.inv(t_in), t_t)
+            s_fxr_out[i] = network.t2s(t_out)
+    
+
+        fxr_in = skrf.Network(frequency=f_list, s=s_fxr_in, z0=50)
+        fxr_in.write_touchstone(filename='fixture_TestPort_DUTPort.s2p', form='ma', dir=export_path, skrf_comment=False)
+        fxr_out = skrf.Network(frequency=f_list, s=s_fxr_out, z0=50)
+        fxr_out.write_touchstone(filename='fixture_DUTPort_TestPort.s2p', form='ma', dir=export_path, skrf_comment=False)
+        return [fxr_in.to_dataframe, fxr_out.to_dataframe]
+
+
+
+
 
 
 ####################################################################
